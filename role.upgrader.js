@@ -8,7 +8,7 @@ var roleUpgrader = {
         const MIN_ENERGY_FOR_UPGRADE = 0;
 
         const constructionSites = Object.keys(Game.constructionSites).length;
-        if (creep.room.memory.stage === 1 && constructionSites > 0) {
+        if (creep.room.memory.stage < 3 && constructionSites > 0) {
             roleHarvester.run(creep, Memory.sources[1]);
             return;
         }
