@@ -7,6 +7,12 @@ var roleUpgrader = {
         // const MIN_ENERGY_FOR_UPGRADE = creep.room.energyCapacityAvailable < 500 ? 150 : 300;
         const MIN_ENERGY_FOR_UPGRADE = 0;
 
+        const constructionSites = Object.keys(Game.constructionSites).length;
+        if (creep.room.memory.stage === 1 && constructionSites > 0) {
+            roleHarvester.run(creep, Memory.sources[1]);
+            return;
+        }
+
         if (creep.memory.upgrading && creep.store[RESOURCE_ENERGY] == 0 && helper.getEmpireEnergyAvailable() > MIN_ENERGY_FOR_UPGRADE) {
             creep.memory.upgrading = false;
             creep.say('🔋');
