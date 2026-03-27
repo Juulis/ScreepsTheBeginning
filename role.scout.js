@@ -48,7 +48,7 @@ var roleScout = {
             if (exit) {
                 creep.moveTo(exit, {
                     reusePath: 50,
-                    visualizePathStyle: { stroke: '#ff00ff' }
+                    visualizePathStyle: {stroke: '#ff00ff'}
                 });
                 creep.say("→ " + creep.memory.targetRoom);
             } else {
@@ -59,28 +59,30 @@ var roleScout = {
         // 4. När vi är framme i målrummet
         else {
             // Spara nya sources
-            const sources = creep.room.find(FIND_SOURCES);
-            let newSources = 0;
+            const hostileArea = !creep.room.controller.my && creep.room.controller.owner;
+            if (!hostileArea) {
+                const sources = creep.room.find(FIND_SOURCES);
+                let newSources = 0;
 
-            sources.forEach(source => {
-                if (!Memory.sources.includes(source.id)) {
-                    Memory.sources.push(source.id);
-                    // Spara även per rum om du vill
-                    if (!Memory.rooms[creep.room.name]) Memory.rooms[creep.room.name] = {};
-                    if (!Memory.rooms[creep.room.name].sources) Memory.rooms[creep.room.name].sources = [];
-                    if (!Memory.rooms[creep.room.name].sources.includes(source.id)) {
-                        Memory.rooms[creep.room.name].sources.push(source.id);
+                sources.forEach(source => {
+                    if (!Memory.sources.includes(source.id)) {
+                        Memory.sources.push(source.id);
+                        // Spara även per rum om du vill
+                        if (!Memory.rooms[creep.room.name]) Memory.rooms[creep.room.name] = {};
+                        if (!Memory.rooms[creep.room.name].sources) Memory.rooms[creep.room.name].sources = [];
+                        if (!Memory.rooms[creep.room.name].sources.includes(source.id)) {
+                            Memory.rooms[creep.room.name].sources.push(source.id);
+                        }
+                        newSources++;
                     }
-                    newSources++;
+                });
+
+                if (newSources > 0) {
+                    creep.say(`+${newSources} src`);
+                } else {
+                    creep.say("No new");
                 }
-            });
-
-            if (newSources > 0) {
-                creep.say(`+${newSources} src`);
-            } else {
-                creep.say("No new");
             }
-
             // Markera rummet som besökt (bara om det inte redan är)
             if (!Memory.visited.includes(creep.room.name)) {
                 Memory.visited.push(creep.room.name);
