@@ -207,8 +207,10 @@ var creepHandler = {
         // }
 
         // convert to a scout if many harvesters and time to expand
-        if (harvestersTotal > 6 && scoutsTotal === 0 && !(Memory.visited.length >= Memory.otherRooms.length)) {
-            room.find(FIND_MY_CREEPS).filter(c => c.memory.role === "harvester")[0].memory.role = "scout";
+        if (harvestersTotal > 6 && scoutsTotal === 0) {
+            if (!Memory.visited || !(Memory.visited.length >= Memory.otherRooms.length)) {
+                room.find(FIND_MY_CREEPS).filter(c => c.memory.role === "harvester")[0].memory.role = "scout";
+            }
         }
 
         if (Memory.debug) console.log(`before spawning field, harvestersTotal:${harvestersTotal}, max_harvesters:${max_harvesters}`);
