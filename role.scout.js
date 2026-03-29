@@ -90,6 +90,7 @@ var roleScout = {
 
             // Återvänd hem
             creep.memory.targetRoom = Memory.mainRoom;
+            if(Memory.debug)console.log(creep.memory.targetRoom);
             creep.say("Home!");
         }
     }
