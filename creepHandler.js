@@ -47,7 +47,7 @@ var creepHandler = {
         switch (room.memory.stage) {
             case 2:
                 max_harvesters = Memory.sources.length * 4;
-                max_builders = 1;
+                max_builders = 2;
                 max_upgraders = 1;
                 max_haulers = 2;
                 harvesterLevel = 2;
@@ -207,7 +207,7 @@ var creepHandler = {
         // }
 
         // convert to a scout if many harvesters and time to expand
-        if (harvestersTotal > 6 && scoutsTotal === 0) {
+        if (harvestersTotal > 2 && scoutsTotal === 0) {
             if (!Memory.visited || !(Memory.visited.length >= Memory.otherRooms.length)) {
                 room.find(FIND_MY_CREEPS).filter(c => c.memory.role === "harvester")[0].memory.role = "scout";
             }
@@ -217,7 +217,7 @@ var creepHandler = {
 
         //spawn creeps depending on available roles and capacity
         //first check if there is no upgraders but bunch of harvesters
-        if (room.memory.stage > 1 && ((upgradersTotal < 1 && harvestersTotal > 3) || (upgradersTotal < 2 && harvestersTotal > 10))) {
+        if ((upgradersTotal < max_upgraders) && room.memory.stage > 1 && ((upgradersTotal < 1 && harvestersTotal > 3) || (upgradersTotal < 2 && harvestersTotal > 10))) {
             if (Memory.debug) console.log(`creating upgrader - balance`);
             spawnUpgrader();
         } else if (buildersTotal < max_builders && harvestersTotal > 5 && constructionSitesExist) {
