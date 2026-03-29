@@ -191,7 +191,7 @@ var creepHandler = {
                 });
             } else if (haulerLevel === 3) {
                 console.log("creating hauler lvl3");
-                room.find(FIND_MY_SPAWNS)[0].spawnCreep([CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE], 'Hauler' + Game.time, {
+                room.find(FIND_MY_SPAWNS)[0].spawnCreep([CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE], 'Hauler' + Game.time, {
                     memory: {
                         role: 'hauler',
                     }
