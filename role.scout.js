@@ -15,6 +15,7 @@ var roleScout = {
 
         // 2. Välj målrum om vi inte har något
         if (!creep.memory.targetRoom) {
+            if (Memory.debug) console.log("choosing targetRoom");
             // Hitta första obesökta rummet
             for (const roomName of Memory.otherRooms) {
                 if (!Memory.visited.includes(roomName)) {
@@ -34,6 +35,7 @@ var roleScout = {
         // 3. Gå till målrummet
         if (creep.room.name !== creep.memory.targetRoom) {
             const exitDir = Game.map.findExit(creep.room.name, creep.memory.targetRoom);
+            if (Memory.debug) console.log("go to targetRoom ", exitDir);
 
             if (exitDir === ERR_NO_PATH || exitDir === ERR_INVALID_ARGS) {
                 creep.say("No path!");
@@ -90,7 +92,7 @@ var roleScout = {
 
             // Återvänd hem
             creep.memory.targetRoom = Memory.mainRoom;
-            if(Memory.debug)console.log(creep.memory.targetRoom);
+            if (Memory.debug) console.log(creep.memory.targetRoom);
             creep.say("Home!");
         }
     }
