@@ -52,7 +52,7 @@ var builder = {
             const sites = room.find(FIND_CONSTRUCTION_SITES, {
                 filter: s => s.structureType === STRUCTURE_CONTAINER
             }).length;
-
+            if (sites > 0) return;
             if (existing + sites >= 5) return;
 
             const exits = Game.map.describeExits(room.name);
@@ -116,7 +116,7 @@ var builder = {
             } else if (controllerLvl > 4 && !hasTowerConstructionSite && totalTowers < 2) {
                 console.log("building 2nd tower");
                 if (!(room.createConstructionSite(buildPos.x, buildPos.y - 1, STRUCTURE_TOWER) === 0)) {
-                    console.log("oops, couldnt build here, idiot... " + buildPos.x + ":" + buildPos.y +1);
+                    console.log("oops, couldnt build here, idiot... " + buildPos.x + ":" + buildPos.y + 1);
                 }
             }
 
