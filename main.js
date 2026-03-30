@@ -25,7 +25,7 @@ module.exports.loop = function () {
 
     console.log(`cpu: ${Game.cpu.getUsed().toFixed(2)}/${Game.cpu.limit} | Bucket: ${Game.cpu.bucket}`);
 
-    //setup sources and mainRoom in memory om inte finns
+    // setup sources and mainRoom in memory om inte finns
     if (!Memory.sources) {
         const sources = Game.spawns["Spawn1"].room.find(FIND_SOURCES);
         Memory.sources = sources.map(source => source.id);

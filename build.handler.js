@@ -20,6 +20,7 @@ var builder = {
                     }
                 }
             }
+            if(Memory.debug)console.log(`cap: ${room.energyCapacityAvailable} crl: ${room.controller.level} ext: ${totalExtensions} extSites: ${totalExtensionConstructionsites}`);
             if (room.energyCapacityAvailable > 500 && room.controller.level > 2 && totalExtensions < 6 && totalExtensionConstructionsites < 0) {
                 console.log("building second extensions at ", spawnPos);
                 const posX = [spawnPos.x - 3, spawnPos.x + 3, spawnPos.x, spawnPos.x, spawnPos.x + 2];
