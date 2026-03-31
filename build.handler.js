@@ -72,7 +72,7 @@ var builder = {
 
                 //exkludera exits om de inte finns med i sourcelistan
                 const targetRoomMem = Memory.rooms[targetRoom];
-                if (!targetRoomMem?.sources?.length ||
+                if (!targetRoomMem.sources.length ||
                     !Memory.sources.includes(targetRoomMem.sources[0])) {
                     continue;
                 }
