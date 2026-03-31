@@ -69,14 +69,15 @@ var builder = {
                 const targetRoom = exits[side.dir];
                 const exitTiles = room.find(side.dir);
                 if (exitTiles.length === 0) continue;
-
                 //exkludera exits om de inte finns med i sourcelistan
+
                 const targetRoomMem = Memory.rooms[targetRoom];
+                if (!targetRoomMem || (targetRoom && !targetRoomMem.sources)) continue;
+
                 if (!targetRoomMem.sources.length ||
                     !Memory.sources.includes(targetRoomMem.sources[0])) {
                     continue;
                 }
-                if (!targetRoomMem || (targetRoom && !targetRoomMem.sources)) continue;
 
                 // Beräkna mitten en gång per sida
                 let middleExit;
