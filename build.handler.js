@@ -59,10 +59,10 @@ var builder = {
             const exits = Game.map.describeExits(room.name);
 
             const sides = [
-                {dir: TOP, dx: 0, dy: 1},
-                {dir: BOTTOM, dx: 0, dy: -1},
-                {dir: LEFT, dx: 1, dy: 0},
-                {dir: RIGHT, dx: -1, dy: 0}
+                {dir: TOP, dx: 0, dy: 2},
+                {dir: BOTTOM, dx: 0, dy: -2},
+                {dir: LEFT, dx: 2, dy: 0},
+                {dir: RIGHT, dx: -2, dy: 0}
             ];
 
             for (const side of sides) {
