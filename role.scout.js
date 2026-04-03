@@ -2,7 +2,7 @@ var roleScout = {
     run: function (creep) {
         // 0. Initiera Memory om det saknas
         if (!Memory.visited) Memory.visited = [];
-        if (!Memory.sources) Memory.sources = [];
+        if (!Memory.sources) Memory.sources = {};
 
         // 1. Kontrollera om vi är färdiga: alla rum besökta OCH tillbaka hemma
         if (Memory.otherRooms.every(roomName => Memory.visited.includes(roomName))) {
@@ -66,9 +66,12 @@ var roleScout = {
                 let newSources = 0;
 
                 sources.forEach(source => {
-                    if (!Memory.sources.includes(source.id)) {
-                        Memory.sources.push(source.id);
-                        // Spara även per rum om du vill
+                    if (!Memory.sources[source.id]) {
+                        Memory.sources[source.id] = {
+                            roomName: source.room.name,
+                            pos: {x: source.pos.x, y: source.pos.y}
+                        };
+                        // Spara även per rum
                         if (!Memory.rooms[creep.room.name]) Memory.rooms[creep.room.name] = {};
                         if (!Memory.rooms[creep.room.name].sources) Memory.rooms[creep.room.name].sources = [];
                         if (!Memory.rooms[creep.room.name].sources.includes(source.id)) {

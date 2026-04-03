@@ -38,8 +38,8 @@ var helper = {
         return targetContainer;
     },
 
-    /** @param {Tombstone.creep} creep
-     @param {room} room **/
+    /** @param {Creep} creep
+     @param {string} room **/
     travelToRoom: function (creep, room) {
         if (Memory.debug) console.log("travelToRoom - " + creep.name + ": " + creep.room.name + "->" + room);
         if (creep.room.name !== room) {

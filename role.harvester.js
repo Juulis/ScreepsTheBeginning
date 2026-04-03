@@ -74,7 +74,7 @@ var roleHarvester = {
                 }
 
                 if (creep.room.name !== Memory.mainRoom) {
-                    creep.say("⛏️➡️🌍️ 🔋📦")
+                    creep.say("⛏️➡️🌍🏠 🔋📦")
                     helper.travelToRoom(creep, Memory.mainRoom);
                 } else {
                     // DUMP when close to spawn for haulers to pickup ? not working as supposed to, need better code for haulers
@@ -122,14 +122,14 @@ var roleHarvester = {
 
 
             //TODO make theses numbers depend on how many sources in the room
-            const source_1 = Memory.sources[0];
-            const source_2 = Memory.sources[1];
-            const source_3 = Memory.sources[2] || Memory.sources[1];
-            const source_4 = Memory.sources[3] || Memory.sources[2] || Memory.sources[1];
-            const source_5 = Memory.sources[4] || Memory.sources[3] || Memory.sources[2] || Memory.sources[1];
-            const source_6 = Memory.sources[5] || Memory.sources[2]
-            const source_7 = Memory.sources[6] || Memory.sources[3] || Memory.sources[2] || Memory.sources[1];
-            const source_8 = Memory.sources[7] || Memory.sources[3] || Memory.sources[2] || Memory.sources[1];
+            const source_1 = Object.keys(Memory.sources)[0];
+            const source_2 = Object.keys(Memory.sources)[1];
+            const source_3 = Object.keys(Memory.sources)[2] || Object.keys(Memory.sources)[1];
+            const source_4 = Object.keys(Memory.sources)[3] || Object.keys(Memory.sources)[2] || Object.keys(Memory.sources)[1];
+            const source_5 = Object.keys(Memory.sources)[4] || Object.keys(Memory.sources)[3] || Object.keys(Memory.sources)[2] || Object.keys(Memory.sources)[1];
+            const source_6 = Object.keys(Memory.sources)[5] || Object.keys(Memory.sources)[2]
+            const source_7 = Object.keys(Memory.sources)[6] || Object.keys(Memory.sources)[3] || Object.keys(Memory.sources)[2] || Object.keys(Memory.sources)[1];
+            const source_8 = Object.keys(Memory.sources)[7] || Object.keys(Memory.sources)[3] || Object.keys(Memory.sources)[2] || Object.keys(Memory.sources)[1];
 
             //check somehow if we are unbalanced?
             const unbalanced = () => {

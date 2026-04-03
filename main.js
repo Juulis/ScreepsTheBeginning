@@ -27,8 +27,17 @@ module.exports.loop = function () {
 
     // setup sources and mainRoom in memory om inte finns
     if (!Memory.sources) {
+        Memory.sources = {};
+
         const sources = Game.spawns["Spawn1"].room.find(FIND_SOURCES);
-        Memory.sources = sources.map(source => source.id);
+
+        for (const source of sources) {
+            Memory.sources[source.id] = {
+                x: source.pos.x,
+                y: source.pos.y,
+                roomName: source.pos.roomName
+            };
+        }
     }
     if (!Memory.mainRoom) Memory.mainRoom = Game.spawns["Spawn1"].room.name;
     if (!Memory.otherRooms) {
@@ -51,11 +60,11 @@ module.exports.loop = function () {
     const harvestersTotal = roleCounts.harvester || 0;
 
     const setStage = (room) => {
-        if (Memory.debug) console.log(`setting stage - energy:${room.energyAvailable} - sources: ${Memory.sources.length} - harvesters: ${harvestersTotal}`);
+        if (Memory.debug) console.log(`setting stage - energy:${room.energyAvailable} - sources: ${Object.keys(Memory.sources).length} - harvesters: ${harvestersTotal}`);
         let stage = 1;
         if (room.energyCapacityAvailable > 500)
             stage = 2;
-        if (room.energyCapacityAvailable > 700 && Memory.sources && Memory.sources.length > 3 && harvestersTotal > 8)
+        if (room.energyCapacityAvailable > 700 && Memory.sources && Object.keys(Memory.sources).length > 3 && harvestersTotal > 8)
             stage = 3;
         if (harvestersTotal < 3 && room.energyAvailable < 500)
             stage = 1

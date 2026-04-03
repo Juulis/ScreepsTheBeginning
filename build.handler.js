@@ -75,7 +75,7 @@ var builder = {
                 if (!targetRoomMem || (targetRoom && !targetRoomMem.sources)) continue;
 
                 if (!targetRoomMem.sources.length ||
-                    !Memory.sources.includes(targetRoomMem.sources[0])) {
+                    !Memory.sources[targetRoomMem.sources[0]]) {
                     continue;
                 }
 

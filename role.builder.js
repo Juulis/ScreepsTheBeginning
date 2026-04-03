@@ -21,10 +21,10 @@ var roleBuilder = {
         //Activates if we deactivate the despawn code
         if (!buildSite && !repairSite) {
             if (creep.room.find(FIND_MY_CREEPS).filter(c => c.memory.role === "harvester").length < 5) {
-                roleHarvester.run(creep, Memory.sources[4] || Memory.sources[3] || Memory.sources[2] || Memory.sources[1]);
+                roleHarvester.run(creep, Object.keys(Memory.sources)[4] || Object.keys(Memory.sources)[3] || Object.keys(Memory.sources)[2] || Object.keys(Memory.sources)[1]);
             } else {
-                if (Memory.sources.length > 3) {
-                    roleHarvester.run(creep, Memory.sources[4] || Memory.sources[3] || Memory.sources[2] || Memory.sources[1]);
+                if (Object.keys(Memory.sources).length > 3) {
+                    roleHarvester.run(creep, Object.keys(Memory.sources)[4] || Object.keys(Memory.sources)[3] || Object.keys(Memory.sources)[2] || Object.keys(Memory.sources)[1]);
                 } else {
                     roleHauler.run(creep);
 

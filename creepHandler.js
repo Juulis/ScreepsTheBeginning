@@ -18,9 +18,9 @@ var creepHandler = {
             }
 
             if (lowEnergyMode && creep.memory.tempHarvester) {
-                roleHarvester.run(creep, Memory.sources[1]);
+                roleHarvester.run(creep, Object.keys(Memory.sources)[1]);
             } else if (creep.memory.role === "harvester")
-                roleHarvester.run(creep, creep.memory.source || Memory.sources[0]);
+                roleHarvester.run(creep, creep.memory.source || Object.keys(Memory.sources)[0]);
             else if (creep.memory.role === "builder")
                 roleBuilder.run(creep);
             else if (creep.memory.role === "upgrader")
@@ -35,7 +35,7 @@ var creepHandler = {
     },
 
     handleSpawn: function (room) {
-        let max_harvesters = Memory.sources.length * 3;
+        let max_harvesters = Object.keys(Memory.sources).length * 3;
         let max_builders = 1;
         let max_upgraders = 1;
         let max_haulers = 1;
@@ -46,7 +46,7 @@ var creepHandler = {
 
         switch (room.memory.stage) {
             case 2:
-                max_harvesters = Memory.sources.length * 4;
+                max_harvesters = Object.keys(Memory.sources).length * 4;
                 max_builders = 2;
                 max_upgraders = 1;
                 max_haulers = 2;
@@ -56,7 +56,7 @@ var creepHandler = {
                 haulerLevel = 2;
                 break;
             case 3:
-                max_harvesters = Memory.sources.length * 4;
+                max_harvesters = Object.keys(Memory.sources).length * 4;
                 max_builders = 4;
                 max_upgraders = 5;
                 max_haulers = 4;
@@ -87,7 +87,7 @@ var creepHandler = {
                 room.find(FIND_MY_SPAWNS)[0].spawnCreep([WORK, CARRY, MOVE], 'Harvester(' + harvesterLevel + ')' + Game.time, {
                     memory: {
                         role: 'harvester',
-                        source: Memory.sources[0],
+                        source: Object.keys(Memory.sources)[0],
                         cost: 200,
                     }
                 });
@@ -96,7 +96,7 @@ var creepHandler = {
                 room.find(FIND_MY_SPAWNS)[0].spawnCreep([WORK, WORK, CARRY, CARRY, MOVE, MOVE], 'Harvester(' + harvesterLevel + ')' + Game.time, {
                     memory: {
                         role: 'harvester',
-                        source: Memory.sources[1],
+                        source: Object.keys(Memory.sources)[1],
                         cost: 400,
                     }
                 });
@@ -105,7 +105,7 @@ var creepHandler = {
                 room.find(FIND_MY_SPAWNS)[0].spawnCreep([WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE], 'Harvester(' + harvesterLevel + ')' + Game.time, {
                     memory: {
                         role: 'harvester',
-                        source: Memory.sources[1],
+                        source: Object.keys(Memory.sources)[1],
                         cost: 800,
                     }
                 });
