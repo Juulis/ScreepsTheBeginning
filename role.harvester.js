@@ -31,13 +31,23 @@ var roleHarvester = {
                 if (Memory.debug) console.log(creep.name + " going to source")
                 //if in another room for source, first go to exit
                 creep.say("⛏️⚡")
-                creep.moveTo(Memory.sources[sourceId], {visualizePathStyle: {stroke: '#ffaa00'}, reusePath: 50});
+                const srcMem = Memory.sources[sourceId];
+                const pos = new RoomPosition(srcMem.x, srcMem.y, srcMem.roomName);
+
+                // Vänta tills vi får vision
+                const source = Game.getObjectById(sourceId);
+                if (source) {
+                    if (creep.harvest(source) === ERR_NOT_IN_RANGE)
+                        creep.moveTo(pos, {visualizePathStyle: {stroke: '#ffaa00'}, reusePath: 50});
+                } else {
+                    creep.moveTo(pos, {visualizePathStyle: {stroke: '#ffaa00'}, reusePath: 50});
+                }
             } else {
                 // DELIVERING
                 if (Memory.debug) console.log(creep.name + "DELIVERING")
                 let hostile = creep.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
                 const totalHaulers = creep.room.find(FIND_MY_CREEPS).filter(c => c.memory.role === "hauler").length;
-                let target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
+                let target = creep.pos.findClosestByPath(FIND_MY_STRUCTURES, {
                     filter: (s) => (
                             s.structureType === STRUCTURE_SPAWN ||
                             s.structureType === STRUCTURE_EXTENSION ||
@@ -46,11 +56,11 @@ var roleHarvester = {
                             s.structureType === STRUCTURE_STORAGE) &&
                         s.store.getFreeCapacity(RESOURCE_ENERGY) > 0
                 });
-                const targetTowers = creep.pos.findClosestByPath(FIND_STRUCTURES, {filter: (s) => s.structureType === STRUCTURE_TOWER && s.store.getFreeCapacity(RESOURCE_ENERGY) > 0});
-                const targetSpawn = creep.pos.findClosestByPath(FIND_STRUCTURES, {filter: (s) => s.structureType === STRUCTURE_SPAWN && s.store.getFreeCapacity(RESOURCE_ENERGY) > 0});
-                const targetExtension = creep.pos.findClosestByPath(FIND_STRUCTURES, {filter: (s) => s.structureType === STRUCTURE_EXTENSION && s.store.getFreeCapacity(RESOURCE_ENERGY) > 0});
-                const targetContainer = creep.pos.findClosestByPath(FIND_STRUCTURES, {filter: (s) => s.structureType === STRUCTURE_CONTAINER && s.store.getFreeCapacity(RESOURCE_ENERGY) > 0});
-                const targetStorage = creep.pos.findClosestByPath(FIND_STRUCTURES, {filter: (s) => s.structureType === STRUCTURE_STORAGE && s.store.getFreeCapacity(RESOURCE_ENERGY) > 0});
+                const targetTowers = creep.pos.findClosestByPath(FIND_MY_STRUCTURES, {filter: (s) => s.structureType === STRUCTURE_TOWER && s.store.getFreeCapacity(RESOURCE_ENERGY) > 0});
+                const targetSpawn = creep.pos.findClosestByPath(FIND_MY_STRUCTURES, {filter: (s) => s.structureType === STRUCTURE_SPAWN && s.store.getFreeCapacity(RESOURCE_ENERGY) > 0});
+                const targetExtension = creep.pos.findClosestByPath(FIND_MY_STRUCTURES, {filter: (s) => s.structureType === STRUCTURE_EXTENSION && s.store.getFreeCapacity(RESOURCE_ENERGY) > 0});
+                const targetContainer = creep.pos.findClosestByPath(FIND_MY_STRUCTURES, {filter: (s) => s.structureType === STRUCTURE_CONTAINER && s.store.getFreeCapacity(RESOURCE_ENERGY) > 0});
+                const targetStorage = creep.pos.findClosestByPath(FIND_MY_STRUCTURES, {filter: (s) => s.structureType === STRUCTURE_STORAGE && s.store.getFreeCapacity(RESOURCE_ENERGY) > 0});
 
                 if (totalHaulers < 1) {
                     target = targetSpawn || targetExtension || targetContainer || targetTowers || targetStorage;
