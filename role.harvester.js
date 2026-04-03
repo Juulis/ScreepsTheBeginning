@@ -28,12 +28,6 @@ var roleHarvester = {
 
             if (creep.memory.harvesting) {
                 //HARVESTING
-                // Gå hem först om i annat rum
-                if(creep.room.name !== Memory.mainRoom) {
-                    const mainRoomPos = new RoomPosition(25, 25, Memory.mainRoom); // mitt i rummet som mål, kvittar för den kommer inte in här när jag väl kommit in i rummet
-                    creep.moveTo(mainRoomPos, {visualizePathStyle:{stroke:'#00ff00'}, reusePath:50});
-                    return;
-                }
                 if (Memory.debug) console.log(creep.name + " going to source")
                 //if in another room for source, first go to exit
                 creep.say("⛏️⚡")
@@ -50,6 +44,15 @@ var roleHarvester = {
                 }
             } else {
                 // DELIVERING
+
+                // Gå hem först om i annat rum
+                if(creep.room.name !== Memory.mainRoom) {
+                    const mainRoomPos = new RoomPosition(25, 25, Memory.mainRoom); // mitt i rummet som mål, kvittar för den kommer inte in här när jag väl kommit in i rummet
+                    creep.moveTo(mainRoomPos, {visualizePathStyle:{stroke:'#00ff00'}, reusePath:50});
+                    creep.say("⛏️|🔋📦→🏠")
+                    return;
+                }
+
                 if (Memory.debug) console.log(creep.name + "DELIVERING")
                 let hostile = creep.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
                 const totalHaulers = creep.room.find(FIND_MY_CREEPS).filter(c => c.memory.role === "hauler").length;
