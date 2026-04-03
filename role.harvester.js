@@ -64,7 +64,7 @@ var roleHarvester = {
                 const targetContainer = creep.pos.findClosestByPath(FIND_STRUCTURES, {filter: (s) => s.structureType === STRUCTURE_CONTAINER && s.store.getFreeCapacity(RESOURCE_ENERGY) > 0});
                 const targetStorage = creep.pos.findClosestByPath(FIND_STRUCTURES, {filter: (s) => s.structureType === STRUCTURE_STORAGE && s.store.getFreeCapacity(RESOURCE_ENERGY) > 0});
 
-                if (totalHaulers < 1 || helper.getEmpireEnergyAvailable() < 500) {
+                if (totalHaulers < 1) {
                     target = targetSpawn || targetExtension || targetContainer || targetTowers || targetStorage;
                 }
 
