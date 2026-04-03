@@ -96,9 +96,10 @@ var builder = {
                 );
 
                 // Kolla om platsen är ledig
-                const occupied = buildPos.lookFor(LOOK_STRUCTURES).some(s => s.structureType === STRUCTURE_CONTAINER) ||
+                const occupiedByContainer = buildPos.lookFor(LOOK_STRUCTURES).some(s => s.structureType === STRUCTURE_CONTAINER) ||
                     buildPos.lookFor(LOOK_CONSTRUCTION_SITES).some(s => s.structureType === STRUCTURE_CONTAINER);
-                if (occupied) buildPos.x > 40 || buildPos.x < -40 ? buildPos.x += 1 : buildPos.y += 1;
+                // if (occupiedByContainer) buildPos.x > 40 || buildPos.x < -40 ? buildPos.x += 1 : buildPos.y += 1;
+                if (occupiedByContainer) continue;
 
                 const result = room.createConstructionSite(buildPos, STRUCTURE_CONTAINER);
 
