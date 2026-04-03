@@ -84,7 +84,7 @@ var creepHandler = {
 
             if (harvesterLevel === 1) {
                 console.log("creating harvester lvl1");
-                room.find(FIND_MY_SPAWNS)[0].spawnCreep([WORK, CARRY, MOVE], 'Harvester' + Game.time, {
+                room.find(FIND_MY_SPAWNS)[0].spawnCreep([WORK, CARRY, MOVE], 'Harvester(' + harvesterLevel + ')' + Game.time, {
                     memory: {
                         role: 'harvester',
                         source: Memory.sources[0],
@@ -93,7 +93,7 @@ var creepHandler = {
                 });
             } else if (harvesterLevel === 2) {
                 console.log("creating harvester lvl2");
-                room.find(FIND_MY_SPAWNS)[0].spawnCreep([WORK, WORK, CARRY, CARRY, MOVE, MOVE], 'Harvester' + Game.time, {
+                room.find(FIND_MY_SPAWNS)[0].spawnCreep([WORK, WORK, CARRY, CARRY, MOVE, MOVE], 'Harvester(' + harvesterLevel + ')' + Game.time, {
                     memory: {
                         role: 'harvester',
                         source: Memory.sources[1],
@@ -102,7 +102,7 @@ var creepHandler = {
                 });
             } else if (harvesterLevel === 3) {
                 console.log("creating harvester lvl3");
-                room.find(FIND_MY_SPAWNS)[0].spawnCreep([WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE], 'Harvester' + Game.time, {
+                room.find(FIND_MY_SPAWNS)[0].spawnCreep([WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE], 'Harvester(' + harvesterLevel + ')' + Game.time, {
                     memory: {
                         role: 'harvester',
                         source: Memory.sources[1],
@@ -115,7 +115,7 @@ var creepHandler = {
         function spawnUpgrader() {
             if (upgraderLevel === 1) {
                 console.log("creating upgrader lvl1");
-                room.find(FIND_MY_SPAWNS)[0].spawnCreep([WORK, CARRY, MOVE], 'Upgrader' + Game.time, {
+                room.find(FIND_MY_SPAWNS)[0].spawnCreep([WORK, CARRY, MOVE], 'Upgrader(' + upgraderLevel + ')' + Game.time, {
                     memory: {
                         role: 'upgrader',
                         upgrading: false,
@@ -124,7 +124,7 @@ var creepHandler = {
                 });
             } else if (upgraderLevel === 2) {
                 console.log("creating upgrader lvl2");
-                room.find(FIND_MY_SPAWNS)[0].spawnCreep([WORK, WORK, WORK, CARRY, CARRY, MOVE], 'Upgrader' + Game.time, {
+                room.find(FIND_MY_SPAWNS)[0].spawnCreep([WORK, WORK, WORK, CARRY, CARRY, MOVE], 'Upgrader(' + upgraderLevel + ')' + Game.time, {
                     memory: {
                         role: 'upgrader',
                         upgrading: false,
@@ -133,7 +133,7 @@ var creepHandler = {
                 });
             } else if (upgraderLevel === 3) {
                 console.log("creating upgrader lvl3");
-                room.find(FIND_MY_SPAWNS)[0].spawnCreep([WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE], 'Upgrader' + Game.time, {
+                room.find(FIND_MY_SPAWNS)[0].spawnCreep([WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE], 'Upgrader(' + upgraderLevel + ')' + Game.time, {
                     memory: {
                         role: 'upgrader',
                         upgrading: false,
@@ -146,7 +146,7 @@ var creepHandler = {
         function spawnBuilder() {
             if (builderLevel === 1) {
                 console.log("creating builder lvl1");
-                room.find(FIND_MY_SPAWNS)[0].spawnCreep([WORK, CARRY, MOVE], 'Builder' + Game.time, {
+                room.find(FIND_MY_SPAWNS)[0].spawnCreep([WORK, CARRY, MOVE], 'Builder(' + builderLevel + ')' + Game.time, {
                     memory: {
                         role: 'builder',
                         building: false,
@@ -155,7 +155,7 @@ var creepHandler = {
                 });
             } else if (builderLevel === 2) {
                 console.log("creating builder lvl2");
-                room.find(FIND_MY_SPAWNS)[0].spawnCreep([WORK, WORK, WORK, CARRY, MOVE, MOVE], 'Builder' + Game.time, {
+                room.find(FIND_MY_SPAWNS)[0].spawnCreep([WORK, WORK, WORK, CARRY, MOVE, MOVE], 'Builder(' + builderLevel + ')' + Game.time, {
                     memory: {
                         role: 'builder',
                         building: false,
@@ -164,7 +164,7 @@ var creepHandler = {
                 });
             } else if (builderLevel === 3) {
                 console.log("creating builder lvl3");
-                room.find(FIND_MY_SPAWNS)[0].spawnCreep([WORK, WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE], 'Builder' + Game.time, {
+                room.find(FIND_MY_SPAWNS)[0].spawnCreep([WORK, WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE], 'Builder(' + builderLevel + ')' + Game.time, {
                     memory: {
                         role: 'builder',
                         building: false,
@@ -177,21 +177,21 @@ var creepHandler = {
         function spawnHauler() {
             if (haulerLevel === 1) {
                 console.log("creating hauler lvl1");
-                room.find(FIND_MY_SPAWNS)[0].spawnCreep([CARRY, CARRY, MOVE], 'Hauler' + Game.time, {
+                room.find(FIND_MY_SPAWNS)[0].spawnCreep([CARRY, CARRY, MOVE], 'Hauler(' + haulerLevel + ')' + Game.time, {
                     memory: {
                         role: 'hauler',
                     }
                 });
             } else if (haulerLevel === 2) {
                 console.log("creating hauler lvl2");
-                room.find(FIND_MY_SPAWNS)[0].spawnCreep([CARRY, CARRY, CARRY, MOVE, MOVE], 'Hauler' + Game.time, {
+                room.find(FIND_MY_SPAWNS)[0].spawnCreep([CARRY, CARRY, CARRY, MOVE, MOVE], 'Hauler(' + haulerLevel + ')' + Game.time, {
                     memory: {
                         role: 'hauler',
                     }
                 });
             } else if (haulerLevel === 3) {
                 console.log("creating hauler lvl3");
-                room.find(FIND_MY_SPAWNS)[0].spawnCreep([CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE], 'Hauler' + Game.time, {
+                room.find(FIND_MY_SPAWNS)[0].spawnCreep([CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE], 'Hauler(' + haulerLevel + ')' + Game.time, {
                     memory: {
                         role: 'hauler',
                     }
