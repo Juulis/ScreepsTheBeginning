@@ -40,7 +40,7 @@ var roleHarvester = {
                             if (Memory.debug) console.log("roomtraveling, source not in room - " + creep.name + " : " + creep.room.name + "->" + targetRoom);
                         }
                     }
-                    creep.say("➡️ ⛏️⚡")
+                    creep.say("➡️🌍 ⛏️⚡")
                     helper.travelToRoom(creep, targetRoom);
                 } else if (creep.harvest(source) === ERR_NOT_IN_RANGE) {
                     creep.moveTo(source, {visualizePathStyle: {stroke: '#ffaa00'}, reusePath: 50});
@@ -74,7 +74,7 @@ var roleHarvester = {
                 }
 
                 if (creep.room.name !== Memory.mainRoom) {
-                    creep.say("➡️ 🔋")
+                    creep.say("➡️🌍 🔋📦")
                     helper.travelToRoom(creep, Memory.mainRoom);
                 } else {
                     // DUMP when close to spawn for haulers to pickup ? not working as supposed to, need better code for haulers
@@ -85,7 +85,7 @@ var roleHarvester = {
                     //     creep.memory.harvested = (creep.memory.harvested || 0) + (creep.body.filter(part => part.type === CARRY).length * 50);
                     //     return;
                     // }
-                    creep.say("🔋")
+                    creep.say("🔋📦")
                     const transfered = creep.transfer(target, RESOURCE_ENERGY);
                     if (transfered === ERR_NOT_IN_RANGE) {
                         creep.moveTo(target, {visualizePathStyle: {stroke: '#ffaa00'}, reusePath: 50});

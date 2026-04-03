@@ -18,8 +18,8 @@ var roleBuilder = {
 
         let buildSite = creep.pos.findClosestByPath(FIND_CONSTRUCTION_SITES);
 
+        //Activates if we deactivate the despawn code
         if (!buildSite && !repairSite) {
-            creep.say("⛏️ ⚡");
             if (creep.room.find(FIND_MY_CREEPS).filter(c => c.memory.role === "harvester").length < 5) {
                 roleHarvester.run(creep, Memory.sources[4] || Memory.sources[3] || Memory.sources[2] || Memory.sources[1]);
             } else {
@@ -36,18 +36,16 @@ var roleBuilder = {
         // State hantering
         if (creep.memory.building && creep.store[RESOURCE_ENERGY] === 0 && creep.room.energyAvailable >= MIN_ENERGY_FOR_BUILDING) {
             creep.memory.building = false;
-            creep.say('⚡');
         }
         if (!creep.memory.building && creep.store.getFreeCapacity(RESOURCE_ENERGY) === 0) {
             creep.memory.building = true;
-            creep.say('🔨🧱');
         }
 
         const towersExist = creep.room.find(FIND_STRUCTURES, {filter: structure => structure.structureType === STRUCTURE_TOWER});
 
         if (creep.memory.building) {
             if (repairSite && !towersExist) {
-                creep.say("🔨🧱");
+                creep.say("🔧️🧱");
                 if (creep.repair(repairSite) == ERR_NOT_IN_RANGE) {
                     creep.moveTo(repairSite, {visualizePathStyle: {stroke: '#ffffff'}, reusePath: 20});
                 }
@@ -60,13 +58,13 @@ var roleBuilder = {
         } else {
             // Hämta energi
             if (creep.room.find(FIND_MY_CREEPS).filter(c => c.memory.role === "harvester").length < 4 && creep.room.energyAvailable < 300) {
-                creep.say("⛏️ ⚡")
+                creep.say("⛏️⚡ → 🛠️")
                 const source = creep.pos.findClosestByPath(FIND_SOURCES);
                 if (creep.harvest(source) == ERR_NOT_IN_RANGE) {
                     creep.moveTo(source, {visualizePathStyle: {stroke: '#ffaa00'}, reusePath: 20});
                 }
             } else {
-                creep.say("🔋")
+                creep.say("🔋→🛠️")
                 let target = helper.getResourceTargetExclSpawnIfPossible(creep);
                 if (creep.withdraw(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                     creep.moveTo(target, {visualizePathStyle: {stroke: '#ffaa00'}, reusePath: 20});

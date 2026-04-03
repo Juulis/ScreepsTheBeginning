@@ -9,11 +9,9 @@ var roleUpgrader = {
 
         if (creep.memory.upgrading && creep.store[RESOURCE_ENERGY] == 0 && helper.getEmpireEnergyAvailable() > MIN_ENERGY_FOR_UPGRADE) {
             creep.memory.upgrading = false;
-            creep.say('🔋');
         }
         if (!creep.memory.upgrading && creep.store.getFreeCapacity() == 0) {
             creep.memory.upgrading = true;
-            creep.say('⚡');
         }
 
 

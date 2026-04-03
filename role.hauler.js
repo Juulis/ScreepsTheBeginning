@@ -39,7 +39,7 @@ var roleHauler = {
                 //     filter: c => c.memory.role === 'hauler' && c.id !== creep.id
                 // });
                 // if (!otherHaulersNearby) {
-                creep.say("🚚 🧹⚡");
+                creep.say("🚚🧹⚡");
                 if (creep.pickup(dropped) === ERR_NOT_IN_RANGE) {
                     creep.moveTo(dropped, {visualizePathStyle: {stroke: '#ffffff'}, reusePath: 20});
                 }
@@ -59,7 +59,7 @@ var roleHauler = {
 
             // STORAGE HAULER
             if (creep.memory.storageHauler && storage && storage.store[RESOURCE_ENERGY] > 5000) {
-                creep.say("🛻🏠📦 ⚡");
+                creep.say("🛻🔋🏪");
                 if (creep.withdraw(storage, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
                     creep.moveTo(storage, {visualizePathStyle: {stroke: '#ffffff'}, reusePath: 20});
                 }
@@ -70,18 +70,18 @@ var roleHauler = {
                 if (creep.withdraw(container, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
                     creep.moveTo(container, {visualizePathStyle: {stroke: '#ffffff'}, reusePath: 20});
                 }
-                creep.say("🚚 ⚡");
+                creep.say("🚚🔋");
                 return;
             }
             if (storage && storage.store[RESOURCE_ENERGY] > 1000) {
                 if (creep.withdraw(storage, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
                     creep.moveTo(storage, {visualizePathStyle: {stroke: '#ffffff'}, reusePath: 20});
                 }
-                creep.say("🚚 🔋➡️🔋");
+                creep.say("🚚 🔋→🔋");
                 return;
             }
 
-            creep.say("⏳ 💤");
+            creep.say("🚚⏳💤");
         } else {
             // Full → lämna energi
 
@@ -96,16 +96,16 @@ var roleHauler = {
             });
 
             if (target) {
+                creep.say("🚚🔋📦");
                 if (creep.transfer(target, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
                     creep.moveTo(target, {reusePath: 10, visualizePathStyle: {stroke: '#ffffff'}});
                 }
-                creep.say("🚚 🔋");
             } else {
                 // Inget som behöver energi → gå till storage som backup eller stå still
                 let storage = creep.room.storage;
                 if (storage && storage.store.getFreeCapacity(RESOURCE_ENERGY) > 0) {
+                    creep.say("🚚🔋📦");
                     if (creep.transfer(storage, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
-                        creep.say("🚚 🔋 📦");
                         creep.moveTo(storage, {visualizePathStyle: {stroke: '#ffffff'}, reusePath: 10});
                     }
                 } else {
