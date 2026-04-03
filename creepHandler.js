@@ -89,6 +89,7 @@ var creepHandler = {
                         role: 'harvester',
                         source: Object.keys(Memory.sources)[0],
                         cost: 200,
+                        mainRoom: room.roomName,
                     }
                 });
             } else if (harvesterLevel === 2) {
@@ -98,6 +99,7 @@ var creepHandler = {
                         role: 'harvester',
                         source: Object.keys(Memory.sources)[1],
                         cost: 400,
+                        mainRoom: room.roomName,
                     }
                 });
             } else if (harvesterLevel === 3) {
@@ -107,6 +109,7 @@ var creepHandler = {
                         role: 'harvester',
                         source: Object.keys(Memory.sources)[1],
                         cost: 800,
+                        mainRoom: room.roomName,
                     }
                 });
             }
@@ -119,7 +122,8 @@ var creepHandler = {
                     memory: {
                         role: 'upgrader',
                         upgrading: false,
-                        tempHarvester: true
+                        tempHarvester: true,
+                        mainRoom: room.roomName,
                     }
                 });
             } else if (upgraderLevel === 2) {
@@ -128,7 +132,8 @@ var creepHandler = {
                     memory: {
                         role: 'upgrader',
                         upgrading: false,
-                        tempHarvester: true
+                        tempHarvester: true,
+                        mainRoom: room.roomName,
                     }
                 });
             } else if (upgraderLevel === 3) {
@@ -137,7 +142,8 @@ var creepHandler = {
                     memory: {
                         role: 'upgrader',
                         upgrading: false,
-                        tempHarvester: true
+                        tempHarvester: true,
+                        mainRoom: room.roomName,
                     }
                 });
             }
@@ -150,7 +156,8 @@ var creepHandler = {
                     memory: {
                         role: 'builder',
                         building: false,
-                        tempHarvester: true
+                        tempHarvester: true,
+                        mainRoom: room.roomName,
                     }
                 });
             } else if (builderLevel === 2) {
@@ -159,7 +166,8 @@ var creepHandler = {
                     memory: {
                         role: 'builder',
                         building: false,
-                        tempHarvester: true
+                        tempHarvester: true,
+                        mainRoom: room.roomName,
                     }
                 });
             } else if (builderLevel === 3) {
@@ -168,7 +176,8 @@ var creepHandler = {
                     memory: {
                         role: 'builder',
                         building: false,
-                        tempHarvester: true
+                        tempHarvester: true,
+                        mainRoom: room.roomName,
                     }
                 });
             }
@@ -180,6 +189,7 @@ var creepHandler = {
                 room.find(FIND_MY_SPAWNS)[0].spawnCreep([CARRY, CARRY, MOVE], 'Hauler(' + haulerLevel + ')' + Game.time, {
                     memory: {
                         role: 'hauler',
+                        mainRoom: room.roomName,
                     }
                 });
             } else if (haulerLevel === 2) {
@@ -187,6 +197,7 @@ var creepHandler = {
                 room.find(FIND_MY_SPAWNS)[0].spawnCreep([CARRY, CARRY, CARRY, MOVE, MOVE], 'Hauler(' + haulerLevel + ')' + Game.time, {
                     memory: {
                         role: 'hauler',
+                        mainRoom: room.roomName,
                     }
                 });
             } else if (haulerLevel === 3) {
@@ -194,6 +205,7 @@ var creepHandler = {
                 room.find(FIND_MY_SPAWNS)[0].spawnCreep([CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE], 'Hauler(' + haulerLevel + ')' + Game.time, {
                     memory: {
                         role: 'hauler',
+                        mainRoom: room.roomName,
                     }
                 });
             }

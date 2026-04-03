@@ -26,26 +26,14 @@ var roleHarvester = {
                 }
             }
 
-            const source = Game.getObjectById(sourceId);
             if (creep.memory.harvesting) {
+                //HARVESTING
                 if (Memory.debug) console.log(creep.name + " going to source")
                 //if in another room for source, first go to exit
                 creep.say("⛏️⚡")
-                if (!source) {
-                    let targetRoom;
-                    for (const roomName in Memory.rooms) {
-                        const roomData = Memory.rooms[roomName];
-                        if (roomData.sources && roomData.sources.includes(sourceId)) {
-                            targetRoom = roomName;  // hittade!
-                            if (Memory.debug) console.log("roomtraveling, source not in room - " + creep.name + " : " + creep.room.name + "->" + targetRoom);
-                        }
-                    }
-                    creep.say("⛏️➡️🌍 ⚡")
-                    helper.travelToRoom(creep, targetRoom);
-                } else if (creep.harvest(source) === ERR_NOT_IN_RANGE) {
-                    creep.moveTo(source, {visualizePathStyle: {stroke: '#ffaa00'}, reusePath: 50});
-                }
+                creep.moveTo(Memory.sources[sourceId], {visualizePathStyle: {stroke: '#ffaa00'}, reusePath: 50});
             } else {
+                // DELIVERING
                 if (Memory.debug) console.log(creep.name + "DELIVERING")
                 let hostile = creep.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
                 const totalHaulers = creep.room.find(FIND_MY_CREEPS).filter(c => c.memory.role === "hauler").length;
@@ -73,26 +61,13 @@ var roleHarvester = {
                     target = targetTowers || targetSpawn || targetExtension || targetContainer || targetStorage;
                 }
 
-                if (creep.room.name !== Memory.mainRoom) {
-                    creep.say("⛏️➡️🌍🏠 🔋📦")
-                    helper.travelToRoom(creep, Memory.mainRoom);
-                } else {
-                    // DUMP when close to spawn for haulers to pickup ? not working as supposed to, need better code for haulers
-                    // const spawn = Game.spawns["Spawn1"];   // eller din spawn
-                    // if (creep.pos.getRangeTo(spawn) < 8 && totalHaulers > 2) {
-                    //     creep.say("DUMPING");
-                    //     creep.drop(RESOURCE_ENERGY)
-                    //     creep.memory.harvested = (creep.memory.harvested || 0) + (creep.body.filter(part => part.type === CARRY).length * 50);
-                    //     return;
-                    // }
-                    creep.say("⛏️🔋📦")
-                    const transfered = creep.transfer(target, RESOURCE_ENERGY);
-                    if (transfered === ERR_NOT_IN_RANGE) {
-                        creep.moveTo(target, {visualizePathStyle: {stroke: '#ffaa00'}, reusePath: 50});
-                    } else if (transfered === OK) {
-                        //spara harvested energy i memory (50 per CARRY bodypart
-                        creep.memory.harvested = (creep.memory.harvested || 0) + (creep.body.filter(part => part.type === CARRY).length * 50);
-                    }
+                creep.say("⛏️🔋📦")
+                const transferred = creep.transfer(target, RESOURCE_ENERGY);
+                if (transferred === ERR_NOT_IN_RANGE) {
+                    creep.moveTo(target, {visualizePathStyle: {stroke: '#ffaa00'}, reusePath: 50});
+                } else if (transferred === OK) {
+                    //spara harvested energy i memory (50 per CARRY bodypart
+                    creep.memory.harvested = (creep.memory.harvested || 0) + (creep.body.filter(part => part.type === CARRY).length * 50);
                 }
             }
         },

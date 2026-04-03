@@ -38,20 +38,6 @@ var helper = {
         return targetContainer;
     },
 
-    /** @param {Creep} creep
-     @param {string} room **/
-    travelToRoom: function (creep, room) {
-        if (Memory.debug) console.log("travelToRoom - " + creep.name + ": " + creep.room.name + "->" + room);
-        if (creep.room.name !== room) {
-            const exitPos = Game.map.findExit(creep.room.name, room)
-            const exit = creep.pos.findClosestByRange(exitPos);
-            creep.moveTo(exit, {visualizePathStyle: {stroke: '#ffaa00'}, reusePath: 50});
-            // creep.say("->", room);
-        } else {
-            creep.say("Already in the room!");
-        }
-    },
-
     getEmpireEnergyCapacity: function () {
         return _.sum(Game.rooms, function (room) {
             let cap = room.energyCapacityAvailable || 0;
