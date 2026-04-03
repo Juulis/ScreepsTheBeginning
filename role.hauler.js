@@ -6,7 +6,6 @@ var roleHauler = {
         if (totalCleaners < 1 && !creep.memory.cleaner) {
             creep.memory.cleaner = true;
         }
-        console.log("delivering?", creep.memory.delivering);
         // create a storageHauler to take care of energy transfer storage -> spawn/extensions
         const storageHaulers = creep.room.find(FIND_MY_CREEPS, {filter: (c) => c.memory.role === "hauler" && c.memory.storageHauler});
         const haulers = creep.room.find(FIND_MY_CREEPS, {filter: (c) => c.memory.role === "hauler"});
