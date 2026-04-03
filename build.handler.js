@@ -138,7 +138,7 @@ var builder = {
             const controllerLvl = room.controller.level;
             const hasStorageConstructionSite = room.find(FIND_CONSTRUCTION_SITES, {filter: s => s.structureType === STRUCTURE_STORAGE}).length > 0;
 
-            if (room.memory.stage > 3 && !hasStorageConstructionSite && totalStorages < 1 && helper.getEmpireEnergyCapacity() > 800 && controllerLvl > 3) {
+            if (room.memory.stage > 2 && !hasStorageConstructionSite && totalStorages < 1 && helper.getEmpireEnergyCapacity() > 800 && controllerLvl > 3) {
                 console.log("building first storage");
                 if (!(room.createConstructionSite(buildPos.x + 3, buildPos.y - 1, STRUCTURE_STORAGE) === 0)) {
                     console.log("oops, couldnt build here, idiot...");

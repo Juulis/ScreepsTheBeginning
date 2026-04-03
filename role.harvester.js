@@ -80,7 +80,7 @@ var roleHarvester = {
                     target = targetTowers || targetSpawn || targetExtension || targetContainer || targetStorage;
                 }
 
-                creep.say("⛏️🔋📦")
+                creep.say("⛏️|🔋📦")
                 const transferred = creep.transfer(target, RESOURCE_ENERGY);
                 if (transferred === ERR_NOT_IN_RANGE) {
                     creep.moveTo(target, {visualizePathStyle: {stroke: '#ffaa00'}, reusePath: 50});
