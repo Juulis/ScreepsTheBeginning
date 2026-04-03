@@ -5,10 +5,9 @@ var roleScout = {
         if (!Memory.sources) Memory.sources = [];
 
         // 1. Kontrollera om vi är färdiga: alla rum besökta OCH tillbaka hemma
-        if (creep.room.name === Memory.mainRoom &&
-            Memory.visited.length >= Memory.otherRooms.length) {
+        if (Memory.otherRooms.every(roomName => Memory.visited.includes(roomName))) {
             creep.memory.role = "harvester";
-            creep.say("Scout klar → Harvester!");
+            creep.say("🌍Scout klar → Harvester!");
             console.log(`${creep.name} bytte till harvester – alla rum scoutade`);
             return;
         }
@@ -28,7 +27,7 @@ var roleScout = {
             // Om inga fler obesökta → sätt mål till hemmet
             if (!creep.memory.targetRoom) {
                 creep.memory.targetRoom = Memory.mainRoom;
-                creep.say("Alla scoutade – hem!");
+                creep.say("🌍 Alla scoutade – hem!");
             }
         }
 
@@ -38,7 +37,7 @@ var roleScout = {
             if (Memory.debug) console.log("go to targetRoom ", exitDir);
 
             if (exitDir === ERR_NO_PATH || exitDir === ERR_INVALID_ARGS) {
-                creep.say("No path!");
+                creep.say("🌍 No path!");
                 console.log(`Ingen väg från ${creep.room.name} till ${creep.memory.targetRoom}`);
                 // Ta bort målet för att undvika loop
                 creep.memory.targetRoom = Memory.mainRoom;
@@ -52,9 +51,9 @@ var roleScout = {
                     reusePath: 50,
                     visualizePathStyle: {stroke: '#ff00ff'}
                 });
-                creep.say("→ " + creep.memory.targetRoom);
+                creep.say("🌍 → " + creep.memory.targetRoom);
             } else {
-                creep.say("No exit?");
+                creep.say("🌍 No exit?");
                 creep.memory.targetRoom = Memory.mainRoom; // säkerhetsåtergång
             }
         }
@@ -80,9 +79,9 @@ var roleScout = {
                 });
 
                 if (newSources > 0) {
-                    creep.say(`+${newSources} src`);
+                    creep.say(`🌍 +${newSources} src`);
                 } else {
-                    creep.say("No new");
+                    creep.say("🌍 No new");
                 }
             }
             // Markera rummet som besökt (bara om det inte redan är)
@@ -90,10 +89,17 @@ var roleScout = {
                 Memory.visited.push(creep.room.name);
             }
 
-            // Återvänd hem
-            creep.memory.targetRoom = Memory.mainRoom;
-            if (Memory.debug) console.log(creep.memory.targetRoom);
-            creep.say("Home!");
+            // Är vi hemma? → nollställ targetRoom så vi kan välja nytt rum nästa tic
+            if (creep.room.name === Memory.mainRoom) {
+                creep.memory.targetRoom = null;
+                creep.say("🌍 ✅🏠");
+
+                // Här kan du också kolla om alla rum är scoutade och byta roll
+            } else {
+                // Vi är i ett annat rum vi just scoutat → åk hem
+                creep.memory.targetRoom = Memory.mainRoom;
+                creep.say("🌍 ➡️🏠");
+            }
         }
     }
 };
