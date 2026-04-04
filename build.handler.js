@@ -203,9 +203,8 @@ var builder = {
         const buildersExist = _.filter(room.find(FIND_MY_CREEPS), (creep) => creep.memory.role === "builder").length > 0;
 
         // build the stuff
-        if (room.find(FIND_MY_SPAWNS)) {
+        if (room.find(FIND_MY_SPAWNS).length > 0) {
             const spawnPos = room.find(FIND_MY_SPAWNS)[0].pos;
-
             buildExtensions(room, spawnPos);
             buildStorage(room, spawnPos);
             buildTower(room, spawnPos);
