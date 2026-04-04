@@ -29,7 +29,7 @@ class RoleClaimer {
         // Annars reservera
         if (
             !controller.reservation ||
-            controller.reservation.username !== Game.me.username ||
+            controller.my ||
             controller.reservation.ticksToEnd < 1000
         ) {
             creep.say("🏳️🌍")
