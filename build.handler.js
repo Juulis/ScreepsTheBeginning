@@ -20,7 +20,7 @@ var builder = {
                     }
                 }
             }
-            if(Memory.debug)console.log(`cap: ${room.energyCapacityAvailable} crl: ${room.controller.level} ext: ${totalExtensions} extSites: ${totalExtensionConstructionsites}`);
+            if (Memory.debug) console.log(`cap: ${room.energyCapacityAvailable} crl: ${room.controller.level} ext: ${totalExtensions} extSites: ${totalExtensionConstructionsites}`);
             if (room.energyCapacityAvailable > 500 && room.controller.level > 2 && totalExtensions < 6 && totalExtensionConstructionsites < 1) {
                 console.log("building second extensions at ", spawnPos);
                 const posX = [spawnPos.x - 3, spawnPos.x + 3, spawnPos.x, spawnPos.x, spawnPos.x + 2];
@@ -146,6 +146,57 @@ var builder = {
             }
         }
 
+        function findContainerSpot(source) {
+            for (let dx = -1; dx <= 1; dx++) {
+                for (let dy = -1; dy <= 1; dy++) {
+                    if (dx === 0 && dy === 0) continue;
+
+                    const x = source.pos.x + dx;
+                    const y = source.pos.y + dy;
+
+                    // Kolla terrain
+                    const terrain = source.room.getTerrain().get(x, y);
+                    if (terrain === TERRAIN_MASK_WALL) continue;
+
+                    // Kolla om något redan blockerar
+                    const structures = source.room.lookForAt(LOOK_STRUCTURES, x, y);
+                    const constructionSites = source.room.lookForAt(LOOK_CONSTRUCTION_SITES, x, y);
+
+                    if (structures.length === 0 && constructionSites.length === 0) {
+                        return new RoomPosition(x, y, source.room.name);
+                    }
+                }
+            }
+
+            return null;
+        }
+
+        const buildContainersAtSources = (room) => {
+            //check if source is in owned room
+            if (!room.controller.my) return;
+
+            //loop sources in room
+            room.memory.sources.forEach(source => {
+                //check if source already has a container
+                const sourceObj = Game.getObjectById(source)
+                const hasContainer = _.some(sourceObj.pos.findInRange(FIND_STRUCTURES, 1),
+                    s => s.structureType === STRUCTURE_CONTAINER
+                );
+                const hasSite = _.some(sourceObj.pos.findInRange(FIND_CONSTRUCTION_SITES, 1),
+                    s => s.structureType === STRUCTURE_CONTAINER
+                );
+
+                if (hasContainer || hasSite) return;
+
+                //build at sourcelocation +/- 1 pos
+                const spot = findContainerSpot(sourceObj);
+
+                if (spot) {
+                    const result = source.room.createConstructionSite(spot, STRUCTURE_CONTAINER);
+                    console.log("Build result:", result);
+                }
+            })
+        }
 
         //preCheck if we should build stuff
 

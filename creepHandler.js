@@ -46,7 +46,7 @@ var creepHandler = {
         let max_builders = 1;
         let max_upgraders = 1;
         let max_haulers = 1;
-        let max_claimers = roomsWithSources - myRoomsTotal;
+        let max_claimers = roomsWithSources.length - myRoomsTotal;
         let harvesterLevel = 1;
         let builderLevel = 1;
         let upgraderLevel = 1;
@@ -54,7 +54,7 @@ var creepHandler = {
 
         switch (room.memory.stage) {
             case 2:
-                max_harvesters = Object.keys(Memory.sources).length * 4;
+                max_harvesters = Object.keys(Memory.sources).length * 3;
                 max_builders = 2;
                 max_upgraders = 1;
                 max_haulers = 2;
@@ -64,7 +64,7 @@ var creepHandler = {
                 haulerLevel = 2;
                 break;
             case 3:
-                max_harvesters = Object.keys(Memory.sources).length * 4;
+                max_harvesters = Object.keys(Memory.sources).length * 1;
                 max_builders = 4;
                 max_upgraders = 5;
                 max_haulers = 4;
