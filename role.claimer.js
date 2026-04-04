@@ -59,7 +59,7 @@ class RoleClaimer {
         for (let roomName of rooms) {
             const claimersAlreadyInRoom = (_.filter(Game.creeps, c =>
                     c.memory.role === 'claimer' &&
-                    c.room.name === creep.memory.targetRoom).length > 0
+                    c.room.name === roomName).length > 0
             );
 
             if (claimersAlreadyInRoom) continue;
@@ -75,7 +75,7 @@ class RoleClaimer {
 
             if (
                 !controller.reservation ||
-                controller.reservation.username !== creep.owner.username ||
+                controller.reservation.username !== Memory.username ||
                 controller.reservation.ticksToEnd < 1000
             ) {
                 return roomName;

@@ -5,6 +5,7 @@ var {towerManager} = require('tower.handler');
 var helper = require('helper');
 
 module.exports.loop = function () {
+    if(!Memory.username) Memory.username = "Juulis";
     // Rensa död memory (bra vana)
     for (let name in Memory.creeps) {
         if (!Game.creeps[name]) delete Memory.creeps[name];
