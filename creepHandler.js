@@ -38,10 +38,13 @@ var creepHandler = {
     },
 
     handleSpawn: function (room) {
+        const myRoomsTotal = Object.values(Game.rooms).filter(room => room.controller && room.controller.my).length;
+
         let max_harvesters = Object.keys(Memory.sources).length * 3;
         let max_builders = 1;
         let max_upgraders = 1;
         let max_haulers = 1;
+        let max_claimers = Memory.rooms.length - myRoomsTotal;
         let harvesterLevel = 1;
         let builderLevel = 1;
         let upgraderLevel = 1;
@@ -252,7 +255,7 @@ var creepHandler = {
         } else if (haulerTotal < max_haulers && harvestersTotal > 7 && (containersTotal > 0 || storageExist)) {
             if (Memory.debug) console.log(`creating hauler`);
             spawnHauler();
-        } else if (Game.gcl.level > 1 && claimersTotal < 1) {
+        } else if (Game.gcl.level > 1 && claimersTotal < max_claimers) {
             if (Memory.debug) console.log(`creating claimer`);
             spawnClaimer();
         } else if (harvestersTotal < max_harvesters) {
