@@ -149,14 +149,19 @@ module.exports.loop = function () {
             });
         }
 
-        //set screeps&towers to work/move
+        //set screeps&towers to work/move (ALL ROOMS)
         handleRoles(room);
         towerManager(room);
 
-        //handle stuff in mainRoom
-        // if (Memory.mainRoom === roomName) {
+        //ONLY CONTROLLED ROOMS
         if (room.controller.my) {
-            // Display spawn message
+            buildManager(room);
+        }
+
+        //ONLY MAINROOM
+        if (Memory.mainRoom === roomName) {
+
+        // Display spawn message
             if (Game.spawns["Spawn1"].spawning) {
                 const spawn = Game.spawns["Spawn1"];
                 const name = spawn.spawning.name;
@@ -167,7 +172,6 @@ module.exports.loop = function () {
             handleLogs(room);
             handleSpawn(room);
             manageSourceBalancing(room);
-            buildManager(room);
             console.log("---------------------------------------------------------" + "tic:" + Game.time + "------------------------------------------------------------------")
         }
     }
