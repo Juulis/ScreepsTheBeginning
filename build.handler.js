@@ -203,12 +203,15 @@ var builder = {
         const buildersExist = _.filter(room.find(FIND_MY_CREEPS), (creep) => creep.memory.role === "builder").length > 0;
 
         // build the stuff
-        const spawnPos = room.find(FIND_MY_SPAWNS)[0].pos;
+        if (room.find(FIND_MY_SPAWNS)) {
+            const spawnPos = room.find(FIND_MY_SPAWNS)[0].pos;
+
+            buildExtensions(room, spawnPos);
+            buildStorage(room, spawnPos);
+            buildTower(room, spawnPos);
+            buildContainer(room);
+        }
         buildContainersAtSources(room);
-        buildExtensions(room, spawnPos);
-        buildContainer(room);
-        buildStorage(room, spawnPos);
-        buildTower(room, spawnPos);
     }
 }
 

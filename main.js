@@ -153,9 +153,9 @@ module.exports.loop = function () {
         handleRoles(room);
         towerManager(room);
 
-
         //handle stuff in mainRoom
-        if (Memory.mainRoom === roomName) {
+        // if (Memory.mainRoom === roomName) {
+        if (room.controller.my) {
             // Display spawn message
             if (Game.spawns["Spawn1"].spawning) {
                 const spawn = Game.spawns["Spawn1"];
