@@ -41,9 +41,6 @@ var roleHarvester = {
                         const container = _.find(source.pos.findInRange(FIND_STRUCTURES, 1),
                             s => s.structureType === STRUCTURE_CONTAINER
                         );
-                        var constructionSite = _.find(source.pos.findInRange(FIND_CONSTRUCTION_SITES, 1),
-                            s => s.structureType === STRUCTURE_CONTAINER
-                        );
                         creep.moveTo(container ? container : pos, {visualizePathStyle: {stroke: '#ffaa00'}, reusePath: 50});
                     }
                 } else {
@@ -75,6 +72,14 @@ var roleHarvester = {
                 const targetExtension = creep.pos.findClosestByPath(FIND_MY_STRUCTURES, {filter: (s) => s.structureType === STRUCTURE_EXTENSION && s.store.getFreeCapacity(RESOURCE_ENERGY) > 0});
                 const targetContainer = creep.pos.findClosestByPath(FIND_MY_STRUCTURES, {filter: (s) => s.structureType === STRUCTURE_CONTAINER && s.store.getFreeCapacity(RESOURCE_ENERGY) > 0});
                 const targetStorage = creep.pos.findClosestByPath(FIND_MY_STRUCTURES, {filter: (s) => s.structureType === STRUCTURE_STORAGE && s.store.getFreeCapacity(RESOURCE_ENERGY) > 0});
+                const source = Game.getObjectById(sourceId);
+                const container = _.find(source.pos.findInRange(FIND_STRUCTURES, 1),
+                    s => s.structureType === STRUCTURE_CONTAINER
+                );
+                const constructionSite = _.find(source.pos.findInRange(FIND_CONSTRUCTION_SITES, 1),
+                    s => s.structureType === STRUCTURE_CONTAINER
+                );
+
 
                 if (totalHaulers < 1) {
                     target = targetSpawn || targetExtension || targetContainer || targetTowers || targetStorage;
