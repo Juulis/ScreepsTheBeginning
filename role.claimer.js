@@ -32,7 +32,11 @@ class RoleClaimer {
             !controller.my ||
             controller.reservation.ticksToEnd < 1000
         ) {
-            creep.say("🏳️🌍|" + controller?.reservation?.ticksToEnd || "0");
+            if (controller.reservation) {
+                creep.say("🏳️🌍|" + controller.reservation.ticksToEnd);
+            } else {
+                creep.say("🏳️🌍|0");
+            }
             if (creep.reserveController(controller) === ERR_NOT_IN_RANGE) {
                 creep.moveTo(controller);
             }
