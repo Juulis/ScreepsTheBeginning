@@ -192,7 +192,7 @@ var builder = {
                 const spot = findContainerSpot(sourceObj);
 
                 if (spot) {
-                    const result = source.room.createConstructionSite(spot, STRUCTURE_CONTAINER);
+                    const result = room.createConstructionSite(spot, STRUCTURE_CONTAINER);
                     console.log("Build result:", result);
                 }
             })
@@ -204,6 +204,7 @@ var builder = {
 
         // build the stuff
         const spawnPos = room.find(FIND_MY_SPAWNS)[0].pos;
+        buildContainersAtSources(room);
         buildExtensions(room, spawnPos);
         buildContainer(room);
         buildStorage(room, spawnPos);
