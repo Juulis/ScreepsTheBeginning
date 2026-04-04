@@ -37,18 +37,23 @@ var roleHarvester = {
                 // Vänta tills vi får vision
                 const source = Game.getObjectById(sourceId);
                 if (source) {
-                    if (creep.harvest(source) === ERR_NOT_IN_RANGE)
-                        creep.moveTo(pos, {visualizePathStyle: {stroke: '#ffaa00'}, reusePath: 50});
+                    if (creep.harvest(source) === ERR_NOT_IN_RANGE) {
+                        const container = _.find(source.pos.findInRange(FIND_STRUCTURES, 1),
+                            s => s.structureType === STRUCTURE_CONTAINER
+                        );
+                        var constructionSite = _.find(source.pos.findInRange(FIND_CONSTRUCTION_SITES, 1),
+                            s => s.structureType === STRUCTURE_CONTAINER
+                        );
+                        creep.moveTo(container ? container : pos, {visualizePathStyle: {stroke: '#ffaa00'}, reusePath: 50});
+                    }
                 } else {
                     creep.moveTo(pos, {visualizePathStyle: {stroke: '#ffaa00'}, reusePath: 50});
                 }
-            } else {
-                // DELIVERING
-
+            } else { // DELIVERING
                 // Gå hem först om i annat rum
-                if(creep.room.name !== Memory.mainRoom) {
+                if (creep.room.name !== Memory.mainRoom) {
                     const mainRoomPos = new RoomPosition(25, 25, Memory.mainRoom); // mitt i rummet som mål, kvittar för den kommer inte in här när jag väl kommit in i rummet
-                    creep.moveTo(mainRoomPos, {visualizePathStyle:{stroke:'#00ff00'}, reusePath:50});
+                    creep.moveTo(mainRoomPos, {visualizePathStyle: {stroke: '#00ff00'}, reusePath: 50});
                     creep.say("⛏️|🔋📦→🏠")
                     return;
                 }
@@ -80,6 +85,11 @@ var roleHarvester = {
                     target = targetTowers || targetSpawn || targetExtension || targetContainer || targetStorage;
                 }
 
+                if(constructionSite && helper.getEmpireEnergyAvailable() > 1000){
+                    creep.build(constructionSite)
+                    creep.say("⛏️| 🔨🧱");
+                    return;
+                }
                 creep.say("⛏️|🔋📦")
                 const transferred = creep.transfer(target, RESOURCE_ENERGY);
                 if (transferred === ERR_NOT_IN_RANGE) {
