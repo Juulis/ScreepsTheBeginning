@@ -217,7 +217,7 @@ var creepHandler = {
         }
 
         function spawnClaimer() {
-            console.log("creating hauler lvl1");
+            console.log("creating claimer");
             room.find(FIND_MY_SPAWNS)[0].spawnCreep([CLAIM, MOVE], 'Claimer' + Game.time, {
                 memory: {
                     role: 'claimer',
