@@ -9,7 +9,7 @@ class RoleClaimer {
 
         // Gå till rätt rum
         if (creep.room.name !== targetRoom) {
-            creep.say("🚩🌍")
+            creep.say("🚩🌍➡️"+creep.targetRoom)
             creep.moveTo(new RoomPosition(25, 25, targetRoom));
             return;
         }
@@ -19,8 +19,8 @@ class RoleClaimer {
 
         // Om vi kan claima (GCL + neutral)
         if (!controller.owner && Game.gcl.level > Object.keys(Game.rooms).length) {
+            creep.say("🚩🌍")
             if (creep.claimController(controller) === ERR_NOT_IN_RANGE) {
-                creep.say("🚩🌍")
                 creep.moveTo(controller);
             }
             return;
@@ -32,8 +32,8 @@ class RoleClaimer {
             controller.reservation.username !== creep.owner.username ||
             controller.reservation.ticksToEnd < 1000
         ) {
+            creep.say("🏳️🌍")
             if (creep.reserveController(controller) === ERR_NOT_IN_RANGE) {
-                creep.say("🏳️🌍")
                 creep.moveTo(controller);
             }
             return;
@@ -54,6 +54,8 @@ class RoleClaimer {
         // Hitta första rum som inte är reserverat
         for (let roomName of rooms) {
             const room = Game.rooms[roomName];
+
+            if(roomName === Memory.mainRoom) continue;
 
             if (!room) return roomName; // ingen vision → gå dit
 
