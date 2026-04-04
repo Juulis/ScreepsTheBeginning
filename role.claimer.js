@@ -9,7 +9,7 @@ class RoleClaimer {
 
         // Gå till rätt rum
         if (creep.room.name !== targetRoom) {
-            creep.say("🚩🌍➡️"+creep.targetRoom)
+            creep.say("🚩🌍➡️"+creep.memory.targetRoom)
             creep.moveTo(new RoomPosition(25, 25, targetRoom));
             return;
         }
