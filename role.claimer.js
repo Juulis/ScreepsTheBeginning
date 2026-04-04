@@ -10,7 +10,7 @@ class RoleClaimer {
         // Gå till rätt rum
         if (creep.room.name !== targetRoom) {
             creep.say("🚩🌍➡️" + creep.memory.targetRoom)
-            creep.moveTo(new RoomPosition(25, 25, targetRoom));
+            creep.moveTo(new RoomPosition(25, 25, targetRoom), {visualizePathStyle: {stroke: '#ffffff'}, reusePath: 50});
             return;
         }
 
@@ -38,7 +38,7 @@ class RoleClaimer {
                 creep.say("🏳️🌍|0");
             }
             if (creep.reserveController(controller) === ERR_NOT_IN_RANGE) {
-                creep.moveTo(controller);
+                creep.moveTo(controller, {visualizePathStyle: {stroke: '#ffffff'}, reusePath: 50});
             }
             return;
         }
