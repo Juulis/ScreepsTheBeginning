@@ -18,7 +18,9 @@ class RoleClaimer {
         if (!controller) return;
 
         // Om vi kan claima (GCL + neutral)
-        if (!controller.owner && Game.gcl.level > Object.keys(Game.rooms).length) {
+        const myRoomsTotal = Object.values(Game.rooms).filter(room => room.controller && room.controller.my).length;
+
+        if (!controller.owner && Game.gcl.level > myRoomsTotal) {
             creep.say("🚩🌍")
             if (creep.claimController(controller) === ERR_NOT_IN_RANGE) {
                 creep.moveTo(controller, {visualizePathStyle: {stroke: '#ffffff'}, reusePath: 50});
