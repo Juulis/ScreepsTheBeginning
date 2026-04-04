@@ -29,7 +29,7 @@ class RoleClaimer {
         // Annars reservera
         if (
             !controller.reservation ||
-            controller.my ||
+            !controller.my ||
             controller.reservation.ticksToEnd < 1000
         ) {
             creep.say("🏳️🌍")
