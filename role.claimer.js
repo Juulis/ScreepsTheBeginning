@@ -57,12 +57,12 @@ class RoleClaimer {
 
         // Hitta första rum som inte är reserverat
         for (let roomName of rooms) {
-            const claimersAlreadyInRoom = (_.filter(Game.creeps, c =>
+            const claimersAlreadyTargetingRoom = (_.filter(Game.creeps, c =>
                     c.memory.role === 'claimer' &&
-                    c.room.name === roomName).length > 0
+                    c.memory.targetRoom === roomName).length > 0
             );
 
-            if (claimersAlreadyInRoom) continue;
+            if (claimersAlreadyTargetingRoom) continue;
 
             const room = Game.rooms[roomName];
 
