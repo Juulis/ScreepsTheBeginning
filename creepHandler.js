@@ -39,7 +39,9 @@ var creepHandler = {
 
     handleSpawn: function (room) {
         const myRoomsTotal = Object.values(Game.rooms).filter(room => room.controller && room.controller.my).length;
-
+        const roomsWithSources = Object.keys(Memory.rooms).filter(roomName =>
+            Memory.rooms[roomName].sources && Object.keys(Memory.rooms[roomName].sources).length > 0
+        );
         let max_harvesters = Object.keys(Memory.sources).length * 3;
         let max_builders = 1;
         let max_upgraders = 1;
