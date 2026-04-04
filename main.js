@@ -80,6 +80,15 @@ module.exports.loop = function () {
         return `[${bar}] ${current}/${max} (${(percent * 100).toFixed(1)}%)`;
     }
 
+    function globalProgressBar(current, max, length = 20) {
+        const percent = current / max;
+        const filled = Math.round(percent * length);
+        const empty = length - filled;
+
+        const bar = '█'.repeat(filled) + '-'.repeat(empty);
+        return `[${bar}] ${current}/${max} (${(percent * 100).toFixed(1)}%)`;
+    }
+
     function handleLogs(room) {
         //gameStatus logging
         const roleCounts = _.countBy(Game.creeps, creep => creep.memory.role || "no role");
@@ -89,10 +98,12 @@ module.exports.loop = function () {
         const upgradersTotal = roleCounts.upgrader || 0;
         const scoutsTotal = roleCounts.scout || 0;
         const haulersTotal = roleCounts.hauler || 0;
+        const claimersTotal = roleCounts.claimer || 0;
 
         console.log(`energy: ${room.energyAvailable}(${helper.getEmpireEnergyAvailable()})/${room.energyCapacityAvailable}(${helper.getEmpireEnergyCapacity()})`)
         console.log(`stage ${room.memory.stage} - RCL:${room.controller.level} - ${progressBar(room.controller.progress,room.controller.progressTotal)}`);
-        console.log(`harvesters:${harvestersTotal}, upgraders:${upgradersTotal}, builders:${buildersTotal}, scouts: ${scoutsTotal}, haulers: ${haulersTotal}`);
+        console.log(`GCL:${Game.gcl.level} - ${progressBar(Game.gcl.progress,Game.gcl.progressTotal)}`);
+        console.log(`harvesters:${harvestersTotal}, upgraders:${upgradersTotal}, builders:${buildersTotal}, scouts: ${scoutsTotal}, haulers: ${haulersTotal}, claimers: ${claimersTotal}`);
 
         // Logga till memory varje halvtimme (1800 ticks = 30 min)
         if (Game.time % 1200 === 0) {

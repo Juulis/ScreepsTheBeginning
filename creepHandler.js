@@ -3,6 +3,7 @@ var roleBuilder = require('role.builder');
 var roleUpgrader = require('role.upgrader');
 var roleHauler = require('role.hauler');
 var roleScout = require('role.scout');
+var roleClaimer = require('role.claimer');
 
 var creepHandler = {
 
@@ -29,6 +30,8 @@ var creepHandler = {
                 roleHauler.run(creep);
             else if (creep.memory.role === "scout")
                 roleScout.run(creep);
+            else if (creep.memory.role === "claimer")
+                roleClaimer.run(creep);
         }
 
 
@@ -74,6 +77,7 @@ var creepHandler = {
         const upgradersTotal = roleCounts.upgrader || 0;
         const scoutsTotal = roleCounts.scout || 0;
         const haulerTotal = roleCounts.hauler || 0;
+        const claimersTotal = roleCounts.claimer || 0;
 
         const containersTotal = room.find(FIND_STRUCTURES, {filter: s => s.structureType === STRUCTURE_CONTAINER}).length;
         const storageExist = room.find(FIND_STRUCTURES, {filter: s => s.structureType === STRUCTURE_STORAGE}).length > 0;
@@ -212,6 +216,16 @@ var creepHandler = {
 
         }
 
+        function spawnClaimer() {
+            console.log("creating hauler lvl1");
+            room.find(FIND_MY_SPAWNS)[0].spawnCreep([CLAIM, MOVE], 'Claimer' + Game.time, {
+                memory: {
+                    role: 'claimer',
+                    mainRoom: room.roomName,
+                }
+            });
+        }
+
         // // convert to a hauler if no hauler and we got a container and 5+ harvesters
         // if (haulerTotal < 1 && room.find(FIND_STRUCTURES, {filter: s => s.structureType === STRUCTURE_CONTAINER}).length > 0 && harvestersTotal > 5) {
         //     if (Memory.debug) console.log(`spawning hauler ${room.find(FIND_MY_CREEPS).filter(c => c.memory.role === "harvester")}`)
@@ -238,6 +252,9 @@ var creepHandler = {
         } else if (haulerTotal < max_haulers && harvestersTotal > 7 && (containersTotal > 0 || storageExist)) {
             if (Memory.debug) console.log(`creating hauler`);
             spawnHauler();
+        } else if (claimersTotal < 1) {
+            if (Memory.debug) console.log(`creating claimer`);
+            spawnClaimer();
         } else if (harvestersTotal < max_harvesters) {
             if (Memory.debug) console.log(`creating harvester`);
             spawnHarvester();
