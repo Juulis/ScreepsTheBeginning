@@ -56,7 +56,7 @@ var roleHarvester = {
                 if (Memory.debug) console.log(creep.name + "DELIVERING")
                 let hostile = creep.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
                 const totalHaulers = creep.room.find(FIND_MY_CREEPS).filter(c => c.memory.role === "hauler").length;
-                let target = creep.pos.findClosestByPath(FIND_MY_STRUCTURES, {
+                let target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
                     filter: (s) => (
                             s.structureType === STRUCTURE_SPAWN ||
                             s.structureType === STRUCTURE_EXTENSION ||
@@ -85,7 +85,7 @@ var roleHarvester = {
                 if (transferred === ERR_NOT_IN_RANGE) {
                     creep.moveTo(target, {visualizePathStyle: {stroke: '#ffaa00'}, reusePath: 50});
                 } else if (transferred === OK) {
-                    //spara harvested energy i memory (50 per CARRY bodypart
+                    //spara harvested energy i memory (50 per CARRY bodypart)
                     creep.memory.harvested = (creep.memory.harvested || 0) + (creep.body.filter(part => part.type === CARRY).length * 50);
                 }
             }
