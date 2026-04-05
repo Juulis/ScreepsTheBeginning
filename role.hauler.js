@@ -79,8 +79,8 @@ var roleHauler = {
                             reusePath: 50
                         });
                     }
-                    return;
                 }
+                return;
             }
         }
 
