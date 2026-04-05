@@ -61,6 +61,7 @@ var roleBuilder = {
                     creep.moveTo(buildSite, {visualizePathStyle: {stroke: '#ffffff'}, reusePath: 20});
                 }
             } else if (closest){
+                creep.say("🔨🧱🌍");
                 creep.moveTo(closest, {visualizePathStyle: {stroke: '#ffffff'}, reusePath: 20});
             }
         } else {

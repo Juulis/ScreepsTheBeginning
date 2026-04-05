@@ -254,7 +254,7 @@ var creepHandler = {
         } else if (buildersTotal < max_builders && harvestersTotal > 5 && constructionSitesExist) {
             if (Memory.debug) console.log(`creating builder - balance`);
             spawnBuilder();
-        } else if (haulerTotal < max_haulers && harvestersTotal > 7 && (containersTotal > 0 || storageExist)) {
+        } else if (haulerTotal < max_haulers && (containersTotal > 0 || storageExist)) {
             if (Memory.debug) console.log(`creating hauler`);
             spawnHauler();
         } else if (Game.gcl.level > 1 && claimersTotal < max_claimers) {
