@@ -105,7 +105,7 @@ module.exports.loop = function () {
         console.log(`energy: ${room.energyAvailable}(${helper.getEmpireEnergyAvailable()})/${room.energyCapacityAvailable}(${helper.getEmpireEnergyCapacity()})`)
         console.log(`stage ${room.memory.stage} - RCL:${room.controller.level} - ${progressBar(room.controller.progress, room.controller.progressTotal)}`);
         console.log(`GCL:${Game.gcl.level} - ${progressBar(Game.gcl.progress, Game.gcl.progressTotal)}`);
-        console.log(`harvesters:${harvestersTotal}, upgraders:${upgradersTotal}, builders:${buildersTotal}, scouts: ${scoutsTotal}, haulers: ${haulersTotal+remoteHaulersTotal}, claimers: ${claimersTotal}`);
+        console.log(`harvesters:${harvestersTotal}, upgraders:${upgradersTotal}, builders:${buildersTotal}, scouts: ${scoutsTotal}, haulers: ${haulersTotal}+${remoteHaulersTotal}, claimers: ${claimersTotal}`);
 
         // Logga till memory varje halvtimme (1800 ticks = 30 min)
         if (Game.time % 1200 === 0) {
