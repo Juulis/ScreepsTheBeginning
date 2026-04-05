@@ -35,17 +35,17 @@ var roleHauler = {
             if (!isOwned && !hasSpawn) {
                 if (!creep.memory.delivering) {
 
-                    // hitta container nära source
-                    const source = Game.getObjectById(sourceId);
-                    const container = source.pos.findInRange(FIND_STRUCTURES, 1)
-                        .find(s => s.structureType === STRUCTURE_CONTAINER);
-
                     // gå till rätt rum först
                     if (container && creep.room.name !== sourceRoom) {
                         creep.say("🚚➡️🌍");
                         creep.moveTo(new RoomPosition(25, 25, sourceRoom));
                         return;
                     }
+
+                    // hitta container nära source
+                    const source = Game.getObjectById(sourceId);
+                    const container = source.pos.findInRange(FIND_STRUCTURES, 1)
+                        .find(s => s.structureType === STRUCTURE_CONTAINER);
 
 
                     if (container && container.store[RESOURCE_ENERGY] > 0) {
