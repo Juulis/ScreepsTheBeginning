@@ -316,12 +316,19 @@ var creepHandler = {
         if (Memory.debug) console.log(`before spawning field, harvestersTotal:${harvestersTotal}, max_harvesters:${max_harvesters}`);
         //spawn creeps depending on available roles and capacity
         //first check if there is no upgraders but bunch of harvesters
+        if (room.stage >= 3) {
+            spawnHarvesterStage3();
+        }
+
         if (upgradersTotal < 1 && room.memory.stage > 1 && harvestersTotal > 6) {
             if (Memory.debug) console.log(`creating upgrader - balance`);
             spawnUpgrader();
         } else if (buildersTotal < max_builders && harvestersTotal > 5 && constructionSitesExist) {
             if (Memory.debug) console.log(`creating builder - balance`);
             spawnBuilder();
+        } else if (harvestersTotal < max_harvesters) {
+            spawnHarvester();
+            if (Memory.debug) console.log(`creating harvester`);
         } else if (haulersTotal < max_haulers && (containersTotal > 0 || storageExist)) {
             if (Memory.debug) console.log(`creating hauler`);
             spawnHauler();
@@ -334,13 +341,6 @@ var creepHandler = {
         } else if (buildersTotal < max_builders && constructionSitesExist) {
             if (Memory.debug) console.log(`creating builder`);
             spawnBuilder();
-        } else if (harvestersTotal < max_harvesters) {
-            if (room.memory.stage >= 3) {
-                spawnHarvesterStage3();
-            } else {
-                spawnHarvester();
-                if (Memory.debug) console.log(`creating harvester`);
-            }
         }
 
         //DESPAWN
