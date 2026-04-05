@@ -283,7 +283,8 @@ var creepHandler = {
                     c.ticksToLive > 200
                 );
 
-                if (Memory.debug) console.log(`source ${sourceId} har ${harvestersForSource.length}`);
+                if (Memory.debug) console.log(`source ${sourceId} har ${harvestersForSource.length} harvesters`);
+                if (Memory.debug) console.log(`source ${sourceId} har ${haulersForSource.length} haulers`);
 
                 if (haulersForSource.length < 1 && harvestersForSource.length > 0) {
                     console.log("spawning Hauler lvl4 for source:", sourceId);
