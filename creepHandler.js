@@ -328,6 +328,12 @@ var creepHandler = {
         } else if (Game.gcl.level > 1 && claimersTotal < max_claimers) {
             if (Memory.debug) console.log(`creating claimer`);
             spawnClaimer();
+        } else if (upgradersTotal < max_upgraders) {
+            if (Memory.debug) console.log(`creating upgrader`);
+            spawnUpgrader();
+        } else if (buildersTotal < max_builders && constructionSitesExist) {
+            if (Memory.debug) console.log(`creating builder`);
+            spawnBuilder();
         } else if (harvestersTotal < max_harvesters) {
             if (room.memory.stage >= 3) {
                 spawnHarvesterStage3();
@@ -335,12 +341,6 @@ var creepHandler = {
                 spawnHarvester();
                 if (Memory.debug) console.log(`creating harvester`);
             }
-        } else if (upgradersTotal < max_upgraders) {
-            if (Memory.debug) console.log(`creating upgrader`);
-            spawnUpgrader();
-        } else if (buildersTotal < max_builders && constructionSitesExist) {
-            if (Memory.debug) console.log(`creating builder`);
-            spawnBuilder();
         }
 
         //DESPAWN
