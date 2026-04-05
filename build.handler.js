@@ -21,7 +21,7 @@ var builder = {
                 }
             }
             if (Memory.debug) console.log(`cap: ${room.energyCapacityAvailable} crl: ${room.controller.level} ext: ${totalExtensions} extSites: ${totalExtensionConstructionsites}`);
-            if (room.energyCapacityAvailable > 500 && room.controller.level > 2 && totalExtensions < 6 && totalExtensionConstructionsites < 1) {
+            if (room.energyCapacityAvailable > 500 && room.controller.level > 2 && totalExtensions + totalExtensionConstructionsites < 6) {
                 console.log("building second extensions at ", spawnPos);
                 const posX = [spawnPos.x - 3, spawnPos.x + 3, spawnPos.x, spawnPos.x, spawnPos.x + 2];
                 const posY = [spawnPos.y, spawnPos.y, spawnPos.y - 3, spawnPos.y + 3, spawnPos.y + 3];
@@ -31,10 +31,20 @@ var builder = {
                     }
                 }
             }
-            if (room.controller.level > 3 && totalExtensionConstructionsites < 1) {
-                console.log("building second extensions at ", spawnPos);
+            if (room.controller.level > 3 && totalExtensions + totalExtensionConstructionsites < 15) {
+                console.log("building third extensions at ", spawnPos);
                 const posX = [spawnPos.x - 2, spawnPos.x + 4, spawnPos.x, spawnPos.x, spawnPos.x + 2];
                 const posY = [spawnPos.y - 2, spawnPos.y, spawnPos.y - 4, spawnPos.y + 4, spawnPos.y + 4];
+                for (let i = 0; i < 5; i++) {
+                    if (!(room.createConstructionSite(posX[i], posY[i], STRUCTURE_EXTENSION) === 0)) {
+                        console.log("oops, couldnt build here, idiot... " + posX[i] + ":" + posY[i]);
+                    }
+                }
+            }
+            if (room.controller.level > 4 && totalExtensions + totalExtensionConstructionsites < 20) {
+                console.log("building fourth extensions at ", spawnPos);
+                const posX = [spawnPos.x - 2, spawnPos.x - 2, spawnPos.x - 2, spawnPos.x - 4, spawnPos.x - 4];
+                const posY = [spawnPos.y + 2, spawnPos.y + 4, spawnPos.y - 4, spawnPos.y + 4, spawnPos.y - 4];
                 for (let i = 0; i < 5; i++) {
                     if (!(room.createConstructionSite(posX[i], posY[i], STRUCTURE_EXTENSION) === 0)) {
                         console.log("oops, couldnt build here, idiot... " + posX[i] + ":" + posY[i]);
