@@ -274,7 +274,7 @@ var creepHandler = {
                 const sourceData = Memory.sources[sourceId];
                 const sourceRoomName = sourceData.roomName;
 
-                const isOwned = Game.rooms[sourceRoomName]?.controller?.my;
+                const isOwned = Game.rooms[sourceRoomName].controller.my;
 
                 const maxPerSource = isOwned ? 1 : 3;
 
