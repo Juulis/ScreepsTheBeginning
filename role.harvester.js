@@ -49,13 +49,17 @@ var roleHarvester = {
             } else { // DELIVERING
                 // Gå hem först om i annat rum
                 const source = Game.getObjectById(sourceId);
+                let constructionSite;
                 let container;
                 if (source) {
                     container = _.find(source.pos.findInRange(FIND_STRUCTURES, 1),
                         s => s.structureType === STRUCTURE_CONTAINER
                     );
+                    constructionSite = _.find(source.pos.findInRange(FIND_CONSTRUCTION_SITES, 1),
+                        s => s.structureType === STRUCTURE_CONTAINER
+                    );
                 }
-                if (!container && creep.room.name !== Memory.mainRoom) {
+                if (!container && !constructionSite && creep.room.name !== Memory.mainRoom) {
                     const mainRoomPos = new RoomPosition(25, 25, Memory.mainRoom); // mitt i rummet som mål, kvittar för den kommer inte in här när jag väl kommit in i rummet
                     creep.moveTo(mainRoomPos, {visualizePathStyle: {stroke: '#00ff00'}, reusePath: 50});
                     creep.say("⛏️|🔋📦→🏠")
@@ -79,12 +83,6 @@ var roleHarvester = {
                 const targetExtension = creep.pos.findClosestByPath(FIND_MY_STRUCTURES, {filter: (s) => s.structureType === STRUCTURE_EXTENSION && s.store.getFreeCapacity(RESOURCE_ENERGY) > 0});
                 const targetContainer = creep.pos.findClosestByPath(FIND_MY_STRUCTURES, {filter: (s) => s.structureType === STRUCTURE_CONTAINER && s.store.getFreeCapacity(RESOURCE_ENERGY) > 0});
                 const targetStorage = creep.pos.findClosestByPath(FIND_MY_STRUCTURES, {filter: (s) => s.structureType === STRUCTURE_STORAGE && s.store.getFreeCapacity(RESOURCE_ENERGY) > 0});
-                let constructionSite;
-                if (source) {
-                    constructionSite = _.find(source.pos.findInRange(FIND_CONSTRUCTION_SITES, 1),
-                        s => s.structureType === STRUCTURE_CONTAINER
-                    );
-                }
 
                 if (totalHaulers < 1) {
                     target = targetSpawn || targetExtension || targetContainer || targetTowers || targetStorage;
