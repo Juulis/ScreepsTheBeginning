@@ -264,6 +264,7 @@ var creepHandler = {
             if (Memory.debug) console.log(`creating claimer`);
             spawnClaimer();
         } else if (harvestersTotal < max_harvesters && room.memory.stage < 3) {
+            //When stage 3+ harvestspawning is handled in role.harvester for now
             if (Memory.debug) console.log(`creating harvester`);
             spawnHarvester();
         } else if (upgradersTotal < max_upgraders) {

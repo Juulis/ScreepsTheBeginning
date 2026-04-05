@@ -28,7 +28,7 @@ var roleHarvester = {
 
             if (creep.memory.harvesting) {
                 //HARVESTING
-                if (Memory.debug) console.log(creep.name + " going to source")
+                if (Memory.debug) console.log(creep.name + " going to " + creep.memory.source)
                 //if in another room for source, first go to exit
                 creep.say("⛏️⚡")
                 const srcMem = Memory.sources[sourceId];
@@ -49,9 +49,12 @@ var roleHarvester = {
             } else { // DELIVERING
                 // Gå hem först om i annat rum
                 const source = Game.getObjectById(sourceId);
-                const container = _.find(source.pos.findInRange(FIND_STRUCTURES, 1),
-                    s => s.structureType === STRUCTURE_CONTAINER
-                );
+                let container;
+                if (source) {
+                    container = _.find(source.pos.findInRange(FIND_STRUCTURES, 1),
+                        s => s.structureType === STRUCTURE_CONTAINER
+                    );
+                }
                 if (!container && creep.room.name !== Memory.mainRoom) {
                     const mainRoomPos = new RoomPosition(25, 25, Memory.mainRoom); // mitt i rummet som mål, kvittar för den kommer inte in här när jag väl kommit in i rummet
                     creep.moveTo(mainRoomPos, {visualizePathStyle: {stroke: '#00ff00'}, reusePath: 50});
@@ -76,7 +79,9 @@ var roleHarvester = {
                 const targetExtension = creep.pos.findClosestByPath(FIND_MY_STRUCTURES, {filter: (s) => s.structureType === STRUCTURE_EXTENSION && s.store.getFreeCapacity(RESOURCE_ENERGY) > 0});
                 const targetContainer = creep.pos.findClosestByPath(FIND_MY_STRUCTURES, {filter: (s) => s.structureType === STRUCTURE_CONTAINER && s.store.getFreeCapacity(RESOURCE_ENERGY) > 0});
                 const targetStorage = creep.pos.findClosestByPath(FIND_MY_STRUCTURES, {filter: (s) => s.structureType === STRUCTURE_STORAGE && s.store.getFreeCapacity(RESOURCE_ENERGY) > 0});
-                const constructionSite = _.find(source.pos.findInRange(FIND_CONSTRUCTION_SITES, 1),
+                let constructionSite;
+                if(source)
+                constructionSite = _.find(source.pos.findInRange(FIND_CONSTRUCTION_SITES, 1),
                     s => s.structureType === STRUCTURE_CONTAINER
                 );
 
@@ -145,10 +150,10 @@ var roleHarvester = {
             }
 
             if (room.memory.stage >= 3) {
-                if(Memory.debug) console.log("in stage 3 balancing");
+                if (Memory.debug) console.log("in stage 3 balancing");
 
                 const sources = Object.keys(Memory.sources);
-                if(Memory.debug) console.log("balancingsources:"+sources);
+                if (Memory.debug) console.log("balancingsources:" + sources);
 
                 const creepsInRoom = room.find(FIND_MY_CREEPS);
 
@@ -158,7 +163,7 @@ var roleHarvester = {
                         c.memory.role === 'harvester' &&
                         c.memory.source === sourceId
                     );
-                    if(Memory.debug) console.log("harvesterForSource:"+harvesterForSource);
+                    if (Memory.debug) console.log("harvesterForSource:" + harvesterForSource);
                     if (!harvesterForSource) {
                         console.log("spawning Harvester lvl4")
                         spawnHarvester(sourceId);
@@ -180,7 +185,7 @@ var roleHarvester = {
 
             //check somehow if we are unbalanced?
             const unbalanced = () => {
-
+                if (room.memory.stage >= 3) return false;
                 return harvesters.length > 3;
                 // return source0 === 0 || source1 === 0 && source2 === 3 && source3 === 3 && source4 === 3;
             };
