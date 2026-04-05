@@ -80,11 +80,11 @@ var roleHarvester = {
                 const targetContainer = creep.pos.findClosestByPath(FIND_MY_STRUCTURES, {filter: (s) => s.structureType === STRUCTURE_CONTAINER && s.store.getFreeCapacity(RESOURCE_ENERGY) > 0});
                 const targetStorage = creep.pos.findClosestByPath(FIND_MY_STRUCTURES, {filter: (s) => s.structureType === STRUCTURE_STORAGE && s.store.getFreeCapacity(RESOURCE_ENERGY) > 0});
                 let constructionSite;
-                if (source)
+                if (source) {
                     constructionSite = _.find(source.pos.findInRange(FIND_CONSTRUCTION_SITES, 1),
                         s => s.structureType === STRUCTURE_CONTAINER
                     );
-
+                }
 
                 if (totalHaulers < 1) {
                     target = targetSpawn || targetExtension || targetContainer || targetTowers || targetStorage;
@@ -95,12 +95,12 @@ var roleHarvester = {
                     target = targetTowers || targetSpawn || targetExtension || targetContainer || targetStorage;
                 }
 
-                if (constructionSite && helper.getEmpireEnergyAvailable() > 1000) {
+                if (constructionSite && (helper.getEmpireEnergyAvailable() > 1000 || creep.room.name !== Memory.mainRoom)) {
                     creep.build(constructionSite)
                     creep.say("⛏️| 🔨🧱");
                     return;
                 }
-                if(container){
+                if (container) {
                     target = container;
                 }
                 creep.say("⛏️|🔋📦")
