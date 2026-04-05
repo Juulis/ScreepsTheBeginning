@@ -52,6 +52,17 @@ var creepHandler = {
         let upgraderLevel = 1;
         let haulerLevel = 1;
 
+
+
+        const roleCounts = _.countBy(Game.creeps, creep => creep.memory.role || "no role");
+
+        const harvestersTotal = roleCounts.harvester || 0;
+        const buildersTotal = roleCounts.builder || 0;
+        const upgradersTotal = roleCounts.upgrader || 0;
+        const scoutsTotal = roleCounts.scout || 0;
+        const haulerTotal = roleCounts.hauler || 0;
+        const claimersTotal = roleCounts.claimer || 0;
+
         switch (room.memory.stage) {
             case 2:
                 max_harvesters = Object.keys(Memory.sources).length * 3;
@@ -67,22 +78,13 @@ var creepHandler = {
                 max_harvesters = Object.keys(Memory.sources).length;
                 max_builders = 4;
                 max_upgraders = 5;
-                max_haulers = 4;
+                max_haulers = harvestersTotal / 2;
                 harvesterLevel = 3;
                 builderLevel = 3;
                 upgraderLevel = 3;
                 haulerLevel = 3;
                 break;
         }
-
-        const roleCounts = _.countBy(Game.creeps, creep => creep.memory.role || "no role");
-
-        const harvestersTotal = roleCounts.harvester || 0;
-        const buildersTotal = roleCounts.builder || 0;
-        const upgradersTotal = roleCounts.upgrader || 0;
-        const scoutsTotal = roleCounts.scout || 0;
-        const haulerTotal = roleCounts.hauler || 0;
-        const claimersTotal = roleCounts.claimer || 0;
 
         const containersTotal = room.find(FIND_STRUCTURES, {filter: s => s.structureType === STRUCTURE_CONTAINER}).length;
         const storageExist = room.find(FIND_STRUCTURES, {filter: s => s.structureType === STRUCTURE_STORAGE}).length > 0;
@@ -248,7 +250,7 @@ var creepHandler = {
 
         //spawn creeps depending on available roles and capacity
         //first check if there is no upgraders but bunch of harvesters
-        if ((upgradersTotal < max_upgraders) && room.memory.stage > 1 && ((upgradersTotal < 1 && harvestersTotal > 3) || (upgradersTotal < 2 && harvestersTotal > 10))) {
+        if ((upgradersTotal < 1) && room.memory.stage > 1 && ((upgradersTotal < 1 && harvestersTotal > 6))) {
             if (Memory.debug) console.log(`creating upgrader - balance`);
             spawnUpgrader();
         } else if (buildersTotal < max_builders && harvestersTotal > 5 && constructionSitesExist) {
