@@ -89,7 +89,7 @@ var creepHandler = {
 
         const containersTotal = room.find(FIND_STRUCTURES, {filter: s => s.structureType === STRUCTURE_CONTAINER}).length;
         const storageExist = room.find(FIND_STRUCTURES, {filter: s => s.structureType === STRUCTURE_STORAGE}).length > 0;
-        const constructionSitesExist = Object.keys(Game.constructionSites).length > 0;
+        const constructionSitesExist = room.find(FIND_CONSTRUCTION_SITES).length > 0;
 
         function spawnHarvester() {
             if (Memory.debug) console.log(`spawning harvester - harvlevel: ${harvesterLevel}`);
