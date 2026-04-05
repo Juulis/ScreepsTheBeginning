@@ -5,7 +5,7 @@ var {towerManager} = require('tower.handler');
 var helper = require('helper');
 
 module.exports.loop = function () {
-    if(!Memory.username) Memory.username = "Juulis";
+    if (!Memory.username) Memory.username = "Juulis";
     // Rensa död memory (bra vana)
     for (let name in Memory.creeps) {
         if (!Game.creeps[name]) delete Memory.creeps[name];
@@ -65,7 +65,7 @@ module.exports.loop = function () {
         let stage = 1;
         if (room.energyCapacityAvailable > 500)
             stage = 2;
-        if (room.energyCapacityAvailable > 700 && Memory.sources && Object.keys(Memory.sources).length > 3 && harvestersTotal > 8)
+        if (room.energyCapacityAvailable > 700 && Memory.sources && Object.keys(Memory.sources).length > 3)
             stage = 3;
         if (harvestersTotal < 3 && room.energyAvailable < 500)
             stage = 1
@@ -102,8 +102,8 @@ module.exports.loop = function () {
         const claimersTotal = roleCounts.claimer || 0;
 
         console.log(`energy: ${room.energyAvailable}(${helper.getEmpireEnergyAvailable()})/${room.energyCapacityAvailable}(${helper.getEmpireEnergyCapacity()})`)
-        console.log(`stage ${room.memory.stage} - RCL:${room.controller.level} - ${progressBar(room.controller.progress,room.controller.progressTotal)}`);
-        console.log(`GCL:${Game.gcl.level} - ${progressBar(Game.gcl.progress,Game.gcl.progressTotal)}`);
+        console.log(`stage ${room.memory.stage} - RCL:${room.controller.level} - ${progressBar(room.controller.progress, room.controller.progressTotal)}`);
+        console.log(`GCL:${Game.gcl.level} - ${progressBar(Game.gcl.progress, Game.gcl.progressTotal)}`);
         console.log(`harvesters:${harvestersTotal}, upgraders:${upgradersTotal}, builders:${buildersTotal}, scouts: ${scoutsTotal}, haulers: ${haulersTotal}, claimers: ${claimersTotal}`);
 
         // Logga till memory varje halvtimme (1800 ticks = 30 min)
@@ -133,7 +133,7 @@ module.exports.loop = function () {
         }
     }
 
-//loop through all rooms and do the loop
+    //loop through all rooms and do the loop
     for (const roomName in Game.rooms) {
         if (Memory.debug) console.log("in roomLoop:", roomName);
         const room = Game.rooms[roomName];
@@ -161,7 +161,7 @@ module.exports.loop = function () {
         //ONLY MAINROOM
         if (Memory.mainRoom === roomName) {
 
-        // Display spawn message
+            // Display spawn message
             if (Game.spawns["Spawn1"].spawning) {
                 const spawn = Game.spawns["Spawn1"];
                 const name = spawn.spawning.name;

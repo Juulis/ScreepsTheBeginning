@@ -48,7 +48,11 @@ var roleHarvester = {
                 }
             } else { // DELIVERING
                 // Gå hem först om i annat rum
-                if (creep.room.name !== Memory.mainRoom) {
+                const source = Game.getObjectById(sourceId);
+                const container = _.find(source.pos.findInRange(FIND_STRUCTURES, 1),
+                    s => s.structureType === STRUCTURE_CONTAINER
+                );
+                if (!container && creep.room.name !== Memory.mainRoom) {
                     const mainRoomPos = new RoomPosition(25, 25, Memory.mainRoom); // mitt i rummet som mål, kvittar för den kommer inte in här när jag väl kommit in i rummet
                     creep.moveTo(mainRoomPos, {visualizePathStyle: {stroke: '#00ff00'}, reusePath: 50});
                     creep.say("⛏️|🔋📦→🏠")
@@ -72,10 +76,6 @@ var roleHarvester = {
                 const targetExtension = creep.pos.findClosestByPath(FIND_MY_STRUCTURES, {filter: (s) => s.structureType === STRUCTURE_EXTENSION && s.store.getFreeCapacity(RESOURCE_ENERGY) > 0});
                 const targetContainer = creep.pos.findClosestByPath(FIND_MY_STRUCTURES, {filter: (s) => s.structureType === STRUCTURE_CONTAINER && s.store.getFreeCapacity(RESOURCE_ENERGY) > 0});
                 const targetStorage = creep.pos.findClosestByPath(FIND_MY_STRUCTURES, {filter: (s) => s.structureType === STRUCTURE_STORAGE && s.store.getFreeCapacity(RESOURCE_ENERGY) > 0});
-                const source = Game.getObjectById(sourceId);
-                const container = _.find(source.pos.findInRange(FIND_STRUCTURES, 1),
-                    s => s.structureType === STRUCTURE_CONTAINER
-                );
                 const constructionSite = _.find(source.pos.findInRange(FIND_CONSTRUCTION_SITES, 1),
                     s => s.structureType === STRUCTURE_CONTAINER
                 );
@@ -90,7 +90,7 @@ var roleHarvester = {
                     target = targetTowers || targetSpawn || targetExtension || targetContainer || targetStorage;
                 }
 
-                if(constructionSite && helper.getEmpireEnergyAvailable() > 1000){
+                if (constructionSite && helper.getEmpireEnergyAvailable() > 1000) {
                     creep.build(constructionSite)
                     creep.say("⛏️| 🔨🧱");
                     return;
@@ -174,8 +174,7 @@ var roleHarvester = {
                 {start: 11, end: 12, source: source_8}
             ];
 
-            const groups = room.stage > 2 ? stage3groups : stage1groups;
-
+            const groups = room.memory.stage > 2 ? stage3groups : stage1groups;
 
             groups.forEach(group => {
                 for (let i = group.start; i < group.end && i < harvesters.length; i++) {

@@ -64,7 +64,7 @@ var creepHandler = {
                 haulerLevel = 2;
                 break;
             case 3:
-                max_harvesters = Object.keys(Memory.sources).length * 1;
+                max_harvesters = Object.keys(Memory.sources).length;
                 max_builders = 4;
                 max_upgraders = 5;
                 max_haulers = 4;
