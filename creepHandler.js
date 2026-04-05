@@ -60,7 +60,8 @@ var creepHandler = {
         const buildersTotal = roleCounts.builder || 0;
         const upgradersTotal = roleCounts.upgrader || 0;
         const scoutsTotal = roleCounts.scout || 0;
-        const haulerTotal = roleCounts.hauler || 0;
+        const haulersTotal = roleCounts.hauler || 0;
+        const remoteHaulersTotal = roleCounts.remoteHauler || 0;
         const claimersTotal = roleCounts.claimer || 0;
 
         switch (room.memory.stage) {
@@ -233,7 +234,7 @@ var creepHandler = {
             });
         }
 
-        function spawnLevel4HarvesterClaimed(sourceId) {
+        function spawnLevel4Harvester(sourceId) {
             room.find(FIND_MY_SPAWNS)[0].spawnCreep(
                 [WORK, WORK, WORK, WORK, CARRY, MOVE],
                 'Harvester(4)-' + sourceId + '-' + Game.time,
@@ -248,28 +249,13 @@ var creepHandler = {
             );
         }
 
-        function spawnLevel4Harvester(sourceId) {
-            room.find(FIND_MY_SPAWNS)[0].spawnCreep(
-                [WORK, WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE],
-                'Harvester(4)-' + sourceId + '-' + Game.time,
-                {
-                    memory: {
-                        role: 'harvester',
-                        source: sourceId,
-                        mainRoom: room.name,
-                        cost: 550
-                    }
-                }
-            );
-        }
-
         function spawnRemoteHauler(sourceId) {
             room.find(FIND_MY_SPAWNS)[0].spawnCreep(
                 [CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE],
                 'Hauler(4)-' + sourceId + '-' + Game.time,
                 {
                     memory: {
-                        role: 'hauler',
+                        role: 'remoteHauler',
                         source: sourceId,
                         mainRoom: room.name,
                     }
@@ -286,49 +272,35 @@ var creepHandler = {
 
             for (let sourceId of sources) {
 
-                const sourceData = Memory.sources[sourceId];
-                const sourceRoomName = sourceData.roomName;
-
-                const isOwned = Game.rooms[sourceRoomName].controller.my;
-
-                const maxPerSource = isOwned ? 1 : 3;
-
                 const harvestersForSource = _.filter(creepsInRoom, c =>
                     c.memory.role === 'harvester' &&
                     c.memory.source === sourceId &&
                     c.ticksToLive > 200
                 );
                 const haulersForSource = _.filter(creepsInRoom, c =>
-                    c.memory.role === 'hauler' &&
+                    c.memory.role === 'remoteHauler' &&
                     c.memory.source === sourceId &&
                     c.ticksToLive > 200
                 );
 
-                if (Memory.debug) console.log(`source ${sourceId} har ${harvestersForSource.length}/${maxPerSource}`);
+                if (Memory.debug) console.log(`source ${sourceId} har ${harvestersForSource.length}`);
 
                 if (haulersForSource.length < 1) {
                     console.log("spawning Hauler lvl4 for source:", sourceId);
-                    if (isOwned && harvestersForSource.length > 0) spawnRemoteHauler(sourceId);
+                    if (harvestersForSource.length > 0) spawnRemoteHauler(sourceId);
                     break;
                 }
 
-                if (harvestersForSource.length < maxPerSource) {
-                    const roleCounts = _.countBy(Game.creeps, creep => creep.memory.role || "no role");
-                    const totalHaulers = roleCounts.hauler || 0;
+                if (harvestersForSource.length < 1) {
                     console.log("spawning Harvester lvl4 for source:", sourceId);
-                    if (isOwned && totalHaulers > 1) {
-                        spawnLevel4HarvesterClaimed(sourceId);
+                    spawnLevel4Harvester(sourceId);
                         break;
-                    } else {
-                        spawnLevel4Harvester(sourceId);
-                        break;
-                    }
                 }
             }
         }
 
         // // convert to a hauler if no hauler and we got a container and 5+ harvesters
-        // if (haulerTotal < 1 && room.find(FIND_STRUCTURES, {filter: s => s.structureType === STRUCTURE_CONTAINER}).length > 0 && harvestersTotal > 5) {
+        // if (haulersTotal < 1 && room.find(FIND_STRUCTURES, {filter: s => s.structureType === STRUCTURE_CONTAINER}).length > 0 && harvestersTotal > 5) {
         //     if (Memory.debug) console.log(`spawning hauler ${room.find(FIND_MY_CREEPS).filter(c => c.memory.role === "harvester")}`)
         //     room.find(FIND_MY_CREEPS).filter(c => c.memory.role === "harvester")[0].memory.role = "hauler";
         // }
@@ -349,7 +321,7 @@ var creepHandler = {
         } else if (buildersTotal < max_builders && harvestersTotal > 5 && constructionSitesExist) {
             if (Memory.debug) console.log(`creating builder - balance`);
             spawnBuilder();
-        } else if (haulerTotal < max_haulers && (containersTotal > 0 || storageExist)) {
+        } else if (haulersTotal < max_haulers && (containersTotal > 0 || storageExist)) {
             if (Memory.debug) console.log(`creating hauler`);
             spawnHauler();
         } else if (Game.gcl.level > 1 && claimersTotal < max_claimers) {

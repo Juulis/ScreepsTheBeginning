@@ -99,12 +99,13 @@ module.exports.loop = function () {
         const upgradersTotal = roleCounts.upgrader || 0;
         const scoutsTotal = roleCounts.scout || 0;
         const haulersTotal = roleCounts.hauler || 0;
+        const remoteHaulersTotal = roleCounts.remoteHauler || 0;
         const claimersTotal = roleCounts.claimer || 0;
 
         console.log(`energy: ${room.energyAvailable}(${helper.getEmpireEnergyAvailable()})/${room.energyCapacityAvailable}(${helper.getEmpireEnergyCapacity()})`)
         console.log(`stage ${room.memory.stage} - RCL:${room.controller.level} - ${progressBar(room.controller.progress, room.controller.progressTotal)}`);
         console.log(`GCL:${Game.gcl.level} - ${progressBar(Game.gcl.progress, Game.gcl.progressTotal)}`);
-        console.log(`harvesters:${harvestersTotal}, upgraders:${upgradersTotal}, builders:${buildersTotal}, scouts: ${scoutsTotal}, haulers: ${haulersTotal}, claimers: ${claimersTotal}`);
+        console.log(`harvesters:${harvestersTotal}, upgraders:${upgradersTotal}, builders:${buildersTotal}, scouts: ${scoutsTotal}, haulers: ${haulersTotal+remoteHaulersTotal}, claimers: ${claimersTotal}`);
 
         // Logga till memory varje halvtimme (1800 ticks = 30 min)
         if (Game.time % 1200 === 0) {
@@ -117,6 +118,7 @@ module.exports.loop = function () {
                 upgraders: roleCounts.upgrader || 0,
                 builders: roleCounts.builder || 0,
                 haulers: roleCounts.hauler || 0,
+                haulers: roleCounts.remoteHauler || 0,
                 energy: helper.getEmpireEnergyAvailable(),
                 energyCapacity: helper.getEmpireEnergyCapacity(),
             };
