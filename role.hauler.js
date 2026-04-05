@@ -38,7 +38,10 @@ var roleHauler = {
                     // gå till rätt rum först
                     if (creep.room.name !== sourceRoom) {
                         creep.say("🚚➡️🌍");
-                        creep.moveTo(new RoomPosition(25, 25, sourceRoom));
+                        creep.moveTo(new RoomPosition(25, 25, sourceRoom), {
+                            visualizePathStyle: {stroke: '#0028ff'},
+                            reusePath: 50
+                        });
                         return;
                     }
 
@@ -51,7 +54,7 @@ var roleHauler = {
                     if (container && container.store[RESOURCE_ENERGY] > 0) {
                         creep.say("🚚🔋");
                         if (creep.withdraw(container, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
-                            creep.moveTo(container);
+                            creep.moveTo(container, {visualizePathStyle: {stroke: '#0028ff'}, reusePath: 50});
                         }
                         return;
                     }
@@ -61,7 +64,7 @@ var roleHauler = {
                     if (dropped) {
                         creep.say("🚚🧹");
                         if (creep.pickup(dropped) === ERR_NOT_IN_RANGE) {
-                            creep.moveTo(dropped);
+                            creep.moveTo(dropped, {visualizePathStyle: {stroke: '#0028ff'}, reusePath: 50});
                         }
                         return;
                     }
@@ -71,7 +74,10 @@ var roleHauler = {
                     // gå hem först
                     if (creep.room.name !== mainRoom) {
                         creep.say("🚚🌍➡️🏠");
-                        creep.moveTo(new RoomPosition(25, 25, mainRoom));
+                        creep.moveTo(new RoomPosition(25, 25, mainRoom), {
+                            visualizePathStyle: {stroke: '#0028ff'},
+                            reusePath: 50
+                        });
                     }
                     return;
                 }
