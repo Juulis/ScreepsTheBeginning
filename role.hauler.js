@@ -146,15 +146,29 @@ var roleHauler = {
         } else {
             // Full → lämna energi
             if (Memory.debug) console.log(creep.name + "full, dumping");
-            // prioritera spawn + extensions först, sen tower, sen storage
-            let target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
-                filter: (s) => {
-                    return (s.structureType === STRUCTURE_SPAWN ||
-                            s.structureType === STRUCTURE_EXTENSION ||
-                            s.structureType === STRUCTURE_TOWER) &&
-                        s.store.getFreeCapacity(RESOURCE_ENERGY) > 0;
-                }
-            });
+            let target;
+            if (creep.memory.role === "remoteHauler") {
+                //för remotehaulers, prioritera bara närmsta deliveryplace
+                target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
+                    filter: (s) => {
+                        return (s.structureType === STRUCTURE_SPAWN ||
+                                s.structureType === STRUCTURE_EXTENSION ||
+                                s.structureType === STRUCTURE_CONTAINER ||
+                                s.structureType === STRUCTURE_TOWER) &&
+                            s.store.getFreeCapacity(RESOURCE_ENERGY) > 0;
+                    }
+                });
+            } else {
+                // prioritera spawn + extensions först, sen tower, sen storage
+                target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
+                    filter: (s) => {
+                        return (s.structureType === STRUCTURE_SPAWN ||
+                                s.structureType === STRUCTURE_EXTENSION ||
+                                s.structureType === STRUCTURE_TOWER) &&
+                            s.store.getFreeCapacity(RESOURCE_ENERGY) > 0;
+                    }
+                });
+            }
 
             if (target) {
                 creep.say("🚚🔋📦");
