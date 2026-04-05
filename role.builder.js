@@ -60,10 +60,10 @@ var roleBuilder = {
                 if (creep.build(buildSite) == ERR_NOT_IN_RANGE) {
                     creep.moveTo(buildSite, {visualizePathStyle: {stroke: '#ffffff'}, reusePath: 20});
                 }
-            } else if (closest) {
-                if (creep.room.name !== closest.room.name) {
+            } else if (allSites) {
+                if (creep.room.name !== allSites[0].room.name) {
                     creep.say("🌍➡️🛠️");
-                    creep.moveTo(new RoomPosition(25, 25, closest.room.name));
+                    creep.moveTo(new RoomPosition(25, 25, closest.room.name),{visualizePathStyle: {stroke: '#ffffff'}, reusePath: 20});
                 } else {
                     creep.say("🔨🧱🌍");
                     creep.moveTo(closest, {visualizePathStyle: {stroke: '#ffffff'}, reusePath: 20});
