@@ -63,7 +63,10 @@ var roleBuilder = {
             } else if (allSites) {
                 if (creep.room.name !== allSites[0].room.name) {
                     creep.say("🌍➡️🛠️");
-                    creep.moveTo(new RoomPosition(25, 25, allSites[0].room.name),{visualizePathStyle: {stroke: '#ffffff'}, reusePath: 20});
+                    creep.moveTo(new RoomPosition(25, 25, allSites[0].room.name), {
+                        visualizePathStyle: {stroke: '#ffffff'},
+                        reusePath: 20
+                    });
                 } else {
                     creep.say("🔨🧱🌍");
                     creep.moveTo(closest, {visualizePathStyle: {stroke: '#ffffff'}, reusePath: 20});
@@ -71,7 +74,7 @@ var roleBuilder = {
             }
         } else {
             // Hämta energi
-            if ((creep.room.find(FIND_MY_CREEPS).filter(c => c.memory.role === "harvester").length < 4 && creep.room.energyAvailable < 300) || creep.room.name !== Memory.mainRoom) {
+            if (((creep.room.find(FIND_MY_CREEPS).filter(c => c.memory.role === "harvester").length < 4 || creep.room.stage < 3) && creep.room.energyAvailable < 300) || creep.room.name !== Memory.mainRoom) {
                 creep.say("⛏️⚡ → 🛠️")
                 const source = creep.pos.findClosestByPath(FIND_SOURCES);
                 if (creep.harvest(source) == ERR_NOT_IN_RANGE) {
