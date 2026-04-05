@@ -113,11 +113,11 @@ var creepHandler = {
                 });
             } else if (harvesterLevel === 3) {
                 console.log("creating harvester lvl3");
-                room.find(FIND_MY_SPAWNS)[0].spawnCreep([WORK, WORK, WORK, WORK, WORK, CARRY, MOVE], 'Harvester(' + harvesterLevel + ')' + Game.time, {
+                room.find(FIND_MY_SPAWNS)[0].spawnCreep([WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE], 'Harvester(' + harvesterLevel + ')' + Game.time, {
                     memory: {
                         role: 'harvester',
                         source: Object.keys(Memory.sources)[1],
-                        cost: 800,
+                        cost: 650,
                         mainRoom: room.roomName,
                     }
                 });
@@ -260,7 +260,7 @@ var creepHandler = {
         } else if (Game.gcl.level > 1 && claimersTotal < max_claimers) {
             if (Memory.debug) console.log(`creating claimer`);
             spawnClaimer();
-        } else if (harvestersTotal < max_harvesters) {
+        } else if (harvestersTotal < max_harvesters && room.memory.stage < 3) {
             if (Memory.debug) console.log(`creating harvester`);
             spawnHarvester();
         } else if (upgradersTotal < max_upgraders) {

@@ -129,6 +129,42 @@ var roleHarvester = {
                 });
             console.log(logDistr);
 
+            function spawnHarvester(sourceId) {
+                room.find(FIND_MY_SPAWNS)[0].spawnCreep(
+                    [WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE],
+                    'Harvester-' + sourceId + '-' + Game.time,
+                    {
+                        memory: {
+                            role: 'harvester',
+                            source: sourceId,
+                            mainRoom: room.name
+                        }
+                    }
+                );
+            }
+
+            if (room.memory.stage >= 3) {
+
+                const sources = Object.keys(Memory.sources).filter(
+                    id => Memory.sources[id].roomName === room.name
+                );
+
+                const creepsInRoom = room.find(FIND_MY_CREEPS);
+
+                for (let sourceId of sources) {
+
+                    const harvesterForSource = _.find(creepsInRoom, c =>
+                        c.memory.role === 'harvester' &&
+                        c.memory.source === sourceId
+                    );
+
+                    if (!harvesterForSource) {
+                        spawnHarvester(sourceId);
+                        break; // 🔥 superviktigt
+                    }
+                }
+            }
+
 
             //TODO make theses numbers depend on how many sources in the room
             const source_1 = Object.keys(Memory.sources)[0];
@@ -152,7 +188,7 @@ var roleHarvester = {
             if (!unbalanced())
                 return;
 
-            const stage1groups = [
+            const groups = [
                 {start: 0, end: 3, source: source_1},
                 {start: 3, end: 6, source: source_2},
                 {start: 6, end: 9, source: source_3},
@@ -162,19 +198,6 @@ var roleHarvester = {
                 {start: 18, end: 21, source: source_7},
                 {start: 21, end: 30, source: source_8}
             ];
-
-            const stage3groups = [
-                {start: 0, end: 1, source: source_1},
-                {start: 1, end: 2, source: source_2},
-                {start: 2, end: 3, source: source_3},
-                {start: 3, end: 4, source: source_4},
-                {start: 5, end: 6, source: source_5},
-                {start: 7, end: 8, source: source_6},
-                {start: 9, end: 10, source: source_7},
-                {start: 11, end: 12, source: source_8}
-            ];
-
-            const groups = room.memory.stage > 2 ? stage3groups : stage1groups;
 
             groups.forEach(group => {
                 for (let i = group.start; i < group.end && i < harvesters.length; i++) {
