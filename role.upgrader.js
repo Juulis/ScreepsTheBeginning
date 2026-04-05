@@ -4,6 +4,30 @@ var helper = require('helper');
 var roleUpgrader = {
     /** @param {Creep} creep **/
     run: function (creep) {
+
+        const myRooms = Object.values(Game.rooms)
+            .filter(r => r.controller && r.controller.my);
+
+        const targetRoom = _.find(myRooms, room =>
+            _.filter(Game.creeps, c =>
+                c.memory.role === 'upgrader' &&
+                c.memory.targetRoom === room.name
+            ).length === 0
+        );
+
+        if (targetRoom && !creep.memory.targetRoom) {
+            creep.memory.targetRoom = targetRoom.name;
+        }
+
+        if (creep.memory.targetRoom && creep.room.name !== creep.memory.targetRoom) {
+            creep.say("🏛️➡️🌍 " + creep.memory.targetRoom);
+            creep.moveTo(new RoomPosition(25, 25, creep.memory.targetRoom), {
+                visualizePathStyle: {stroke: '#ffffff'},
+                reusePath: 50
+            });
+            return;
+        }
+
         // const MIN_ENERGY_FOR_UPGRADE = creep.room.energyCapacityAvailable < 500 ? 150 : 300;
         const MIN_ENERGY_FOR_UPGRADE = 0;
 
