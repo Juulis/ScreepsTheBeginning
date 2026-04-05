@@ -23,7 +23,7 @@ var roleHauler = {
         }
 
         // hantera remote hauling
-        if (creep.memory.source) {
+        if (creep.memory.role === "remoteHauler") {
             const sourceId = creep.memory.source;
             const sourceData = Memory.sources[sourceId];
             const sourceRoom = sourceData.roomName;
@@ -72,8 +72,8 @@ var roleHauler = {
                     if (creep.room.name !== mainRoom) {
                         creep.say("🚚🌍➡️🏠");
                         creep.moveTo(new RoomPosition(25, 25, mainRoom));
-                        return;
                     }
+                    return;
                 }
             }
         }
