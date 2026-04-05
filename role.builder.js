@@ -63,7 +63,7 @@ var roleBuilder = {
             } else if (allSites) {
                 if (creep.room.name !== allSites[0].room.name) {
                     creep.say("🌍➡️🛠️");
-                    creep.moveTo(new RoomPosition(25, 25, closest.room.name),{visualizePathStyle: {stroke: '#ffffff'}, reusePath: 20});
+                    creep.moveTo(new RoomPosition(25, 25, allSites[0].room.name),{visualizePathStyle: {stroke: '#ffffff'}, reusePath: 20});
                 } else {
                     creep.say("🔨🧱🌍");
                     creep.moveTo(closest, {visualizePathStyle: {stroke: '#ffffff'}, reusePath: 20});
