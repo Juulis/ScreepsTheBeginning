@@ -80,10 +80,10 @@ var roleHarvester = {
                 const targetContainer = creep.pos.findClosestByPath(FIND_MY_STRUCTURES, {filter: (s) => s.structureType === STRUCTURE_CONTAINER && s.store.getFreeCapacity(RESOURCE_ENERGY) > 0});
                 const targetStorage = creep.pos.findClosestByPath(FIND_MY_STRUCTURES, {filter: (s) => s.structureType === STRUCTURE_STORAGE && s.store.getFreeCapacity(RESOURCE_ENERGY) > 0});
                 let constructionSite;
-                if(source)
-                constructionSite = _.find(source.pos.findInRange(FIND_CONSTRUCTION_SITES, 1),
-                    s => s.structureType === STRUCTURE_CONTAINER
-                );
+                if (source)
+                    constructionSite = _.find(source.pos.findInRange(FIND_CONSTRUCTION_SITES, 1),
+                        s => s.structureType === STRUCTURE_CONTAINER
+                    );
 
 
                 if (totalHaulers < 1) {
@@ -133,45 +133,6 @@ var roleHarvester = {
                     logDistr += `${src.slice(-5)}:${counts[src]} `;
                 });
             console.log(logDistr);
-
-            function spawnHarvester(sourceId) {
-                room.find(FIND_MY_SPAWNS)[0].spawnCreep(
-                    [WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE],
-                    'Harvester(4)-' + sourceId + '-' + Game.time,
-                    {
-                        memory: {
-                            role: 'harvester',
-                            source: sourceId,
-                            mainRoom: room.name,
-                            cost: 550
-                        }
-                    }
-                );
-            }
-
-            if (room.memory.stage >= 3) {
-                if (Memory.debug) console.log("in stage 3 balancing");
-
-                const sources = Object.keys(Memory.sources);
-                if (Memory.debug) console.log("balancingsources:" + sources);
-
-                const creepsInRoom = room.find(FIND_MY_CREEPS);
-
-                for (let sourceId of sources) {
-
-                    const harvesterForSource = _.find(creepsInRoom, c =>
-                        c.memory.role === 'harvester' &&
-                        c.memory.source === sourceId
-                    );
-                    if (Memory.debug) console.log("harvesterForSource:" + harvesterForSource);
-                    if (!harvesterForSource) {
-                        console.log("spawning Harvester lvl4")
-                        spawnHarvester(sourceId);
-                        break; // 🔥 superviktigt
-                    }
-                }
-            }
-
 
             //TODO make theses numbers depend on how many sources in the room
             const source_1 = Object.keys(Memory.sources)[0];

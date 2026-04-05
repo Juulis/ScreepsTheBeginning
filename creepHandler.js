@@ -54,7 +54,6 @@ var creepHandler = {
         let haulerLevel = 1;
 
 
-
         const roleCounts = _.countBy(Game.creeps, creep => creep.memory.role || "no role");
 
         const harvestersTotal = roleCounts.harvester || 0;
@@ -234,6 +233,70 @@ var creepHandler = {
             });
         }
 
+        function spawnLevel4HarvesterClaimed(sourceId) {
+            room.find(FIND_MY_SPAWNS)[0].spawnCreep(
+                [WORK, WORK, WORK, WORK, CARRY, MOVE],
+                'Harvester(4)-' + sourceId + '-' + Game.time,
+                {
+                    memory: {
+                        role: 'harvester',
+                        source: sourceId,
+                        mainRoom: room.name,
+                        cost: 550
+                    }
+                }
+            );
+        }
+
+        function spawnLevel4Harvester(sourceId) {
+            room.find(FIND_MY_SPAWNS)[0].spawnCreep(
+                [WORK, WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE],
+                'Harvester(4)-' + sourceId + '-' + Game.time,
+                {
+                    memory: {
+                        role: 'harvester',
+                        source: sourceId,
+                        mainRoom: room.name,
+                        cost: 550
+                    }
+                }
+            );
+        }
+
+        function spawnHarvesterStage3() {
+            if (Memory.debug) console.log("in stage 3 balancing");
+
+            const sources = Object.keys(Memory.sources);
+            const creepsInRoom = room.find(FIND_MY_CREEPS);
+
+            for (let sourceId of sources) {
+
+                const sourceData = Memory.sources[sourceId];
+                const sourceRoomName = sourceData.roomName;
+
+                const isOwned = Game.rooms[sourceRoomName]?.controller?.my;
+
+                const maxPerSource = isOwned ? 1 : 3;
+
+                const harvestersForSource = _.filter(creepsInRoom, c =>
+                    c.memory.role === 'harvester' &&
+                    c.memory.source === sourceId &&
+                    c.ticksToLive > 200
+                );
+
+                if (Memory.debug) console.log(`source ${sourceId} har ${harvestersForSource.length}/${maxPerSource}`);
+
+                if (harvestersForSource.length < maxPerSource) {
+                    const roleCounts = _.countBy(Game.creeps, creep => creep.memory.role || "no role");
+                    const totalHaulers = roleCounts.hauler || 0;
+                    console.log("spawning Harvester lvl4 for source:", sourceId);
+                    if (isOwned && totalHaulers > 1) spawnLevel4HarvesterClaimed(sourceId);
+                    spawnLevel4Harvester(sourceId);
+                    break; // 🔥 viktigt
+                }
+            }
+        }
+
         // // convert to a hauler if no hauler and we got a container and 5+ harvesters
         // if (haulerTotal < 1 && room.find(FIND_STRUCTURES, {filter: s => s.structureType === STRUCTURE_CONTAINER}).length > 0 && harvestersTotal > 5) {
         //     if (Memory.debug) console.log(`spawning hauler ${room.find(FIND_MY_CREEPS).filter(c => c.memory.role === "harvester")}`)
@@ -248,7 +311,6 @@ var creepHandler = {
         }
 
         if (Memory.debug) console.log(`before spawning field, harvestersTotal:${harvestersTotal}, max_harvesters:${max_harvesters}`);
-        console.log(harvestersTotal < max_harvesters && room.memory.stage < 3)
         //spawn creeps depending on available roles and capacity
         //first check if there is no upgraders but bunch of harvesters
         if ((upgradersTotal < 1) && room.memory.stage > 1 && ((upgradersTotal < 1 && harvestersTotal > 6))) {
@@ -263,10 +325,10 @@ var creepHandler = {
         } else if (Game.gcl.level > 1 && claimersTotal < max_claimers) {
             if (Memory.debug) console.log(`creating claimer`);
             spawnClaimer();
-        } else if (harvestersTotal < max_harvesters && room.memory.stage < 3) {
-            //When stage 3+ harvestspawning is handled in role.harvester for now
+        } else if (harvestersTotal < max_harvesters) {
             if (Memory.debug) console.log(`creating harvester`);
-            spawnHarvester();
+            if (room.memory.stage >= 3) spawnHarvesterStage3();
+            else spawnHarvester();
         } else if (upgradersTotal < max_upgraders) {
             if (Memory.debug) console.log(`creating upgrader`);
             spawnUpgrader();
