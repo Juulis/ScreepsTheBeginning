@@ -22,6 +22,62 @@ var roleHauler = {
             creep.memory.delivering = true;
         }
 
+        // hantera remote hauling
+        if(creep.memory.source) {
+            const sourceId = creep.memory.source;
+            const sourceData = Memory.sources[sourceId];
+            const sourceRoom = sourceData.roomName;
+            const mainRoom = creep.memory.mainRoom;
+            const roomObj = Game.rooms[sourceRoom];
+            const isOwned = roomObj.controller.my;
+            const hasSpawn = roomObj.find(FIND_MY_SPAWNS).length > 0;
+
+            if (!isOwned && !hasSpawn) {
+                if (!creep.memory.delivering) {
+
+                    // gå till rätt rum först
+                    if (creep.room.name !== sourceRoom) {
+                        creep.say("🌍➡️⛏️");
+                        creep.moveTo(new RoomPosition(25, 25, sourceRoom));
+                        return;
+                    }
+
+                    // hitta container nära source
+                    const source = Game.getObjectById(sourceId);
+
+                    const container = source.pos.findInRange(FIND_STRUCTURES, 1)
+                        .find(s => s.structureType === STRUCTURE_CONTAINER);
+
+                    if (container && container.store[RESOURCE_ENERGY] > 0) {
+                        creep.say("🚚⛏️🔋");
+                        if (creep.withdraw(container, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
+                            creep.moveTo(container);
+                        }
+                        return;
+                    }
+
+                    // fallback: dropped energy
+                    const dropped = source.pos.findInRange(FIND_DROPPED_RESOURCES, 1)[0];
+                    if (dropped) {
+                        creep.say("🚚💧");
+                        if (creep.pickup(dropped) === ERR_NOT_IN_RANGE) {
+                            creep.moveTo(dropped);
+                        }
+                        return;
+                    }
+
+                    creep.say("⛏️⏳");
+                } else {
+                    // gå hem först
+                    if (creep.room.name !== mainRoom) {
+                        creep.say("🌍➡️🏠");
+                        creep.moveTo(new RoomPosition(25, 25, mainRoom));
+                        return;
+                    }
+                }
+            }
+        }
+
         // === STEG 1: Bestäm om vi ska hämta eller lämna ===
         if (!creep.memory.delivering) {
             // Hämta energi

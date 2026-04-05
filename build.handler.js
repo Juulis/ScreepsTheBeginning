@@ -173,7 +173,7 @@ var builder = {
 
         const buildContainersAtSources = (room) => {
             //check if source is in owned room
-            if (!room.controller.my) return;
+            // if (!room.controller.my) return;
 
             //loop sources in room
             room.memory.sources.forEach(source => {

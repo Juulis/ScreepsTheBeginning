@@ -242,7 +242,7 @@ var creepHandler = {
                         role: 'harvester',
                         source: sourceId,
                         mainRoom: room.name,
-                        cost: 550
+                        cost: 500
                     }
                 }
             );
@@ -262,6 +262,21 @@ var creepHandler = {
                 }
             );
         }
+
+        function spawnRemoteHauler(sourceId) {
+            room.find(FIND_MY_SPAWNS)[0].spawnCreep(
+                [CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE],
+                'Hauler(4)-' + sourceId + '-' + Game.time,
+                {
+                    memory: {
+                        role: 'hauler',
+                        source: sourceId,
+                        mainRoom: room.name,
+                    }
+                }
+            );
+        }
+
 
         function spawnHarvesterStage3() {
             if (Memory.debug) console.log("in stage 3 balancing");
@@ -283,16 +298,31 @@ var creepHandler = {
                     c.memory.source === sourceId &&
                     c.ticksToLive > 200
                 );
+                const haulersForSource = _.filter(creepsInRoom, c =>
+                    c.memory.role === 'hauler' &&
+                    c.memory.source === sourceId &&
+                    c.ticksToLive > 200
+                );
 
                 if (Memory.debug) console.log(`source ${sourceId} har ${harvestersForSource.length}/${maxPerSource}`);
+
+                if (haulersForSource.length < 1) {
+                    console.log("spawning Hauler lvl4 for source:", sourceId);
+                    if (isOwned && harvestersForSource.length > 0) spawnRemoteHauler(sourceId);
+                    break;
+                }
 
                 if (harvestersForSource.length < maxPerSource) {
                     const roleCounts = _.countBy(Game.creeps, creep => creep.memory.role || "no role");
                     const totalHaulers = roleCounts.hauler || 0;
                     console.log("spawning Harvester lvl4 for source:", sourceId);
-                    if (isOwned && totalHaulers > 1) spawnLevel4HarvesterClaimed(sourceId);
-                    spawnLevel4Harvester(sourceId);
-                    break; // 🔥 viktigt
+                    if (isOwned && totalHaulers > 1) {
+                        spawnLevel4HarvesterClaimed(sourceId);
+                        break;
+                    } else {
+                        spawnLevel4Harvester(sourceId);
+                        break;
+                    }
                 }
             }
         }
