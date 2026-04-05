@@ -78,9 +78,9 @@ var roleHauler = {
                             visualizePathStyle: {stroke: '#000000'},
                             reusePath: 50
                         });
+                        return;
                     }
                 }
-                return;
             }
         }
 
@@ -145,7 +145,7 @@ var roleHauler = {
             creep.say("🚚⏳💤");
         } else {
             // Full → lämna energi
-
+            if (Memory.debug) console.log(creep.name + "full, dumping");
             // prioritera spawn + extensions först, sen tower, sen storage
             let target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
                 filter: (s) => {
