@@ -78,7 +78,7 @@ var creepHandler = {
                 max_harvesters = Object.keys(Memory.sources).length;
                 max_builders = 4;
                 max_upgraders = room.energyAvailable > 2000 ? 5 : 2;
-                max_haulers = harvestersTotal / 2;
+                max_haulers = 3;
                 harvesterLevel = 3;
                 builderLevel = 3;
                 upgraderLevel = 3;
@@ -355,7 +355,7 @@ var creepHandler = {
         } else if (Game.gcl.level > 1 && claimersTotal < max_claimers) {
             if (Memory.debug) console.log(`creating claimer`);
             spawnClaimer();
-        } else if (harvestersTotal < max_harvesters) {
+        } else if (harvestersTotal < max_harvesters || room.memory.stage >= 3) {
             if (Memory.debug) console.log(`creating harvester`);
             if (room.memory.stage >= 3) spawnHarvesterStage3();
             else spawnHarvester();
