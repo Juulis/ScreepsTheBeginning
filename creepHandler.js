@@ -328,7 +328,7 @@ var creepHandler = {
         } else if (Game.gcl.level > 1 && claimersTotal < max_claimers) {
             if (Memory.debug) console.log(`creating claimer`);
             spawnClaimer();
-        } else if (harvestersTotal < max_harvesters || room.memory.stage >= 3) {
+        } else if (harvestersTotal < max_harvesters) {
             if (room.memory.stage >= 3) {
                 spawnHarvesterStage3();
             } else {
