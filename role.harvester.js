@@ -125,7 +125,7 @@ var roleHarvester = {
                 const creep = Game.creeps[name];
                 const src = creep.memory.source;
                 const harvester = creep.memory.role === "harvester";
-                if (src && harvester)
+                if (src)
                     counts[src] = (counts[src] || 0) + 1;
 
             }
