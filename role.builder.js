@@ -25,7 +25,7 @@ var roleBuilder = {
         const closest = creep.pos.findClosestByPath(allSites);
 
         //Activates if we deactivate the despawn code
-        if (!buildSite && !repairSite) {
+        if (!buildSite && !repairSite && !allSites) {
             if (creep.room.find(FIND_MY_CREEPS).filter(c => c.memory.role === "harvester").length < 5) {
                 roleHarvester.run(creep, Object.keys(Memory.sources)[4] || Object.keys(Memory.sources)[3] || Object.keys(Memory.sources)[2] || Object.keys(Memory.sources)[1]);
             } else {
