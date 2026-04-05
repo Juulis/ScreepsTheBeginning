@@ -144,11 +144,12 @@ var roleHarvester = {
             }
 
             if (room.memory.stage >= 3) {
+                if(Memory.debug) console.log("in stage 3 balancing");
 
                 const sources = Object.keys(Memory.sources).filter(
                     id => Memory.sources[id].roomName === room.name
                 );
-
+                if(Memory.debug) console.log("balancingsources:"+sources);
                 const creepsInRoom = room.find(FIND_MY_CREEPS);
 
                 for (let sourceId of sources) {
@@ -157,7 +158,8 @@ var roleHarvester = {
                         c.memory.role === 'harvester' &&
                         c.memory.source === sourceId
                     );
-
+                    if(Memory.debug) console.log("harvesterForSource:"+harvesterForSource);
+                    if(Memory.debug) console.log(":"+harvesterForSource);
                     if (!harvesterForSource) {
                         spawnHarvester(sourceId);
                         break; // 🔥 superviktigt

@@ -248,7 +248,7 @@ var creepHandler = {
         }
 
         if (Memory.debug) console.log(`before spawning field, harvestersTotal:${harvestersTotal}, max_harvesters:${max_harvesters}`);
-
+        console.log(harvestersTotal < max_harvesters && room.memory.stage < 3)
         //spawn creeps depending on available roles and capacity
         //first check if there is no upgraders but bunch of harvesters
         if ((upgradersTotal < 1) && room.memory.stage > 1 && ((upgradersTotal < 1 && harvestersTotal > 6))) {
