@@ -113,7 +113,7 @@ var creepHandler = {
                 });
             } else if (harvesterLevel === 3) {
                 console.log("creating harvester lvl3");
-                room.find(FIND_MY_SPAWNS)[0].spawnCreep([WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE], 'Harvester(' + harvesterLevel + ')' + Game.time, {
+                room.find(FIND_MY_SPAWNS)[0].spawnCreep([WORK, WORK, WORK, WORK, WORK, CARRY, MOVE], 'Harvester(' + harvesterLevel + ')' + Game.time, {
                     memory: {
                         role: 'harvester',
                         source: Object.keys(Memory.sources)[1],
