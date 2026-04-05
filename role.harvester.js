@@ -152,7 +152,7 @@ var roleHarvester = {
             if (!unbalanced())
                 return;
 
-            const groups = [
+            const stage1groups = [
                 {start: 0, end: 3, source: source_1},
                 {start: 3, end: 6, source: source_2},
                 {start: 6, end: 9, source: source_3},
@@ -162,6 +162,20 @@ var roleHarvester = {
                 {start: 18, end: 21, source: source_7},
                 {start: 21, end: 30, source: source_8}
             ];
+
+            const stage3groups = [
+                {start: 0, end: 1, source: source_1},
+                {start: 1, end: 2, source: source_2},
+                {start: 2, end: 3, source: source_3},
+                {start: 3, end: 4, source: source_4},
+                {start: 5, end: 6, source: source_5},
+                {start: 7, end: 8, source: source_6},
+                {start: 9, end: 10, source: source_7},
+                {start: 11, end: 12, source: source_8}
+            ];
+
+            const groups = room.stage > 2 ? stage3groups : stage1groups;
+
 
             groups.forEach(group => {
                 for (let i = group.start; i < group.end && i < harvesters.length; i++) {
