@@ -17,6 +17,12 @@ var roleBuilder = {
         }
 
         let buildSite = creep.pos.findClosestByPath(FIND_CONSTRUCTION_SITES);
+        let allSites = [];
+        for (let roomName in Game.rooms) {
+            allSites = allSites.concat(Game.rooms[roomName].find(FIND_CONSTRUCTION_SITES));
+        }
+
+        const closest = creep.pos.findClosestByPath(allSites);
 
         //Activates if we deactivate the despawn code
         if (!buildSite && !repairSite) {
@@ -54,10 +60,12 @@ var roleBuilder = {
                 if (creep.build(buildSite) == ERR_NOT_IN_RANGE) {
                     creep.moveTo(buildSite, {visualizePathStyle: {stroke: '#ffffff'}, reusePath: 20});
                 }
+            } else if (closest){
+                creep.moveTo(closest, {visualizePathStyle: {stroke: '#ffffff'}, reusePath: 20});
             }
         } else {
             // Hämta energi
-            if (creep.room.find(FIND_MY_CREEPS).filter(c => c.memory.role === "harvester").length < 4 && creep.room.energyAvailable < 300) {
+            if ((creep.room.find(FIND_MY_CREEPS).filter(c => c.memory.role === "harvester").length < 4 && creep.room.energyAvailable < 300) || creep.room.name === Memory.mainRoom) {
                 creep.say("⛏️⚡ → 🛠️")
                 const source = creep.pos.findClosestByPath(FIND_SOURCES);
                 if (creep.harvest(source) == ERR_NOT_IN_RANGE) {
