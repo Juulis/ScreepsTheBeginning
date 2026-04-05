@@ -268,16 +268,16 @@ var creepHandler = {
             if (Memory.debug) console.log("in stage 3 balancing");
 
             const sources = Object.keys(Memory.sources);
-            const creepsInRoom = room.find(FIND_MY_CREEPS);
+            const creepsGlobal = Object.values(Game.creeps);
 
             for (let sourceId of sources) {
 
-                const harvestersForSource = _.filter(creepsInRoom, c =>
+                const harvestersForSource = _.filter(creepsGlobal, c =>
                     c.memory.role === 'harvester' &&
                     c.memory.source === sourceId &&
                     c.ticksToLive > 200
                 );
-                const haulersForSource = _.filter(creepsInRoom, c =>
+                const haulersForSource = _.filter(creepsGlobal, c =>
                     c.memory.role === 'remoteHauler' &&
                     c.memory.source === sourceId &&
                     c.ticksToLive > 200
