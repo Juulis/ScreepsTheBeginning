@@ -4,6 +4,7 @@ var roleUpgrader = require('role.upgrader');
 var roleHauler = require('role.hauler');
 var roleScout = require('role.scout');
 var roleClaimer = require('role.claimer');
+var helper = require('helper');
 
 var creepHandler = {
 
@@ -77,7 +78,7 @@ var creepHandler = {
             case 3:
                 max_harvesters = Object.keys(Memory.sources).length;
                 max_builders = 4;
-                max_upgraders = 5;
+                max_upgraders = room.energyAvailable > 2000 ? 5 : 2;
                 max_haulers = harvestersTotal / 2;
                 harvesterLevel = 3;
                 builderLevel = 3;
