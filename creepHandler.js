@@ -75,10 +75,10 @@ var creepHandler = {
                 haulerLevel = 2;
                 break;
             case 3:
-                max_harvesters = Object.keys(Memory.sources).length;
+                max_harvesters = Object.keys(Memory.sources).length; // infinite with stage 3 logic
                 max_builders = 4;
                 max_upgraders = room.energyAvailable > 2000 ? 5 : 2;
-                max_haulers = 3;
+                max_haulers = 2; // infinite with stage 3 logic
                 harvesterLevel = 3;
                 builderLevel = 3;
                 upgraderLevel = 3;

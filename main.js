@@ -149,13 +149,13 @@ module.exports.loop = function () {
             });
         }
 
-        //set screeps&towers to work/move (ALL ROOMS)
+        //ALL ROOMS
         handleRoles(room);
         towerManager(room);
+        buildManager(room);
 
         //ONLY CONTROLLED ROOMS
         if (room.controller.my) {
-            buildManager(room);
         }
 
         //ONLY MAINROOM
