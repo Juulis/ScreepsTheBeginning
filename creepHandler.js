@@ -27,7 +27,7 @@ var creepHandler = {
                 roleBuilder.run(creep);
             else if (creep.memory.role === "upgrader")
                 roleUpgrader.run(creep);
-            else if (creep.memory.role === "hauler")
+            else if (creep.memory.role === "hauler" || creep.memory.role === "remoteHauler")
                 roleHauler.run(creep);
             else if (creep.memory.role === "scout")
                 roleScout.run(creep);
@@ -285,16 +285,16 @@ var creepHandler = {
 
                 if (Memory.debug) console.log(`source ${sourceId} har ${harvestersForSource.length}`);
 
-                if (haulersForSource.length < 1) {
+                if (haulersForSource.length < 1 && harvestersForSource.length > 0) {
                     console.log("spawning Hauler lvl4 for source:", sourceId);
-                    if (harvestersForSource.length > 0) spawnRemoteHauler(sourceId);
+                    spawnRemoteHauler(sourceId);
                     break;
                 }
 
                 if (harvestersForSource.length < 1) {
                     console.log("spawning Harvester lvl4 for source:", sourceId);
                     spawnLevel4Harvester(sourceId);
-                        break;
+                    break;
                 }
             }
         }
