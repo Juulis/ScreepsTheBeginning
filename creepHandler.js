@@ -78,7 +78,7 @@ var creepHandler = {
             case 3:
                 max_harvesters = Object.keys(Memory.sources).length; // infinite with stage 3 logic
                 max_builders = 4;
-                max_upgraders = room.energyAvailable > 2000 ? 5 : 2;
+                max_upgraders = helper.getEmpireEnergyAvailable() > 2000 ? 5 : 2;
                 max_haulers = 2; // infinite with stage 3 logic
                 harvesterLevel = 3;
                 builderLevel = 3;
@@ -316,7 +316,7 @@ var creepHandler = {
         if (Memory.debug) console.log(`before spawning field, harvestersTotal:${harvestersTotal}, max_harvesters:${max_harvesters}`);
         //spawn creeps depending on available roles and capacity
         //first check if there is no upgraders but bunch of harvesters
-        if ((upgradersTotal < 1) && room.memory.stage > 1 && ((upgradersTotal < 1 && harvestersTotal > 6))) {
+        if (upgradersTotal < 1 && room.memory.stage > 1 && harvestersTotal > 6) {
             if (Memory.debug) console.log(`creating upgrader - balance`);
             spawnUpgrader();
         } else if (buildersTotal < max_builders && harvestersTotal > 5 && constructionSitesExist) {
