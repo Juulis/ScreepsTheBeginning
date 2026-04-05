@@ -36,7 +36,7 @@ var roleHauler = {
                 if (!creep.memory.delivering) {
 
                     // gå till rätt rum först
-                    if (container && creep.room.name !== sourceRoom) {
+                    if (creep.room.name !== sourceRoom) {
                         creep.say("🚚➡️🌍");
                         creep.moveTo(new RoomPosition(25, 25, sourceRoom));
                         return;
