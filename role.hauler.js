@@ -32,7 +32,7 @@ var roleHauler = {
             const isOwned = roomObj.controller.my;
             const hasSpawn = roomObj.find(FIND_MY_SPAWNS).length > 0;
 
-            if (!isOwned && !hasSpawn) {
+            if (!hasSpawn) {
                 if (!creep.memory.delivering) {
 
                     // gå till rätt rum först
