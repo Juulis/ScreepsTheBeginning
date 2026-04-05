@@ -100,6 +100,9 @@ var roleHarvester = {
                     creep.say("⛏️| 🔨🧱");
                     return;
                 }
+                if(container){
+                    target = container;
+                }
                 creep.say("⛏️|🔋📦")
                 const transferred = creep.transfer(target, RESOURCE_ENERGY);
                 if (transferred === ERR_NOT_IN_RANGE) {
