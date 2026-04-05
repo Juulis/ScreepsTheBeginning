@@ -132,12 +132,13 @@ var roleHarvester = {
             function spawnHarvester(sourceId) {
                 room.find(FIND_MY_SPAWNS)[0].spawnCreep(
                     [WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE],
-                    'Harvester-' + sourceId + '-' + Game.time,
+                    'Harvester(4)-' + sourceId + '-' + Game.time,
                     {
                         memory: {
                             role: 'harvester',
                             source: sourceId,
-                            mainRoom: room.name
+                            mainRoom: room.name,
+                            cost: 550
                         }
                     }
                 );
@@ -145,9 +146,7 @@ var roleHarvester = {
 
             if (room.memory.stage >= 3) {
 
-                const sources = Object.keys(Memory.sources).filter(
-                    id => Memory.sources[id].roomName === room.name
-                );
+                const sources = Object.keys(Memory.sources);
 
                 const creepsInRoom = room.find(FIND_MY_CREEPS);
 
@@ -159,6 +158,7 @@ var roleHarvester = {
                     );
 
                     if (!harvesterForSource) {
+                        console.log("spawning Harvester lvl4")
                         spawnHarvester(sourceId);
                         break; // 🔥 superviktigt
                     }
