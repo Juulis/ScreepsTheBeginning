@@ -265,7 +265,6 @@ var creepHandler = {
 
 
         function spawnHarvesterStage3() {
-            if (room.controller.level < 5) return; // probably no containers to build
             if (Memory.debug) console.log("in stage 3 balancing");
             const sources = Object.keys(Memory.sources);
             const creepsGlobal = Object.values(Game.creeps);
@@ -337,7 +336,9 @@ var creepHandler = {
         } else if (buildersTotal < max_builders && constructionSitesExist) {
             if (Memory.debug) console.log(`creating builder`);
             spawnBuilder();
-        } else if (room.stage >= 3) {
+        }
+
+        if (room.stage >= 3 && room.controller.level >= 5) {
             spawnHarvesterStage3();
         }
 
