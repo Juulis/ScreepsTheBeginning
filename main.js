@@ -156,7 +156,7 @@ module.exports.loop = function () {
         buildManager(room);
 
         //ONLY CONTROLLED ROOMS
-        if (room.controller.my) {
+        if (room.controller && room.controller.my) {
         }
 
         //ONLY MAINROOM
