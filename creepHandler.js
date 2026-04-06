@@ -313,9 +313,11 @@ var creepHandler = {
                 if (Memory.debug) console.log(`source ${sourceId} har ${haulersForSource.length} haulers`);
 
                 const sourceObj = Game.getObjectById(sourceId)
-                const hasContainer = _.some(sourceObj.pos.findInRange(FIND_STRUCTURES, 1),
-                    s => s.structureType === STRUCTURE_CONTAINER
-                );
+                let hasContainer;
+                if (sourceObj)
+                    hasContainer = _.some(sourceObj.pos.findInRange(FIND_STRUCTURES, 1),
+                        s => s.structureType === STRUCTURE_CONTAINER
+                    );
 
                 if (haulersForSource.length < 2 && harvestersForSource.length > 0 && hasContainer) {
                     console.log("spawning Hauler lvl4 for source:", sourceId);
