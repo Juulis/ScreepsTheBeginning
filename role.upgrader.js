@@ -12,7 +12,7 @@ var roleUpgrader = {
             _.filter(Game.creeps, c =>
                 c.memory.role === 'upgrader' &&
                 c.memory.targetRoom === room.name
-            ).length === 0
+            ).length < 2
         );
 
         if (targetRoom && !creep.memory.targetRoom) {

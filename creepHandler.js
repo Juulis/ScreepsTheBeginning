@@ -78,7 +78,7 @@ var creepHandler = {
             case 3:
                 max_harvesters = Object.keys(Memory.sources).length + 3; // allow 3 extra for seemless spawning
                 max_builders = 4;
-                max_upgraders = helper.getEmpireEnergyAvailable() > 5000 ? 5 : 2;
+                max_upgraders = helper.getEmpireEnergyAvailable() > 5000 ? 7 : 2;
                 max_haulers = 4; // infinite with stage 3 logic
                 harvesterLevel = 3;
                 builderLevel = 3;
