@@ -138,14 +138,15 @@ var roleHarvester = {
             console.log(logDistr);
 
             //TODO make theses numbers depend on how many sources in the room
-            const source_1 = Object.keys(Memory.sources)[0];
-            const source_2 = Object.keys(Memory.sources)[1];
-            const source_3 = Object.keys(Memory.sources)[2] || Object.keys(Memory.sources)[1];
-            const source_4 = Object.keys(Memory.sources)[3] || Object.keys(Memory.sources)[2] || Object.keys(Memory.sources)[1];
-            const source_5 = Object.keys(Memory.sources)[4] || Object.keys(Memory.sources)[3] || Object.keys(Memory.sources)[2] || Object.keys(Memory.sources)[1];
-            const source_6 = Object.keys(Memory.sources)[5] || Object.keys(Memory.sources)[2]
-            const source_7 = Object.keys(Memory.sources)[6] || Object.keys(Memory.sources)[3] || Object.keys(Memory.sources)[2] || Object.keys(Memory.sources)[1];
-            const source_8 = Object.keys(Memory.sources)[7] || Object.keys(Memory.sources)[3] || Object.keys(Memory.sources)[2] || Object.keys(Memory.sources)[1];
+            const sourceKeys = Object.keys(Memory.sources); // alla source IDs som strängar
+
+            const sources = [];
+            for (let i = 0; i < sourceKeys.length; i++) {
+                // Om det inte finns en källa på index i, fallback till den sista tillgängliga
+                sources[i] = sourceKeys[i] || sourceKeys[sourceKeys.length - 1];
+            }
+            const [source_1, source_2, source_3, source_4, source_5, source_6, source_7, source_8] = sources;
+
 
             //check somehow if we are unbalanced?
             const unbalanced = () => {
