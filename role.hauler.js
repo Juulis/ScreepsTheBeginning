@@ -128,7 +128,7 @@ var roleHauler = {
             }
 
             // only remoteHaulers should dump in containers!
-            if (container && sourceRoom !== mainRoom) {
+            if (container) {
                 if (creep.withdraw(container, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
                     creep.moveTo(container, {visualizePathStyle: {stroke: '#ffffff'}, reusePath: 20});
                 }
