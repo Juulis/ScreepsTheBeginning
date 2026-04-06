@@ -67,7 +67,7 @@ module.exports.loop = function () {
         if (room.energyCapacityAvailable > 700 && Memory.sources && Object.keys(Memory.sources).length > 3) stage = 3;
         if (room.controller.level >= 5) stage = 4;
         //fallback for emergency low energy
-        if (harvestersTotal < 3 || room.energyAvailable < 500) stage = 1
+        if (harvestersTotal < 3) stage = 1
         return stage;
     };
 
