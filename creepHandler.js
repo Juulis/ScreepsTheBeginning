@@ -65,6 +65,7 @@ var creepHandler = {
         const claimersTotal = roleCounts.claimer || 0;
 
         if (room.memory.stage === 2) {
+            if(Memory.debug) console.log("in stage 2 creepbalancing");
             max_harvesters = Object.keys(Memory.sources).length * 3;
             max_builders = 2;
             max_upgraders = 1;
@@ -74,7 +75,7 @@ var creepHandler = {
             upgraderLevel = 2;
             haulerLevel = 2;
         } else if (room.memory.stage >= 3) {
-            console.log("in stage 3+ creepbalancing");
+            if(Memory.debug) console.log("in stage 3+ creepbalancing");
             max_harvesters = Object.keys(Memory.sources).length + 3; // allow 3 extra for seemless spawning
             max_builders = 4;
             max_upgraders = helper.getEmpireEnergyAvailable() > 5000 ? 7 : 2;
@@ -309,9 +310,7 @@ var creepHandler = {
                 room.find(FIND_MY_CREEPS).filter(c => c.memory.role === "harvester")[0].memory.role = "scout";
             }
         }
-        console.log(max_upgraders)
-        console.log(room.memory.stage)
-        console.log(helper.getEmpireEnergyAvailable())
+
         if (Memory.debug) console.log(`before spawning field, harvestersTotal:${harvestersTotal}, max_harvesters:${max_harvesters}`);
         //spawn creeps depending on available roles and capacity
         //first check if there is no upgraders but bunch of harvesters
