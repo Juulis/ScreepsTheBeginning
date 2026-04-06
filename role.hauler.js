@@ -102,7 +102,7 @@ var roleHauler = {
                 // if (!otherHaulersNearby) {
                 creep.say("🚚🧹⚡");
                 if (creep.pickup(dropped) === ERR_NOT_IN_RANGE) {
-                    creep.moveTo(dropped, {visualizePathStyle: {stroke: '#ffffff'}, reusePath: 20});
+                    creep.moveTo(dropped, {visualizePathStyle: {stroke: '#ffffff'}, reusePath: 50});
                 }
                 return;
                 // }
@@ -122,7 +122,7 @@ var roleHauler = {
             if (creep.memory.storageHauler && storage && storage.store[RESOURCE_ENERGY] > 5000) {
                 creep.say("🛻🔋🏪");
                 if (creep.withdraw(storage, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
-                    creep.moveTo(storage, {visualizePathStyle: {stroke: '#ffffff'}, reusePath: 20});
+                    creep.moveTo(storage, {visualizePathStyle: {stroke: '#ffffff'}, reusePath: 50});
                 }
                 return;
             }
@@ -130,14 +130,14 @@ var roleHauler = {
             // only remoteHaulers should dump in containers!
             if (container) {
                 if (creep.withdraw(container, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
-                    creep.moveTo(container, {visualizePathStyle: {stroke: '#ffffff'}, reusePath: 20});
+                    creep.moveTo(container, {visualizePathStyle: {stroke: '#ffffff'}, reusePath: 50});
                 }
                 creep.say("🚚🔋");
                 return;
             }
             if (storage && storage.store[RESOURCE_ENERGY] > 1000) {
                 if (creep.withdraw(storage, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
-                    creep.moveTo(storage, {visualizePathStyle: {stroke: '#ffffff'}, reusePath: 20});
+                    creep.moveTo(storage, {visualizePathStyle: {stroke: '#ffffff'}, reusePath: 50});
                 }
                 creep.say("🚚 🔋→🔋");
                 return;
@@ -148,7 +148,11 @@ var roleHauler = {
             // Full → lämna energi
             if (Memory.debug) console.log(creep.name + "full, dumping");
             let target;
-            if (creep.memory.role === "remoteHauler") {
+            let sourceInMainRoom = false;
+            const source = Game.getObjectById(creep.memory.source);
+            if (source && source.room.name === Memory.mainRoom) sourceInMainRoom = true;
+
+            if (creep.memory.role === "remoteHauler" && !sourceInMainRoom) {
                 //för remotehaulers, prioritera bara närmsta deliveryplace
                 target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
                     filter: (s) => {
@@ -174,7 +178,7 @@ var roleHauler = {
             if (target) {
                 creep.say("🚚🔋📦");
                 if (creep.transfer(target, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
-                    creep.moveTo(target, {reusePath: 10, visualizePathStyle: {stroke: '#ffffff'}});
+                    creep.moveTo(target, {reusePath: 50, visualizePathStyle: {stroke: '#ffffff'}});
                 }
             } else {
                 // Inget som behöver energi → gå till storage som backup eller stå still
@@ -182,7 +186,7 @@ var roleHauler = {
                 if (storage && storage.store.getFreeCapacity(RESOURCE_ENERGY) > 0) {
                     creep.say("🚚🔋📦");
                     if (creep.transfer(storage, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
-                        creep.moveTo(storage, {visualizePathStyle: {stroke: '#ffffff'}, reusePath: 10});
+                        creep.moveTo(storage, {visualizePathStyle: {stroke: '#ffffff'}, reusePath: 50});
                     }
                 } else {
                     creep.say("⏳ 📦📦📦 💤");
