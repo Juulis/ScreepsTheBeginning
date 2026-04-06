@@ -64,27 +64,24 @@ var creepHandler = {
         const remoteHaulersTotal = roleCounts.remoteHauler || 0;
         const claimersTotal = roleCounts.claimer || 0;
 
-        switch (room.memory.stage) {
-            case 2:
-                max_harvesters = Object.keys(Memory.sources).length * 3;
-                max_builders = 2;
-                max_upgraders = 1;
-                max_haulers = 2;
-                harvesterLevel = 2;
-                builderLevel = 2;
-                upgraderLevel = 2;
-                haulerLevel = 2;
-                break;
-            case 3:
-                max_harvesters = Object.keys(Memory.sources).length + 3; // allow 3 extra for seemless spawning
-                max_builders = 4;
-                max_upgraders = helper.getEmpireEnergyAvailable() > 5000 ? 7 : 2;
-                max_haulers = 4; // infinite with stage 3 logic
-                harvesterLevel = 3;
-                builderLevel = 3;
-                upgraderLevel = 3;
-                haulerLevel = 3;
-                break;
+        if (room.memory.stage >= 2) {
+            max_harvesters = Object.keys(Memory.sources).length * 3;
+            max_builders = 2;
+            max_upgraders = 1;
+            max_haulers = 2;
+            harvesterLevel = 2;
+            builderLevel = 2;
+            upgraderLevel = 2;
+            haulerLevel = 2;
+        } else if (room.memory.stage >= 3) {
+            max_harvesters = Object.keys(Memory.sources).length + 3; // allow 3 extra for seemless spawning
+            max_builders = 4;
+            max_upgraders = helper.getEmpireEnergyAvailable() > 5000 ? 7 : 2;
+            max_haulers = 4; // infinite with stage 3 logic
+            harvesterLevel = 3;
+            builderLevel = 3;
+            upgraderLevel = 3;
+            haulerLevel = 3;
         }
 
         const containersTotal = room.find(FIND_STRUCTURES, {filter: s => s.structureType === STRUCTURE_CONTAINER}).length;
@@ -321,7 +318,7 @@ var creepHandler = {
         } else if (buildersTotal < max_builders && harvestersTotal > 5 && constructionSitesExist) {
             if (Memory.debug) console.log(`creating builder - balance`);
             spawnBuilder();
-        } else if (harvestersTotal < max_harvesters && room.controller.level < 5) {
+        } else if (harvestersTotal < max_harvesters && room.memory.stage < 4) {
             spawnHarvester();
             if (Memory.debug) console.log(`creating harvester`);
         } else if (haulersTotal < max_haulers && (containersTotal > 0 || storageExist)) {
@@ -338,7 +335,7 @@ var creepHandler = {
             spawnBuilder();
         }
 
-        if (room.stage >= 3 && room.controller.level >= 5) {
+        if (room.memory.stage >= 4) {
             spawnHarvesterStage3();
         }
 

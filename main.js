@@ -63,12 +63,10 @@ module.exports.loop = function () {
     const setStage = (room) => {
         if (Memory.debug) console.log(`setting stage - energy:${room.energyAvailable} - sources: ${Object.keys(Memory.sources).length} - harvesters: ${harvestersTotal}`);
         let stage = 1;
-        if (room.energyCapacityAvailable > 500)
-            stage = 2;
-        if (room.energyCapacityAvailable > 700 && Memory.sources && Object.keys(Memory.sources).length > 3)
-            stage = 3;
-        if (harvestersTotal < 3 && room.energyAvailable < 500)
-            stage = 1
+        if (room.energyCapacityAvailable > 500) stage = 2;
+        if (room.energyCapacityAvailable > 700 && Memory.sources && Object.keys(Memory.sources).length > 3) stage = 3;
+        if (harvestersTotal < 3 && room.energyAvailable < 500) stage = 1
+        if (room.controller.level >= 5) stage = 4;
         return stage;
     };
 
