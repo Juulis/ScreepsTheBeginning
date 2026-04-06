@@ -322,7 +322,7 @@ var creepHandler = {
         } else if (buildersTotal < max_builders && harvestersTotal > 5 && constructionSitesExist) {
             if (Memory.debug) console.log(`creating builder - balance`);
             spawnBuilder();
-        } else if (harvestersTotal < max_harvesters && room.stage < 3) {
+        } else if (harvestersTotal < max_harvesters && room.controller.level < 5) {
             spawnHarvester();
             if (Memory.debug) console.log(`creating harvester`);
         } else if (haulersTotal < max_haulers && (containersTotal > 0 || storageExist)) {
