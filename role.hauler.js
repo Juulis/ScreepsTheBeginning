@@ -51,7 +51,7 @@ var roleHauler = {
                         .find(s => s.structureType === STRUCTURE_CONTAINER);
 
 
-                    if (container && container.store[RESOURCE_ENERGY] > 0 && sourceRoom !== mainRoom) {
+                    if (container && container.store[RESOURCE_ENERGY] > 0) {
                         creep.say("🚚🔋");
                         if (creep.withdraw(container, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
                             creep.moveTo(container, {visualizePathStyle: {stroke: '#000000'}, reusePath: 50});
@@ -127,7 +127,8 @@ var roleHauler = {
                 return;
             }
 
-            if (container) {
+            // only remoteHaulers should dump in containers!
+            if (container && creep.memory.role === "remoteHauler") {
                 if (creep.withdraw(container, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
                     creep.moveTo(container, {visualizePathStyle: {stroke: '#ffffff'}, reusePath: 20});
                 }
