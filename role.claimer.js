@@ -2,9 +2,13 @@ class RoleClaimer {
     static run(creep) {
         // Hämta target room från memory
         if (!creep.memory.targetRoom || creep.memory.targetRoom === Memory.mainRoom) {
-            creep.memory.targetRoom = this.getNextRoom(creep);
+            const nextRoom = this.getNextRoom(creep);
+            if(!nextRoom){
+                creep.say("🚩❌");
+                return;
+            }
+            creep.memory.targetRoom = nextRoom;
         }
-        if(!creep.memory.targetRoom) return;
 
         const targetRoom = creep.memory.targetRoom;
 
