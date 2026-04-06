@@ -93,7 +93,7 @@ var creepHandler = {
             harvesterLevel = 3; // level 4 has its own logic for now
             builderLevel = 3;
             upgraderLevel = helper.getEmpireEnergyAvailable() > 100000 ? 4 : 3;
-            haulerLevel = 4;
+            haulerLevel = 2;
         }
 
         const containersTotal = room.find(FIND_STRUCTURES, {filter: s => s.structureType === STRUCTURE_CONTAINER}).length;
@@ -312,7 +312,12 @@ var creepHandler = {
                 if (Memory.debug) console.log(`source ${sourceId} har ${harvestersForSource.length} harvesters`);
                 if (Memory.debug) console.log(`source ${sourceId} har ${haulersForSource.length} haulers`);
 
-                if (haulersForSource.length < 1 && harvestersForSource.length > 0) {
+                const sourceObj = Game.getObjectById(sourceId)
+                const hasContainer = _.some(sourceObj.pos.findInRange(FIND_STRUCTURES, 1),
+                    s => s.structureType === STRUCTURE_CONTAINER
+                );
+
+                if (haulersForSource.length < 2 && harvestersForSource.length > 0 && hasContainer) {
                     console.log("spawning Hauler lvl4 for source:", sourceId);
                     spawnRemoteHauler(sourceId);
                     break;
