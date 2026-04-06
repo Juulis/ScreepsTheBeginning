@@ -65,7 +65,7 @@ var creepHandler = {
         const claimersTotal = roleCounts.claimer || 0;
 
         if (room.memory.stage === 2) {
-            if(Memory.debug) console.log("in stage 2 creepbalancing");
+            if (Memory.debug) console.log("in stage 2 creepbalancing");
             max_harvesters = Object.keys(Memory.sources).length * 3;
             max_builders = 2;
             max_upgraders = 1;
@@ -75,7 +75,7 @@ var creepHandler = {
             upgraderLevel = 2;
             haulerLevel = 2;
         } else if (room.memory.stage === 3) {
-            if(Memory.debug) console.log("in stage 3 creepbalancing");
+            if (Memory.debug) console.log("in stage 3 creepbalancing");
             max_harvesters = Object.keys(Memory.sources).length * 2.5;
             max_builders = 4;
             max_upgraders = helper.getEmpireEnergyAvailable() > 5000 ? 5 : 2;
@@ -85,7 +85,7 @@ var creepHandler = {
             upgraderLevel = 3;
             haulerLevel = 3;
         } else if (room.memory.stage >= 4) {
-            if(Memory.debug) console.log("in stage 4+ creepbalancing");
+            if (Memory.debug) console.log("in stage 4+ creepbalancing");
             max_harvesters = Object.keys(Memory.sources).length + 3; // allow 3 extra for seemless spawning
             max_builders = 4;
             max_upgraders = helper.getEmpireEnergyAvailable() > 100000 ? 10 : 5;
@@ -291,7 +291,7 @@ var creepHandler = {
         }
 
 
-        function spawnHarvesterStage3() {
+        function spawnHarvesterStage4() {
             if (Memory.debug) console.log("in stage 3 balancing");
             const sources = Object.keys(Memory.sources);
             const creepsGlobal = Object.values(Game.creeps);
@@ -342,7 +342,7 @@ var creepHandler = {
         if (Memory.debug) console.log(`before spawning field, harvestersTotal:${harvestersTotal}, max_harvesters:${max_harvesters}`);
         //spawn creeps depending on available roles and capacity
         //first check if there is no upgraders but bunch of harvesters
-        if (upgradersTotal < 1 && room.memory.stage > 1 && harvestersTotal > 6) {
+        if ((upgradersTotal < 1 && room.memory.stage > 1 && harvestersTotal > 6) || (upgradersTotal < 3 && room.memory.stage >= 4 && harvestersTotal > 3)) {
             if (Memory.debug) console.log(`creating upgrader - balance`);
             spawnUpgrader();
         } else if (buildersTotal < max_builders && harvestersTotal > 5 && constructionSitesExist) {
@@ -366,7 +366,7 @@ var creepHandler = {
         }
 
         if (room.memory.stage >= 4) {
-            spawnHarvesterStage3();
+            spawnHarvesterStage4();
         }
 
         //DESPAWN
