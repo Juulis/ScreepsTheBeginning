@@ -148,7 +148,7 @@ var roleHarvester = {
 
             //check somehow if we are unbalanced?
             const unbalanced = () => {
-                if (room.controller.level < 5) return false;
+                if (room.controller.level > 4) return false;
                 return harvesters.length > 2;
                 // return source0 === 0 || source1 === 0 && source2 === 3 && source3 === 3 && source4 === 3;
             };
