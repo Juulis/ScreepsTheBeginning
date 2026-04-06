@@ -26,8 +26,8 @@ var roleHauler = {
         if (creep.memory.role === "remoteHauler") {
             const sourceId = creep.memory.source;
             const sourceData = Memory.sources[sourceId];
-            const sourceRoom = sourceData.roomName;
-            const mainRoom = creep.memory.mainRoom;
+            var sourceRoom = sourceData.roomName;
+            var mainRoom = creep.memory.mainRoom;
             const roomObj = Game.rooms[sourceRoom];
             const isOwned = roomObj.controller.my;
             const hasSpawn = roomObj.find(FIND_MY_SPAWNS).length > 0;
@@ -128,7 +128,7 @@ var roleHauler = {
             }
 
             // only remoteHaulers should dump in containers!
-            if (container && creep.memory.role === "remoteHauler") {
+            if (container && sourceRoom !== mainRoom) {
                 if (creep.withdraw(container, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
                     creep.moveTo(container, {visualizePathStyle: {stroke: '#ffffff'}, reusePath: 20});
                 }
