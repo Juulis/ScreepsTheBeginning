@@ -6,19 +6,6 @@ var roleHarvester = {
         /** @param {Creep} creep
          @param {string} sourceId **/
         run: function (creep, sourceId) {
-            const room = Game.rooms[creep.memory.sourceRoom || creep.room.name];
-
-            if (room) {
-                const hasInvaderCore = room.find(FIND_STRUCTURES, {
-                    filter: s => s.structureType === STRUCTURE_INVADER_CORE
-                }).length > 0;
-
-                if (hasInvaderCore) {
-                    creep.say("☠️CORE");
-                    creep.moveTo(new RoomPosition(25, 25, Memory.mainRoom));
-                    return;
-                }
-            }
             if (creep.memory.harvesting && creep.store.getFreeCapacity() === 0) {
                 creep.memory.harvesting = false;
             }
@@ -43,6 +30,7 @@ var roleHarvester = {
                 //HARVESTING
                 if (Memory.debug) console.log(creep.name + " going to " + creep.memory.source)
                 //if in another room for source, first go to exit
+                console.log("srcname: "+sourceId)
                 creep.say("⛏️⚡")
                 const srcMem = Memory.sources[sourceId];
                 const pos = new RoomPosition(srcMem.x, srcMem.y, srcMem.roomName);
