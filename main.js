@@ -173,7 +173,7 @@ module.exports.loop = function () {
             handleLogs(room);
             handleSpawn(room);
             manageSourceBalancing(room);
-            console.log("---------------------------------------------------------" + "tic:" + Game.time + "------------------------------------------------------------------")
+            console.log("---------------------------------------------------------" + Memory.serverName + " tic:" + Game.time + "------------------------------------------------------------------")
         }
     }
 }

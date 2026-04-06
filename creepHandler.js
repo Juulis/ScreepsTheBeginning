@@ -74,16 +74,26 @@ var creepHandler = {
             builderLevel = 2;
             upgraderLevel = 2;
             haulerLevel = 2;
-        } else if (room.memory.stage >= 3) {
-            if(Memory.debug) console.log("in stage 3+ creepbalancing");
-            max_harvesters = Object.keys(Memory.sources).length + 3; // allow 3 extra for seemless spawning
+        } else if (room.memory.stage === 3) {
+            if(Memory.debug) console.log("in stage 3 creepbalancing");
+            max_harvesters = Object.keys(Memory.sources).length * 2.5;
             max_builders = 4;
-            max_upgraders = helper.getEmpireEnergyAvailable() > 5000 ? 7 : 2;
-            max_haulers = 4; // infinite with stage 3 logic
+            max_upgraders = helper.getEmpireEnergyAvailable() > 5000 ? 5 : 2;
+            max_haulers = 4;
             harvesterLevel = 3;
             builderLevel = 3;
             upgraderLevel = 3;
             haulerLevel = 3;
+        } else if (room.memory.stage >= 4) {
+            if(Memory.debug) console.log("in stage 4+ creepbalancing");
+            max_harvesters = Object.keys(Memory.sources).length + 3; // allow 3 extra for seemless spawning
+            max_builders = 4;
+            max_upgraders = helper.getEmpireEnergyAvailable() > 100000 ? 10 : 5;
+            max_haulers = 3;
+            harvesterLevel = 3; // level 4 has its own logic for now
+            builderLevel = 3;
+            upgraderLevel = helper.getEmpireEnergyAvailable() > 100000 ? 4 : 3;
+            haulerLevel = 4;
         }
 
         const containersTotal = room.find(FIND_STRUCTURES, {filter: s => s.structureType === STRUCTURE_CONTAINER}).length;
@@ -149,7 +159,17 @@ var creepHandler = {
                 });
             } else if (upgraderLevel === 3) {
                 console.log("creating upgrader lvl3");
-                room.find(FIND_MY_SPAWNS)[0].spawnCreep([WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE], 'Upgrader(' + upgraderLevel + ')' + Game.time, {
+                room.find(FIND_MY_SPAWNS)[0].spawnCreep([WORK, WORK, WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE], 'Upgrader(' + upgraderLevel + ')' + Game.time, {
+                    memory: {
+                        role: 'upgrader',
+                        upgrading: false,
+                        tempHarvester: true,
+                        mainRoom: room.roomName,
+                    }
+                });
+            } else if (upgraderLevel === 4) {
+                console.log("creating upgrader lvl4");
+                room.find(FIND_MY_SPAWNS)[0].spawnCreep([WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE], 'Upgrader(' + upgraderLevel + ')' + Game.time, {
                     memory: {
                         role: 'upgrader',
                         upgrading: false,
@@ -213,6 +233,14 @@ var creepHandler = {
                 });
             } else if (haulerLevel === 3) {
                 console.log("creating hauler lvl3");
+                room.find(FIND_MY_SPAWNS)[0].spawnCreep([CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE], 'Hauler(' + haulerLevel + ')' + Game.time, {
+                    memory: {
+                        role: 'hauler',
+                        mainRoom: room.roomName,
+                    }
+                });
+            } else if (haulerLevel === 4) {
+                console.log("creating hauler lvl4");
                 room.find(FIND_MY_SPAWNS)[0].spawnCreep([CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE], 'Hauler(' + haulerLevel + ')' + Game.time, {
                     memory: {
                         role: 'hauler',
