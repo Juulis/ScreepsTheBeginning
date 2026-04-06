@@ -4,6 +4,7 @@ class RoleClaimer {
         if (!creep.memory.targetRoom || creep.memory.targetRoom === Memory.mainRoom) {
             creep.memory.targetRoom = this.getNextRoom(creep);
         }
+        if(!creep.memory.targetRoom) return;
 
         const targetRoom = creep.memory.targetRoom;
 
