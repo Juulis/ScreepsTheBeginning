@@ -89,11 +89,11 @@ var creepHandler = {
             max_harvesters = Object.keys(Memory.sources).length + 3; // allow 3 extra for seemless spawning
             max_builders = 4;
             max_upgraders = helper.getEmpireEnergyAvailable() > 100000 ? 10 : 5;
-            max_haulers = 3;
+            max_haulers = 2;
             harvesterLevel = 3; // level 4 has its own logic for now
             builderLevel = 3;
             upgraderLevel = helper.getEmpireEnergyAvailable() > 100000 ? 4 : 3;
-            haulerLevel = 2;
+            haulerLevel = 4;
         }
 
         const containersTotal = room.find(FIND_STRUCTURES, {filter: s => s.structureType === STRUCTURE_CONTAINER}).length;
