@@ -266,7 +266,7 @@ var creepHandler = {
 
         function spawnHarvesterStage3() {
             if (Memory.debug) console.log("in stage 3 balancing");
-
+            if (room.controller.level < 5) return; // probably no containers to build
             const sources = Object.keys(Memory.sources);
             const creepsGlobal = Object.values(Game.creeps);
 
