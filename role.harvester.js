@@ -53,7 +53,7 @@ var roleHarvester = {
                 let container;
                 if (source) {
                     container = _.find(source.pos.findInRange(FIND_STRUCTURES, 1),
-                        s => s.structureType === STRUCTURE_CONTAINER
+                        s => s.structureType === STRUCTURE_CONTAINER && s.store.getFreeCapacity(RESOURCE_ENERGY) > 0
                     );
                     constructionSite = _.find(source.pos.findInRange(FIND_CONSTRUCTION_SITES, 1),
                         s => s.structureType === STRUCTURE_CONTAINER
