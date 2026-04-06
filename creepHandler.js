@@ -43,7 +43,7 @@ var creepHandler = {
         const roomsWithSources = Object.keys(Memory.rooms).filter(roomName =>
             Memory.rooms[roomName].sources && Object.keys(Memory.rooms[roomName].sources).length > 0
         );
-        let max_harvesters = Object.keys(Memory.sources).length * 3;
+        let max_harvesters = Object.keys(Memory.sources).length * 2;
         let max_builders = 1;
         let max_upgraders = 1;
         let max_haulers = 1;
@@ -66,7 +66,7 @@ var creepHandler = {
 
         if (room.memory.stage === 2) {
             if (Memory.debug) console.log("in stage 2 creepbalancing");
-            max_harvesters = Object.keys(Memory.sources).length * 3;
+            max_harvesters = Object.keys(Memory.sources).length * 2;
             max_builders = 2;
             max_upgraders = 1;
             max_haulers = 2;
@@ -76,7 +76,7 @@ var creepHandler = {
             haulerLevel = 2;
         } else if (room.memory.stage === 3) {
             if (Memory.debug) console.log("in stage 3 creepbalancing");
-            max_harvesters = Object.keys(Memory.sources).length * 2.5;
+            max_harvesters = Object.keys(Memory.sources).length * 2;
             max_builders = 4;
             max_upgraders = helper.getEmpireEnergyAvailable() > 5000 ? 5 : 2;
             max_haulers = 4;
@@ -86,7 +86,7 @@ var creepHandler = {
             haulerLevel = 3;
         } else if (room.memory.stage >= 4) {
             if (Memory.debug) console.log("in stage 4+ creepbalancing");
-            max_harvesters = Object.keys(Memory.sources).length + 3; // allow 3 extra for seemless spawning
+            max_harvesters = 0; // handle this with sourcebalancing directly instead
             max_builders = 4;
             max_upgraders = helper.getEmpireEnergyAvailable() > 100000 ? 10 : 5;
             max_haulers = 2;
@@ -353,7 +353,7 @@ var creepHandler = {
         } else if (buildersTotal < max_builders && harvestersTotal > 5 && constructionSitesExist) {
             if (Memory.debug) console.log(`creating builder - balance`);
             spawnBuilder();
-        } else if (harvestersTotal < max_harvesters && room.memory.stage < 4) {
+        } else if (harvestersTotal < max_harvesters) {
             spawnHarvester();
             if (Memory.debug) console.log(`creating harvester`);
         } else if (haulersTotal < max_haulers && (containersTotal > 0 || storageExist)) {
