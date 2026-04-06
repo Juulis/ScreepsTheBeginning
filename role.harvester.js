@@ -30,7 +30,6 @@ var roleHarvester = {
                 //HARVESTING
                 if (Memory.debug) console.log(creep.name + " going to " + creep.memory.source)
                 //if in another room for source, first go to exit
-                console.log("srcname: "+sourceId)
                 creep.say("⛏️⚡")
                 const srcMem = Memory.sources[sourceId];
                 const pos = new RoomPosition(srcMem.x, srcMem.y, srcMem.roomName);
