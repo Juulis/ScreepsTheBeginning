@@ -51,7 +51,7 @@ var roleHauler = {
                         .find(s => s.structureType === STRUCTURE_CONTAINER);
 
 
-                    if (container && container.store[RESOURCE_ENERGY] > 0) {
+                    if (container && container.store[RESOURCE_ENERGY] > 0 && sourceRoom !== mainRoom) {
                         creep.say("🚚🔋");
                         if (creep.withdraw(container, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
                             creep.moveTo(container, {visualizePathStyle: {stroke: '#000000'}, reusePath: 50});

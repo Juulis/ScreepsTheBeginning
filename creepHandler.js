@@ -150,7 +150,7 @@ var creepHandler = {
                 });
             } else if (upgraderLevel === 3) {
                 console.log("creating upgrader lvl3");
-                room.find(FIND_MY_SPAWNS)[0].spawnCreep([WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE], 'Upgrader(' + upgraderLevel + ')' + Game.time, {
+                room.find(FIND_MY_SPAWNS)[0].spawnCreep([WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE], 'Upgrader(' + upgraderLevel + ')' + Game.time, {
                     memory: {
                         role: 'upgrader',
                         upgrading: false,
@@ -265,8 +265,8 @@ var creepHandler = {
 
 
         function spawnHarvesterStage3() {
-            if (Memory.debug) console.log("in stage 3 balancing");
             if (room.controller.level < 5) return; // probably no containers to build
+            if (Memory.debug) console.log("in stage 3 balancing");
             const sources = Object.keys(Memory.sources);
             const creepsGlobal = Object.values(Game.creeps);
 
