@@ -90,7 +90,7 @@ var roleHauler = {
 
             // 1. Dropped energy (snabbast)
             let dropped = creep.pos.findClosestByPath(FIND_DROPPED_RESOURCES, {
-                filter: r => r.resourceType === RESOURCE_ENERGY && r.amount >= 50
+                filter: r => r.resourceType === RESOURCE_ENERGY && r.amount >= 50 && r.room.name === creep.room.name
             });
 
             // CLEANER
@@ -111,11 +111,13 @@ var roleHauler = {
             // 2. Container
             let container = creep.pos.findClosestByPath(FIND_STRUCTURES, {
                 filter: s => s.structureType === STRUCTURE_CONTAINER &&
-                    s.store[RESOURCE_ENERGY] >= 50   // undvik tomma
+                    s.store[RESOURCE_ENERGY] >= 50 &&  // undvik tomma
+                    s.room.name === creep.room.name
             });
             let storage = creep.pos.findClosestByPath(FIND_STRUCTURES, {
                 filter: s => s.structureType === STRUCTURE_STORAGE &&
-                    s.store[RESOURCE_ENERGY] >= 50   // undvik tomma
+                    s.store[RESOURCE_ENERGY] >= 50 &&  // undvik tomma
+                    s.room.name === creep.room.name
             });
 
             // STORAGE HAULER
@@ -127,7 +129,6 @@ var roleHauler = {
                 return;
             }
 
-            // only remoteHaulers should dump in containers!
             if (container) {
                 if (creep.withdraw(container, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
                     creep.moveTo(container, {visualizePathStyle: {stroke: '#ffffff'}, reusePath: 50});
