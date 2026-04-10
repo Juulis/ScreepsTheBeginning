@@ -263,14 +263,14 @@ var creepHandler = {
 
         function spawnLevel4Harvester(sourceId) {
             room.find(FIND_MY_SPAWNS)[0].spawnCreep(
-                [WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE],
+                [WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE, MOVE],
                 'Harvester(4)-' + sourceId + '-' + Game.time,
                 {
                     memory: {
                         role: 'harvester',
                         source: sourceId,
                         mainRoom: room.name,
-                        cost: 500
+                        cost: 700
                     }
                 }
             );

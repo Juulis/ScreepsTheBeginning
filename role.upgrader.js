@@ -38,6 +38,15 @@ var roleUpgrader = {
             creep.memory.upgrading = true;
         }
 
+        let buildSite = creep.pos.findClosestByPath(FIND_CONSTRUCTION_SITES);
+
+        if(buildSite && creep.memory.upgrading && creep.room.name !== Memory.mainRoom) {
+            creep.say('🏛️ 🧱');
+            if (creep.build(buildSite) == ERR_NOT_IN_RANGE) {
+                creep.moveTo(buildSite, {visualizePathStyle: {stroke: '#ffffff'}, reusePath: 40});
+            }
+            return;
+        }
 
         if (creep.memory.upgrading) {
             creep.say('🏛️ ⚡️');
