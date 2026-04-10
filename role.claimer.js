@@ -3,7 +3,7 @@ class RoleClaimer {
         // Hämta target room från memory
         if (!creep.memory.targetRoom || creep.memory.targetRoom === Memory.mainRoom) {
             const nextRoom = this.getNextRoom(creep);
-            if(!nextRoom){
+            if (!nextRoom) {
                 creep.say("🚩❌");
                 return;
             }
@@ -15,7 +15,10 @@ class RoleClaimer {
         // Gå till rätt rum
         if (creep.room.name !== targetRoom) {
             creep.say("🚩🌍➡️" + creep.memory.targetRoom)
-            creep.moveTo(new RoomPosition(25, 25, targetRoom), {visualizePathStyle: {stroke: '#ffffff'}, reusePath: 50});
+            creep.moveTo(new RoomPosition(25, 25, targetRoom), {
+                visualizePathStyle: {stroke: '#ffffff'},
+                reusePath: 50
+            });
             return;
         }
 
@@ -79,6 +82,8 @@ class RoleClaimer {
 
             const controller = room.controller;
             if (!controller) continue;
+
+            if (room.controller.my) continue;
 
             if (
                 !controller.reservation ||
