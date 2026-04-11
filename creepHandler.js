@@ -63,6 +63,9 @@ var creepHandler = {
         const haulersTotal = roleCounts.hauler || 0;
         const remoteHaulersTotal = roleCounts.remoteHauler || 0;
         const claimersTotal = roleCounts.claimer || 0;
+        const containersTotal = room.find(FIND_STRUCTURES, {filter: s => s.structureType === STRUCTURE_CONTAINER}).length;
+        const storageExist = room.find(FIND_STRUCTURES, {filter: s => s.structureType === STRUCTURE_STORAGE}).length > 0;
+        const constructionSitesExist = room.find(FIND_CONSTRUCTION_SITES).length > 0;
 
         if (room.memory.stage === 2) {
             if (Memory.debug) console.log("in stage 2 creepbalancing");
@@ -89,16 +92,13 @@ var creepHandler = {
             max_harvesters = 0; // handle this with sourcebalancing directly instead
             max_builders = 4;
             max_upgraders = helper.getEmpireEnergyAvailable() > 100000 ? 10 : 5;
-            max_haulers = 3;
+            max_haulers = containersTotal;
             harvesterLevel = 3; // level 4 has its own logic for now
             builderLevel = 3;
             upgraderLevel = helper.getEmpireEnergyAvailable() > 100000 ? 4 : 3;
             haulerLevel = 4;
         }
 
-        const containersTotal = room.find(FIND_STRUCTURES, {filter: s => s.structureType === STRUCTURE_CONTAINER}).length;
-        const storageExist = room.find(FIND_STRUCTURES, {filter: s => s.structureType === STRUCTURE_STORAGE}).length > 0;
-        const constructionSitesExist = room.find(FIND_CONSTRUCTION_SITES).length > 0;
 
         function spawnHarvester() {
             if (Memory.debug) console.log(`spawning harvester - harvlevel: ${harvesterLevel}`);
