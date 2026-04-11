@@ -40,7 +40,7 @@ var roleUpgrader = {
 
         let buildSite = creep.pos.findClosestByPath(FIND_CONSTRUCTION_SITES);
 
-        if(buildSite && creep.memory.upgrading && creep.room.name !== Memory.mainRoom && creep.room.find(FIND_MY_CREEPS).filter(c => c.memory.role === "builder").length > 0) {
+        if (buildSite && creep.memory.upgrading && creep.room.name !== Memory.mainRoom && creep.room.find(FIND_MY_CREEPS).filter(c => c.memory.role === "builder").length > 0) {
             creep.say('🏛️ 🧱');
             if (creep.build(buildSite) == ERR_NOT_IN_RANGE) {
                 creep.moveTo(buildSite, {visualizePathStyle: {stroke: '#ffffff'}, reusePath: 40});
