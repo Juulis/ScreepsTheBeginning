@@ -208,6 +208,52 @@ var builder = {
             })
         }
 
+        function isAreaClear(room, x, y, radius) {
+            const terrain = room.getTerrain();
+
+            for (let dx = -radius; dx <= radius; dx++) {
+                for (let dy = -radius; dy <= radius; dy++) {
+
+                    const tx = x + dx;
+                    const ty = y + dy;
+
+                    // ❌ utanför karta
+                    if (tx <= 0 || tx >= 49 || ty <= 0 || ty >= 49) return false;
+
+                    // ❌ wall
+                    if (terrain.get(tx, ty) === TERRAIN_MASK_WALL) return false;
+
+                    // ❌ structure redan där
+                    const stuff = room.lookForAt(LOOK_STRUCTURES, tx, ty);
+                    if (stuff.length > 0) return false;
+                }
+            }
+
+            return true;
+        }
+
+        function findSpawnLocation(room) {
+            for (let x = 3; x < 47; x++) {
+                for (let y = 3; y < 47; y++) {
+
+                    if (x <= 5 || x >= 45 || y <= 5 || y >= 45) continue;
+                    if (isAreaClear(room, x, y, 2)) {
+                        return new RoomPosition(x, y, room.name);
+                    }
+
+                }
+            }
+            return null;
+        }
+
+        const buildSpawn = (room) => {
+            const pos = findSpawnLocation(room);
+            if (pos) {
+                room.createConstructionSite(pos, STRUCTURE_SPAWN);
+            }
+        }
+
+
         //preCheck if we should build stuff
 
         const buildersExist = _.filter(room.find(FIND_MY_CREEPS), (creep) => creep.memory.role === "builder").length > 0;
@@ -219,6 +265,10 @@ var builder = {
             buildStorage(room, spawnPos);
             buildTower(room, spawnPos);
             buildContainer(room);
+        } else if (room.controller.my) {
+            if (room.find(FIND_CONSTRUCTION_SITES, {filter: s => s.structureType === STRUCTURE_SPAWN}).length < 1) {
+                buildSpawn(room);
+            }
         }
         buildContainersAtSources(room);
     }
