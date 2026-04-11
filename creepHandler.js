@@ -364,7 +364,7 @@ var creepHandler = {
         } else if (haulersTotal < max_haulers && (containersTotal > 0 || storageExist)) {
             if (Memory.debug) console.log(`creating hauler`);
             spawnHauler();
-        } else if (Game.gcl.level > 1 && claimersTotal < max_claimers) {
+        } else if (Game.gcl.level > 1 && claimersTotal < max_claimers && room.energyCapacityAvailable > 500) {
             if (Memory.debug) console.log(`creating claimer`);
             spawnClaimer();
         } else if (upgradersTotal < max_upgraders) {
