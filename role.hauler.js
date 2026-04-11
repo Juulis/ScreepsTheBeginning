@@ -52,7 +52,7 @@ var roleHauler = {
 
                 if (!creep.memory.targetContainer) creep.memory.targetContainer = container.id;
 
-                if (container && container.store[RESOURCE_ENERGY] > 0) {
+                if (container && container.store[RESOURCE_ENERGY] > 200) {
                     creep.say("🚚🔋");
                     if (creep.withdraw(container, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
                         creep.moveTo(container, {visualizePathStyle: {stroke: '#000000'}, reusePath: 50});
