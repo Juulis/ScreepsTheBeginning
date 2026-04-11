@@ -50,7 +50,7 @@ var roleHauler = {
                 const container = source.pos.findInRange(FIND_STRUCTURES, 1)
                     .find(s => s.structureType === STRUCTURE_CONTAINER);
 
-                if (!creep.memory.targetContainer) creep.memory.targetContainer = container.id;
+                if (container && !creep.memory.targetContainer) creep.memory.targetContainer = container.id;
 
                 if (container && container.store[RESOURCE_ENERGY] > 200) {
                     creep.say("🚚🔋");
