@@ -233,11 +233,11 @@ var builder = {
         }
 
         function findSpawnLocation(room) {
-            for (let x = 3; x < 47; x++) {
-                for (let y = 3; y < 47; y++) {
+            for (let x = 6; x < 44; x++) {
+                for (let y = 6; y < 44; y++) {
 
-                    if (x <= 5 || x >= 45 || y <= 5 || y >= 45) continue;
-                    if (isAreaClear(room, x, y, 2)) {
+                    if (x <= 10 || x >= 40 || y <= 10 || y >= 40) continue;
+                    if (isAreaClear(room, x, y, 5)) {
                         return new RoomPosition(x, y, room.name);
                     }
 
