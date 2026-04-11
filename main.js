@@ -5,6 +5,7 @@ var {towerManager} = require('tower.handler');
 var helper = require('helper');
 
 module.exports.loop = function () {
+    console.log("\n\n\n\n" + "---------------------------------------------------------" + Memory.serverName + " tic:" + Game.time + "------------------------------------------------------------------")
     if (!Memory.username) Memory.username = "Juulis";
     // Rensa död memory (bra vana)
     for (let name in Memory.creeps) {
@@ -100,8 +101,7 @@ module.exports.loop = function () {
         return `[${bar}] ${current}/${max} (${(percent * 100).toFixed(1)}%)`;
     }
 
-    function handleLogs(room) {
-        //gameStatus logging
+    function handleGameLogs(room) {
         const roleCounts = _.countBy(Game.creeps, creep => creep.memory.role || "no role");
 
         const harvestersTotal = roleCounts.harvester || 0;
@@ -112,10 +112,33 @@ module.exports.loop = function () {
         const remoteHaulersTotal = roleCounts.remoteHauler || 0;
         const claimersTotal = roleCounts.claimer || 0;
 
-        console.log(`energy: ${room.energyAvailable}(${helper.getEmpireEnergyAvailable()})/${room.energyCapacityAvailable}(${helper.getEmpireEnergyCapacity()})`)
-        console.log(`stage ${room.memory.stage} - RCL:${room.controller.level} - ${progressBar(room.controller.progress, room.controller.progressTotal)}`);
         console.log(`GCL:${Game.gcl.level} - ${progressBar(Game.gcl.progress, Game.gcl.progressTotal)}`);
         console.log(`harvesters:${harvestersTotal}, upgraders:${upgradersTotal}, builders:${buildersTotal}, scouts: ${scoutsTotal}, haulers: ${haulersTotal}+${remoteHaulersTotal}, claimers: ${claimersTotal}`);
+
+        //log the distributed sources
+        const counts = {};
+        for (const name in Game.creeps) {
+            const creep = Game.creeps[name];
+            const src = creep.memory.source;
+            const harvester = creep.memory.role === "harvester";
+            if (src)
+                counts[src] = (counts[src] || 0) + 1;
+
+        }
+
+        let logDistr = "sourceBalancing: ";
+        Object.keys(counts)
+            .sort((a, b) => Number(a) - Number(b))
+            .forEach(src => {
+                logDistr += `${src.slice(-5)}:${counts[src]} `;
+            });
+        console.log(logDistr);
+    }
+
+    function handleRoomLogs(room) {
+
+        console.log(`energy: ${room.energyAvailable}(${helper.getEmpireEnergyAvailable()})/${room.energyCapacityAvailable}(${helper.getEmpireEnergyCapacity()})`)
+        console.log(`stage ${room.memory.stage} - RCL:${room.controller.level} - ${progressBar(room.controller.progress, room.controller.progressTotal)}`);
 
         // Logga till memory varje halvtimme (1800 ticks = 30 min)
         if (Game.time % 1200 === 0) {
@@ -128,7 +151,7 @@ module.exports.loop = function () {
                 upgraders: roleCounts.upgrader || 0,
                 builders: roleCounts.builder || 0,
                 haulers: roleCounts.hauler || 0,
-                haulers: roleCounts.remoteHauler || 0,
+                remoteHaulers: roleCounts.remoteHauler || 0,
                 energy: helper.getEmpireEnergyAvailable(),
                 energyCapacity: helper.getEmpireEnergyCapacity(),
             };
@@ -145,10 +168,13 @@ module.exports.loop = function () {
         }
     }
 
+    handleGameLogs();
+
     //loop through all rooms and do the loop
     for (const roomName in Game.rooms) {
         if (Memory.debug) console.log("in roomLoop:", roomName);
         const room = Game.rooms[roomName];
+        console.log("---------------------------------------------------------" + room.name + "------------------------------------------------------------------")
 
         room.memory.stage = setStage(room);
 
@@ -168,7 +194,6 @@ module.exports.loop = function () {
 
         //ONLY CONTROLLED ROOMS
         if (room.controller && room.controller.my) {
-            console.log("---------------------------------------------------------" + Memory.serverName + " " + room.name + " tic:" + Game.time + "------------------------------------------------------------------")
             // Display spawn message
             const spawn = room.find(FIND_MY_SPAWNS)[0];
             if (spawn && spawn.spawning) {
@@ -179,7 +204,7 @@ module.exports.loop = function () {
             }
             handleSpawn(room);
             manageSourceBalancing(room);
-            handleLogs(room);
+            handleRoomLogs(room);
 
         }
 

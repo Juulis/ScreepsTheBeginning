@@ -127,28 +127,9 @@ var roleHarvester = {
         },
 
         manageSourceBalancing: function (room) {
-            //log the distributed sources
             const creepsByRole = _.groupBy(Game.creeps, c => c.memory.role || "no role");
             const harvesters = creepsByRole.harvester || [];
             const upgraders = creepsByRole.upgrader || []; //exempel för senare
-
-            const counts = {};
-            for (const name in Game.creeps) {
-                const creep = Game.creeps[name];
-                const src = creep.memory.source;
-                const harvester = creep.memory.role === "harvester";
-                if (src)
-                    counts[src] = (counts[src] || 0) + 1;
-
-            }
-
-            let logDistr = "sourceBalancing: ";
-            Object.keys(counts)
-                .sort((a, b) => Number(a) - Number(b))
-                .forEach(src => {
-                    logDistr += `${src.slice(-5)}:${counts[src]} `;
-                });
-            console.log(logDistr);
 
             //TODO make theses numbers depend on how many sources in the room
             const sourceKeys = Object.keys(Memory.sources); // alla source IDs som strängar
