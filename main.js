@@ -75,8 +75,11 @@ module.exports.loop = function () {
         const percent = current / max;
         const filled = Math.round(percent * length);
         const empty = length - filled;
+        let bar;
 
-        const bar = '█'.repeat(filled) + '-'.repeat(empty);
+        if (filled > 0) bar = '█'.repeat(filled) + '-'.repeat(empty);
+        else bar = "OBS!! Controller degrading!!";
+
         return `[${bar}] ${current}/${max} (${(percent * 100).toFixed(1)}%)`;
     }
 
@@ -157,7 +160,7 @@ module.exports.loop = function () {
 
         //ONLY CONTROLLED ROOMS
         if (room.controller && room.controller.my) {
-            console.log("---------------------------------------------------------" + Memory.serverName +" "+ room.name + " tic:" + Game.time + "------------------------------------------------------------------")
+            console.log("---------------------------------------------------------" + Memory.serverName + " " + room.name + " tic:" + Game.time + "------------------------------------------------------------------")
             // Display spawn message
             const spawn = room.find(FIND_MY_SPAWNS)[0];
             if (spawn && spawn.spawning) {
