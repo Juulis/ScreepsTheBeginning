@@ -72,13 +72,21 @@ module.exports.loop = function () {
     };
 
     function progressBar(current, max, length = 20) {
+        if (max <= 0) max = 1;
+
         const percent = current / max;
-        const filled = Math.round(percent * length);
-        const empty = length - filled;
+
+        // clamp filled
+        const filled = Math.max(0, Math.min(length, Math.round(percent * length)));
+        const empty = Math.max(0, length - filled);
+
         let bar;
 
-        if (filled > 0 && empty > 0) bar = '█'.repeat(filled) + '-'.repeat(empty);
-        else bar = "OBS!! Controller degrading!!";
+        if (current <= 0) {
+            bar = "OBS!! Controller degrading!!";
+        } else {
+            bar = '█'.repeat(filled) + '-'.repeat(empty);
+        }
 
         return `[${bar}] ${current}/${max} (${(percent * 100).toFixed(1)}%)`;
     }
