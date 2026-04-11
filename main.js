@@ -77,7 +77,7 @@ module.exports.loop = function () {
         const empty = length - filled;
         let bar;
 
-        if (filled > 0) bar = '█'.repeat(filled) + '-'.repeat(empty);
+        if (filled > 0 && empty > 0) bar = '█'.repeat(filled) + '-'.repeat(empty);
         else bar = "OBS!! Controller degrading!!";
 
         return `[${bar}] ${current}/${max} (${(percent * 100).toFixed(1)}%)`;
