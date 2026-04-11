@@ -109,8 +109,10 @@ var roleHarvester = {
                 if(container && creep.room.find(FIND_MY_SPAWNS).length > 0 && !towersExist){
                     //broken container in a remote room? repair
                     if(container.hits < container.hitsMax * 0.7){
+                        creep.say("⛏️|🔧️🧱");
                         creep.repair(container);
                     }
+                    return;
                 }
 
                 creep.say("⛏️|🔋📦")
