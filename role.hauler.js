@@ -13,6 +13,7 @@ var roleHauler = {
             creep.memory.storageHauler = true;
         }
 
+        // === STEG 1: Bestäm om vi ska hämta eller lämna ===
         // if empty
         if (creep.memory.delivering && creep.store[RESOURCE_ENERGY] === 0) {
             creep.memory.delivering = false;
@@ -32,61 +33,59 @@ var roleHauler = {
             const isOwned = roomObj.controller && roomObj.controller.my;
             const hasSpawn = roomObj.find(FIND_MY_SPAWNS).length > 0;
 
-            if (!hasSpawn) {
-                if (!creep.memory.delivering) {
+            if (!creep.memory.delivering) {
 
-                    // gå till rätt rum först
-                    if (creep.room.name !== sourceRoom) {
-                        creep.say("🚚➡️🌍");
-                        creep.moveTo(new RoomPosition(25, 25, sourceRoom), {
-                            visualizePathStyle: {stroke: '#000000'},
-                            reusePath: 50
-                        });
-                        return;
+                // gå till rätt rum först
+                if (creep.room.name !== sourceRoom) {
+                    creep.say("🚚➡️🌍");
+                    creep.moveTo(new RoomPosition(25, 25, sourceRoom), {
+                        visualizePathStyle: {stroke: '#000000'},
+                        reusePath: 50
+                    });
+                    return;
+                }
+
+                // hitta container nära source
+                const source = Game.getObjectById(sourceId);
+                const container = source.pos.findInRange(FIND_STRUCTURES, 1)
+                    .find(s => s.structureType === STRUCTURE_CONTAINER);
+
+                if (!creep.memory.targetContainer) creep.memory.targetContainer = container.id;
+
+                if (container && container.store[RESOURCE_ENERGY] > 0) {
+                    creep.say("🚚🔋");
+                    if (creep.withdraw(container, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
+                        creep.moveTo(container, {visualizePathStyle: {stroke: '#000000'}, reusePath: 50});
                     }
+                    return;
+                }
 
-                    // hitta container nära source
-                    const source = Game.getObjectById(sourceId);
-                    const container = source.pos.findInRange(FIND_STRUCTURES, 1)
-                        .find(s => s.structureType === STRUCTURE_CONTAINER);
-
-
-                    if (container && container.store[RESOURCE_ENERGY] > 0) {
-                        creep.say("🚚🔋");
-                        if (creep.withdraw(container, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
-                            creep.moveTo(container, {visualizePathStyle: {stroke: '#000000'}, reusePath: 50});
-                        }
-                        return;
+                // fallback: dropped energy
+                const dropped = source.pos.findInRange(FIND_DROPPED_RESOURCES, 1)[0];
+                if (dropped) {
+                    creep.say("🚚🧹");
+                    if (creep.pickup(dropped) === ERR_NOT_IN_RANGE) {
+                        creep.moveTo(dropped, {visualizePathStyle: {stroke: '#000000'}, reusePath: 50});
                     }
+                    return;
+                }
 
-                    // fallback: dropped energy
-                    const dropped = source.pos.findInRange(FIND_DROPPED_RESOURCES, 1)[0];
-                    if (dropped) {
-                        creep.say("🚚🧹");
-                        if (creep.pickup(dropped) === ERR_NOT_IN_RANGE) {
-                            creep.moveTo(dropped, {visualizePathStyle: {stroke: '#000000'}, reusePath: 50});
-                        }
-                        return;
-                    }
-
-                    creep.say("⛏️⏳");
-                } else {
-                    // gå hem först
-                    if (creep.room.name !== mainRoom) {
-                        creep.say("🚚🌍➡️🏠");
-                        creep.moveTo(new RoomPosition(25, 25, mainRoom), {
-                            visualizePathStyle: {stroke: '#000000'},
-                            reusePath: 50
-                        });
-                        return;
-                    }
+                creep.say("⛏️⏳");
+            } else {
+                // gå hem först
+                if (creep.room.name !== mainRoom) {
+                    creep.say("🚚🌍➡️🏠");
+                    creep.moveTo(new RoomPosition(25, 25, mainRoom), {
+                        visualizePathStyle: {stroke: '#000000'},
+                        reusePath: 50
+                    });
+                    return;
                 }
             }
         }
 
-        // === STEG 1: Bestäm om vi ska hämta eller lämna ===
+        // Hämta energi
         if (!creep.memory.delivering) {
-            // Hämta energi
 
             // 1. Dropped energy (snabbast)
             let dropped = creep.pos.findClosestByPath(FIND_DROPPED_RESOURCES, {
@@ -111,8 +110,14 @@ var roleHauler = {
             // 2. Container
             let container = creep.pos.findClosestByPath(FIND_STRUCTURES, {
                 filter: s => s.structureType === STRUCTURE_CONTAINER &&
-                    s.store[RESOURCE_ENERGY] >= 50 &&  // undvik tomma
-                    s.room.name === creep.room.name
+                    s.store[RESOURCE_ENERGY] >= 300 &&  // undvik tomma
+                    s.room.name === creep.room.name &&
+                    !_.some(Game.creeps, c =>
+                        (c.memory.role === "hauler" || c.memory.role === "remoteHauler") &&
+                        c.memory.targetContainer &&
+                        c.memory.targetContainer === s.id &&
+                        c.id !== creep.id && s.store[RESOURCE_ENERGY] < 1000
+                    )
             });
             let storage = creep.pos.findClosestByPath(FIND_STRUCTURES, {
                 filter: s => s.structureType === STRUCTURE_STORAGE &&
@@ -133,6 +138,7 @@ var roleHauler = {
                 if (creep.withdraw(container, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
                     creep.moveTo(container, {visualizePathStyle: {stroke: '#ffffff'}, reusePath: 50});
                 }
+                if (creep.memory.role === "hauler") creep.memory.targetContainer = container.id;
                 creep.say("🚚🔋");
                 return;
             }
@@ -147,6 +153,7 @@ var roleHauler = {
             creep.say("🚚⏳💤");
         } else {
             // Full → lämna energi
+            if (creep.memory.role === "hauler") creep.memory.targetContainer = "";
             if (Memory.debug) console.log(creep.name + "full, dumping");
             let target;
             let sourceInMainRoom = false;

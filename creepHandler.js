@@ -89,7 +89,7 @@ var creepHandler = {
             max_harvesters = 0; // handle this with sourcebalancing directly instead
             max_builders = 4;
             max_upgraders = helper.getEmpireEnergyAvailable() > 100000 ? 10 : 5;
-            max_haulers = 2;
+            max_haulers = 3;
             harvesterLevel = 3; // level 4 has its own logic for now
             builderLevel = 3;
             upgraderLevel = helper.getEmpireEnergyAvailable() > 100000 ? 4 : 3;
@@ -314,12 +314,15 @@ var creepHandler = {
 
                 const sourceObj = Game.getObjectById(sourceId)
                 let hasContainer;
-                if (sourceObj)
+                let maxHaulers;
+                if (sourceObj) {
                     hasContainer = _.some(sourceObj.pos.findInRange(FIND_STRUCTURES, 1),
                         s => s.structureType === STRUCTURE_CONTAINER
                     );
+                    maxHaulers = sourceObj.room.find(FIND_MY_SPAWNS).length > 0 ? 1 : 2;
+                }
 
-                if (haulersForSource.length < 2 && harvestersForSource.length > 0 && hasContainer) {
+                if (hasContainer && haulersForSource.length < maxHaulers && harvestersForSource.length > 0) {
                     console.log("spawning Hauler lvl4 for source:", sourceId);
                     spawnRemoteHauler(sourceId);
                     break;
