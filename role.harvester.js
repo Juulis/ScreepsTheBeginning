@@ -127,7 +127,8 @@ var roleHarvester = {
         },
 
         manageSourceBalancing: function (room) {
-            const creepsByRole = _.groupBy(Game.creeps, c => c.memory.role || "no role");
+            const creepsByRole = _.groupBy(_.filter(Game.creeps, c => c.memory.mainRoom === room.name),c => c.memory.role || "no role");
+
             const harvesters = creepsByRole.harvester || [];
             const upgraders = creepsByRole.upgrader || []; //exempel för senare
 
