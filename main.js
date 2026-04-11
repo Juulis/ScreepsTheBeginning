@@ -61,7 +61,7 @@ module.exports.loop = function () {
     const harvestersTotal = roleCounts.harvester || 0;
 
     const setStage = (room) => {
-        if (Memory.debug) console.log(`setting stage - energy:${room.energyAvailable} - sources: ${Object.keys(Memory.sources).length} - harvesters: ${harvestersTotal}`);
+        if (Memory.debug) console.log(`setting stage - energy:${room.energyAvailable} / ${room.energyCapacityAvailable} - sources: ${Object.keys(Memory.sources).length} - harvesters: ${harvestersTotal}`);
         let stage = 1;
         if (room.energyCapacityAvailable > 500) stage = 2;
         if (room.energyCapacityAvailable > 700 && Memory.sources && Object.keys(Memory.sources).length > 3) stage = 3;
@@ -157,23 +157,24 @@ module.exports.loop = function () {
 
         //ONLY CONTROLLED ROOMS
         if (room.controller && room.controller.my) {
+            console.log("---------------------------------------------------------" + Memory.serverName +" "+ room.name + " tic:" + Game.time + "------------------------------------------------------------------")
+            // Display spawn message
+            const spawn = room.find(FIND_MY_SPAWNS)[0];
+            if (spawn && spawn.spawning) {
+                const name = spawn.spawning.name;
+                const memory = Memory.creeps[name];
+                room.visual.text("👶 Spawning " + memory.role, spawn.pos.x, spawn.pos.y - 1, {font: 0.5});
+
+            }
+            handleSpawn(room);
+            manageSourceBalancing(room);
+            handleLogs(room);
+
         }
 
         //ONLY MAINROOM
         if (Memory.mainRoom === roomName) {
 
-            // Display spawn message
-            if (Game.spawns["Spawn1"].spawning) {
-                const spawn = Game.spawns["Spawn1"];
-                const name = spawn.spawning.name;
-                const memory = Memory.creeps[name];
-                room.visual.text("👶 Spawning " + memory.role, spawn.pos.x, spawn.pos.y - 1, {font: 0.5});
-            }
-
-            handleLogs(room);
-            handleSpawn(room);
-            manageSourceBalancing(room);
-            console.log("---------------------------------------------------------" + Memory.serverName + " tic:" + Game.time + "------------------------------------------------------------------")
         }
     }
 }

@@ -73,7 +73,7 @@ var roleHauler = {
                 creep.say("⛏️⏳");
             } else {
                 // gå hem först
-                if (creep.room.name !== mainRoom) {
+                if (creep.room.name !== mainRoom && !hasSpawn) {
                     creep.say("🚚🌍➡️🏠");
                     creep.moveTo(new RoomPosition(25, 25, mainRoom), {
                         visualizePathStyle: {stroke: '#000000'},
@@ -157,10 +157,11 @@ var roleHauler = {
             if (Memory.debug) console.log(creep.name + "full, dumping");
             let target;
             let sourceInMainRoom = false;
+            const hasSpawn = creep.room.find(FIND_MY_SPAWNS).length > 0;
             const source = Game.getObjectById(creep.memory.source);
             if (source && source.room.name === Memory.mainRoom) sourceInMainRoom = true;
 
-            if (creep.memory.role === "remoteHauler" && !sourceInMainRoom) {
+            if (creep.memory.role === "remoteHauler" && !sourceInMainRoom && !hasSpawn) {
                 //för remotehaulers, prioritera bara närmsta deliveryplace
                 target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
                     filter: (s) => {
