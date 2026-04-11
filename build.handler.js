@@ -265,7 +265,7 @@ var builder = {
             buildStorage(room, spawnPos);
             buildTower(room, spawnPos);
             buildContainer(room);
-        } else if (room.controller.my) {
+        } else if (room.controller && room.controller.my) {
             if (room.find(FIND_CONSTRUCTION_SITES, {filter: s => s.structureType === STRUCTURE_SPAWN}).length < 1) {
                 buildSpawn(room);
             }
