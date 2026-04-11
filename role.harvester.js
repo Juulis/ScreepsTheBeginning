@@ -98,9 +98,21 @@ var roleHarvester = {
                     creep.say("⛏️| 🔨🧱");
                     return;
                 }
+
+
                 if (container) {
                     target = container;
                 }
+
+                const towersExist = creep.room.find(FIND_STRUCTURES, {filter: structure => structure.structureType === STRUCTURE_TOWER});
+                //in a controlled room
+                if(container && creep.room.find(FIND_MY_SPAWNS).length > 0 && !towersExist){
+                    //broken container in a remote room? repair
+                    if(container.hits < container.hitsMax * 0.7){
+                        creep.repair(container);
+                    }
+                }
+
                 creep.say("⛏️|🔋📦")
                 const transferred = creep.transfer(target, RESOURCE_ENERGY);
                 if (transferred === ERR_NOT_IN_RANGE) {
