@@ -202,7 +202,7 @@ module.exports.loop = function () {
                 room.visual.text("👶 Spawning " + memory.role, spawn.pos.x, spawn.pos.y - 1, {font: 0.5});
 
             }
-            handleSpawn(room);
+            if(spawn) handleSpawn(room);
             manageSourceBalancing(room);
             handleRoomLogs(room);
 
