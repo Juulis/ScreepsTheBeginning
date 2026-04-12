@@ -95,11 +95,11 @@ var roleHarvester = {
                 target = targetTowers || targetSpawn || targetExtension || targetContainer || targetStorage;
             }
 
-            if (constructionSite && (helper.getEmpireEnergyAvailable() > 1000 || !isMainRoom)) {
+            if (!container && constructionSite && (helper.getEmpireEnergyAvailable() > 1000 || !isMainRoom)) {
+                creep.say("⛏️| 🔨🧱");
                 if(creep.build(constructionSite) === ERR_NOT_IN_RANGE) {
                     creep.moveTo(constructionSite, {visualizePathStyle: {stroke: '#ffaa00'}, reusePath: 50});
                 }
-                creep.say("⛏️| 🔨🧱");
                 return;
             }
 
