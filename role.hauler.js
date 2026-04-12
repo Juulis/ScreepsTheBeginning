@@ -30,8 +30,8 @@ var roleHauler = {
             var sourceRoom = sourceData.roomName;
             var mainRoom = creep.memory.mainRoom;
             const roomObj = Game.rooms[sourceRoom];
-            const isOwned = roomObj.controller && roomObj.controller.my;
-            const hasSpawn = roomObj.find(FIND_MY_SPAWNS).length > 0;
+            const isOwned = roomObj && roomObj.controller && roomObj.controller.my;
+            const hasSpawn = roomObj && roomObj.find(FIND_MY_SPAWNS).length > 0;
 
             if (!creep.memory.delivering) {
 

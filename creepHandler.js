@@ -301,6 +301,20 @@ var creepHandler = {
             );
         }
 
+        function spawnScout() {
+            console.log("creating scout");
+            room.find(FIND_MY_SPAWNS)[0].spawnCreep(
+                [MOVE],
+                'Scout-' + Game.time,
+                {
+                    memory: {
+                        role: 'scout',
+                        mainRoom: room.name,
+                    }
+                }
+            );
+        }
+
 
         function spawnHarvesterStage4() {
             if (Memory.debug) console.log("in stage 3 balancing");
@@ -347,19 +361,6 @@ var creepHandler = {
             }
         }
 
-        // // convert to a hauler if no hauler and we got a container and 5+ harvesters
-        // if (haulersTotal < 1 && room.find(FIND_STRUCTURES, {filter: s => s.structureType === STRUCTURE_CONTAINER}).length > 0 && harvestersTotal > 5) {
-        //     if (Memory.debug) console.log(`spawning hauler ${room.find(FIND_MY_CREEPS).filter(c => c.memory.role === "harvester")}`)
-        //     room.find(FIND_MY_CREEPS).filter(c => c.memory.role === "harvester")[0].memory.role = "hauler";
-        // }
-
-        // convert to a scout if many harvesters and time to expand
-        if (harvestersTotal > 2 && scoutsTotal === 0) {
-            if (!Memory.visited || !(Memory.visited.length >= Memory.otherRooms.length)) {
-                room.find(FIND_MY_CREEPS).filter(c => c.memory.role === "harvester")[0].memory.role = "scout";
-            }
-        }
-
         if (Memory.debug) console.log(`before spawning field, harvestersTotal:${harvestersTotal}, max_harvesters:${max_harvesters}`);
         //spawn creeps depending on available roles and capacity
         //first check if there is no upgraders but bunch of harvesters
@@ -384,6 +385,11 @@ var creepHandler = {
         } else if (buildersTotal < max_builders && constructionSitesExist) {
             if (Memory.debug) console.log(`creating builder`);
             spawnBuilder();
+        } else if (room.controller && room.controller.my && scoutsTotal === 0) {
+            if (Memory.debug) console.log(`creating scout`);
+            if (Memory.otherRooms.some(x => !Memory.visited.includes(x))) {
+                spawnScout();
+            }
         }
 
         if (room.memory.stage >= 4) {
