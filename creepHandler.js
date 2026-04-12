@@ -289,7 +289,7 @@ var creepHandler = {
 
         function spawnRemoteHauler(sourceId) {
             room.find(FIND_MY_SPAWNS)[0].spawnCreep(
-                [CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE],
+                [CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE],
                 'Hauler(4)-' + sourceId + '-' + Game.time,
                 {
                     memory: {
