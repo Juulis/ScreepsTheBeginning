@@ -32,7 +32,7 @@ module.exports.loop = function () {
 
         for (const dir in exits) {
             const adjacentRoom = exits[dir];
-            if (!Memory.otherRooms.includes(adjacentRoom)) {
+            if (!Memory.otherRooms.includes(adjacentRoom && Memory.mainRoom !== adjacentRoom)) {
                 Memory.otherRooms.push(adjacentRoom);
             }
         }
