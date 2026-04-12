@@ -52,10 +52,10 @@ var roleHarvester = {
                 let constructionSite;
                 let container;
                 if (source) {
-                    container = _.find(source.pos.findInRange(FIND_STRUCTURES, 1),
+                    container = _.find(source.pos.findInRange(FIND_STRUCTURES, 2),
                         s => s.structureType === STRUCTURE_CONTAINER && s.store.getFreeCapacity(RESOURCE_ENERGY) > 0
                     );
-                    constructionSite = _.find(source.pos.findInRange(FIND_CONSTRUCTION_SITES, 1),
+                    constructionSite = _.find(source.pos.findInRange(FIND_CONSTRUCTION_SITES, 2),
                         s => s.structureType === STRUCTURE_CONTAINER
                     );
                 }
@@ -105,7 +105,6 @@ var roleHarvester = {
                 }
 
                 const towersExist = creep.room.find(FIND_STRUCTURES, {filter: structure => structure.structureType === STRUCTURE_TOWER});
-                //in a controlled room
                 if(container && creep.room.find(FIND_MY_SPAWNS).length === 0 && !towersExist){
                     //broken container in a remote room? repair
                     if(container.hits < container.hitsMax * 0.7){
