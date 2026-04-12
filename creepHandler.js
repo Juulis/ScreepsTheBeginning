@@ -312,12 +312,12 @@ var creepHandler = {
                 const harvestersForSource = _.filter(creepsGlobal, c =>
                     c.memory.role === 'harvester' &&
                     c.memory.source === sourceId &&
-                    c.ticksToLive > 200
+                    c.ticksToLive > 50
                 );
                 const haulersForSource = _.filter(creepsGlobal, c =>
                     c.memory.role === 'remoteHauler' &&
                     c.memory.source === sourceId &&
-                    c.ticksToLive > 200
+                    c.ticksToLive > 50
                 );
 
                 if (Memory.debug) console.log(`source ${sourceId} har ${harvestersForSource.length} harvesters`);
