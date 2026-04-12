@@ -41,7 +41,7 @@ var roleHarvester = {
                         const container = _.find(source.pos.findInRange(FIND_STRUCTURES, 1),
                             s => s.structureType === STRUCTURE_CONTAINER
                         );
-                        if(Memory.debug) console.log(creep.name + ": container exist?, moveTo. - "+container);
+                        if (Memory.debug) console.log(creep.name + ": container exist?, moveTo. - " + container ? "true" : "false");
                         creep.moveTo(container ? container : pos, {visualizePathStyle: {stroke: '#ffaa00'}, reusePath: 50});
                     }
                 } else {
@@ -106,9 +106,9 @@ var roleHarvester = {
                 }
 
                 const towersExist = creep.room.find(FIND_STRUCTURES, {filter: structure => structure.structureType === STRUCTURE_TOWER});
-                if(container && creep.room.find(FIND_MY_SPAWNS).length === 0 && !towersExist){
+                if (container && creep.room.find(FIND_MY_SPAWNS).length === 0 && !towersExist) {
                     //broken container in a remote room? repair
-                    if(container.hits < container.hitsMax * 0.7){
+                    if (container.hits < container.hitsMax * 0.7) {
                         creep.say("⛏️|🔧️🧱");
                         creep.repair(container);
                     }
@@ -127,7 +127,7 @@ var roleHarvester = {
         },
 
         manageSourceBalancing: function (room) {
-            const creepsByRole = _.groupBy(_.filter(Game.creeps, c => c.memory.mainRoom === room.name),c => c.memory.role || "no role");
+            const creepsByRole = _.groupBy(_.filter(Game.creeps, c => c.memory.mainRoom === room.name), c => c.memory.role || "no role");
 
             const harvesters = creepsByRole.harvester || [];
             const upgraders = creepsByRole.upgrader || []; //exempel för senare
