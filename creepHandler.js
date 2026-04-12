@@ -53,6 +53,7 @@ var creepHandler = {
         let builderLevel = 1;
         let upgraderLevel = 1;
         let haulerLevel = 1;
+        let claimerLevel = room.energyCapacityAvailable < 1200 ? 1 : 2;
 
 
         const roleCounts = _.countBy(Game.creeps, creep => creep.memory.role || "no role");
@@ -253,13 +254,24 @@ var creepHandler = {
         }
 
         function spawnClaimer() {
-            console.log("creating claimer");
-            room.find(FIND_MY_SPAWNS)[0].spawnCreep([CLAIM, MOVE], 'Claimer' + Game.time, {
-                memory: {
-                    role: 'claimer',
-                    mainRoom: room.roomName,
-                }
-            });
+            if (claimerLevel === 1) {
+                console.log("creating claimer lvl1");
+                room.find(FIND_MY_SPAWNS)[0].spawnCreep([CLAIM, MOVE, MOVE], 'Claimer(1)' + Game.time, {
+                    memory: {
+                        role: 'claimer',
+                        mainRoom: room.roomName,
+                    }
+                });
+            }
+            if (claimerLevel === 2) {
+                console.log("creating claimer lvl2");
+                room.find(FIND_MY_SPAWNS)[0].spawnCreep([CLAIM, CLAIM, MOVE, MOVE, MOVE, MOVE], 'Claimer(2)' + Game.time, {
+                    memory: {
+                        role: 'claimer',
+                        mainRoom: room.roomName,
+                    }
+                });
+            }
         }
 
         function spawnLevel4Harvester(sourceId) {
