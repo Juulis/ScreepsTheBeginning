@@ -9,6 +9,9 @@ var builder = {
         const totalExtensions = room.find(FIND_STRUCTURES, {filter: structure => structure.structureType === STRUCTURE_EXTENSION}).length;
         const totalExtensionConstructionsites = room.find(FIND_CONSTRUCTION_SITES, {filter: s => s.structureType === STRUCTURE_EXTENSION}).length;
 
+        const buildingStorage = room.find(FIND_CONSTRUCTION_SITES, {filter: s => s.structureType === STRUCTURE_STORAGE}).length > 0;
+        if(buildingStorage) return;
+
         const buildExtensions = (room, spawnPos) => {
             if (!totalExtensions && room.controller.level > 1) {
                 console.log("building first extensions at ", spawnPos);
@@ -261,8 +264,8 @@ var builder = {
         // build the stuff
         if (room.find(FIND_MY_SPAWNS).length > 0) {
             const spawnPos = room.find(FIND_MY_SPAWNS)[0].pos;
-            buildExtensions(room, spawnPos);
             buildStorage(room, spawnPos);
+            buildExtensions(room, spawnPos);
             buildTower(room, spawnPos);
             buildContainer(room);
         } else if (room.controller && room.controller.my) {
