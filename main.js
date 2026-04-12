@@ -198,7 +198,7 @@ module.exports.loop = function () {
 
         //ONLY CONTROLLED ROOMS
         if (room.controller && room.controller.my) {
-            if (!room.memory.exitsHandled) {
+            if (Memory.mainRoom !== room.name && !room.memory.exitsHandled) {
                 room.memory.exitsHandled = true;
                 setExits(room);
             }
