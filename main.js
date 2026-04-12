@@ -27,6 +27,18 @@ module.exports.loop = function () {
 
     console.log(`cpu: ${Game.cpu.getUsed().toFixed(2)}/${Game.cpu.limit} | Bucket: ${Game.cpu.bucket}`);
 
+    function setExits(room) {
+        const exits = Game.map.describeExits(room);
+
+        for (const dir in exits) {
+            const adjacentRoom = exits[dir];
+            if (!Memory.otherRooms.includes(adjacentRoom)) {
+                Memory.otherRooms.push(adjacentRoom);
+            }
+        }
+        console.log("Sparade angränsande rum:", Memory.otherRooms);
+    }
+
     // setup sources and mainRoom in memory om inte finns
     if (!Memory.sources) {
         Memory.sources = {};
@@ -44,15 +56,7 @@ module.exports.loop = function () {
     if (!Memory.mainRoom) Memory.mainRoom = Game.spawns["Spawn1"].room.name;
     if (!Memory.otherRooms) {
         Memory.otherRooms = [];
-        const exits = Game.map.describeExits(Memory.mainRoom);
-
-        for (const dir in exits) {
-            const adjacentRoom = exits[dir];
-            if (!Memory.otherRooms.includes(adjacentRoom)) {
-                Memory.otherRooms.push(adjacentRoom);
-            }
-        }
-        console.log("Sparade angränsande rum:", Memory.otherRooms);
+        setExits(Memory.mainRoom);
     }
 
     //Set what stage the room is in, deciding level of creeps, what buildings to build and total creeps for each role.
@@ -194,6 +198,10 @@ module.exports.loop = function () {
 
         //ONLY CONTROLLED ROOMS
         if (room.controller && room.controller.my) {
+            if (!room.memory.exitsHandled) {
+                room.memory.exitsHandled = true;
+                setExits(room);
+            }
             // Display spawn message
             const spawn = room.find(FIND_MY_SPAWNS)[0];
             if (spawn && spawn.spawning) {
@@ -202,7 +210,7 @@ module.exports.loop = function () {
                 room.visual.text("👶 Spawning " + memory.role, spawn.pos.x, spawn.pos.y - 1, {font: 0.5});
 
             }
-            if(spawn) handleSpawn(room);
+            if (spawn) handleSpawn(room);
             manageSourceBalancing(room);
             handleRoomLogs(room);
 
