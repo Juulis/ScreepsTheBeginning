@@ -41,7 +41,7 @@ var creepHandler = {
     handleSpawn: function (room) {
         const myRoomsTotal = Object.values(Game.rooms).filter(room => room.controller && room.controller.my).length;
         const roomsWithSources = new Set(Object.values(Memory.sources).map(s => s.roomName)).size;
-        const mainRoom = room.name === Memory.mainRoom;
+        const isMainRoom = room.name === Memory.mainRoom;
         let max_harvesters = Object.keys(Memory.sources).length * 2;
         let max_builders = 1;
         let max_upgraders = 1;
@@ -72,7 +72,7 @@ var creepHandler = {
             max_harvesters = Object.keys(Memory.sources).length * 2;
             max_builders = 2;
             max_upgraders = 1;
-            max_haulers = 2;
+            max_haulers = isMainRoom ? 2 : 1;
             harvesterLevel = 2;
             builderLevel = 2;
             upgraderLevel = 2;
@@ -82,7 +82,7 @@ var creepHandler = {
             max_harvesters = Object.keys(Memory.sources).length * 2;
             max_builders = 4;
             max_upgraders = helper.getEmpireEnergyAvailable() > 5000 ? 5 : 2;
-            max_haulers = 4;
+            max_haulers = isMainRoom ? 4 : 1;
             harvesterLevel = 3;
             builderLevel = 3;
             upgraderLevel = 3;
@@ -369,7 +369,7 @@ var creepHandler = {
         } else if (buildersTotal < max_builders && harvestersTotal > 5 && constructionSitesExist) {
             if (Memory.debug) console.log(`creating builder - balance`);
             spawnBuilder();
-        } else if (mainRoom && harvestersTotal < max_harvesters) { // only spawn harvesters in mainRoom, or stage < 4 rooms will spawn bunch of harvesters that runs to source[1] in mainRoom
+        } else if (isMainRoom && harvestersTotal < max_harvesters) { // only spawn harvesters in isMainRoom, or stage < 4 rooms will spawn bunch of harvesters that runs to source[1] in isMainRoom
             spawnHarvester();
             if (Memory.debug) console.log(`creating harvester`);
         } else if (haulersTotal < max_haulers && (containersTotal > 0 || storageExist)) {
