@@ -41,6 +41,7 @@ var roleHarvester = {
                         const container = _.find(source.pos.findInRange(FIND_STRUCTURES, 1),
                             s => s.structureType === STRUCTURE_CONTAINER
                         );
+                        if(Memory.debug) console.log(creep.name + ": container exist, moveTo");
                         creep.moveTo(container ? container : pos, {visualizePathStyle: {stroke: '#ffaa00'}, reusePath: 50});
                     }
                 } else {
