@@ -58,7 +58,7 @@ var roleHarvester = {
                 container = _.find(source.pos.findInRange(FIND_STRUCTURES, 2),
                     s => s.structureType === STRUCTURE_CONTAINER && s.store.getFreeCapacity(RESOURCE_ENERGY) > 0
                 );
-                constructionSite = creep.room.find(source.pos.find(FIND_CONSTRUCTION_SITES));
+                constructionSite = creep.room.find(FIND_CONSTRUCTION_SITES);
             }
 
             if (!container && !constructionSite && !isMainRoom) {
