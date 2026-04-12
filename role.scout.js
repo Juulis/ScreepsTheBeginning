@@ -69,7 +69,8 @@ var roleScout = {
                     if (!Memory.sources[source.id]) {
                         Memory.sources[source.id] = {
                             roomName: source.room.name,
-                            pos: {x: source.pos.x, y: source.pos.y}
+                            x: source.pos.x,
+                            y: source.pos.y
                         };
                         // Spara även per rum
                         if (!Memory.rooms[creep.room.name]) Memory.rooms[creep.room.name] = {};
