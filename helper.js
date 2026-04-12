@@ -5,7 +5,7 @@ var helper = {
         let targetsInclSpawn = creep.pos.findClosestByPath(FIND_STRUCTURES, {
             filter: (s) =>
                 (s.structureType === STRUCTURE_STORAGE || s.structureType === STRUCTURE_EXTENSION ||
-                    s.structureType === STRUCTURE_SPAWN) &&
+                    s.structureType === STRUCTURE_SPAWN || s.structureType === STRUCTURE_CONTAINER) &&
                 s.store.getUsedCapacity(RESOURCE_ENERGY) > 0
         });
         let targetsExcludingSpawn = creep.pos.findClosestByPath(FIND_STRUCTURES, {
@@ -16,11 +16,9 @@ var helper = {
         });
         let targetContainerOrStorage = creep.pos.findClosestByPath(FIND_STRUCTURES, {
             filter: (s) => (s.structureType === STRUCTURE_CONTAINER || s.structureType === STRUCTURE_STORAGE) && s.store.getUsedCapacity(RESOURCE_ENERGY) > 0});
-
-        if (targetContainerOrStorage)
-            return targetContainerOrStorage;
-        if (targetsExcludingSpawn)
-            return targetsExcludingSpawn;
+        if(creep.room.name !== Memory.mainRoom) return targetsInclSpawn;
+        if (targetContainerOrStorage) return targetContainerOrStorage;
+        if (targetsExcludingSpawn) return targetsExcludingSpawn;
 
         const target = creep.room.energyCapacityAvailable < 350 ? targetsInclSpawn : targetsExcludingSpawn;
         if (!target) creep.say("no E!");
