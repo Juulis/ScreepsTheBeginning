@@ -37,6 +37,7 @@ module.exports.loop = function () {
             }
         }
         console.log("Sparade angränsande rum:", Memory.otherRooms);
+        Memory.exitsHandled = true;
     }
 
     // setup sources and mainRoom in memory om inte finns
