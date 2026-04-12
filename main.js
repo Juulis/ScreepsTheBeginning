@@ -25,7 +25,7 @@ module.exports.loop = function () {
         }
     }
 
-    console.log(`cpu: ${Game.cpu.getUsed().toFixed(2)}/${Game.cpu.limit} | Bucket: ${Game.cpu.bucket}`);
+    console.log(`cpu: ${Game.cpu.getUsed().toFixed(2)*10}/${Game.cpu.limit} | Bucket: ${Game.cpu.bucket}`);
 
     function setExits(room) {
         const exits = Game.map.describeExits(room);
