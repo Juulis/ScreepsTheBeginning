@@ -105,7 +105,7 @@ var roleHarvester = {
                     target = container;
                 }
 
-                const towersExist = creep.room.find(FIND_STRUCTURES, {filter: structure => structure.structureType === STRUCTURE_TOWER});
+                const towersExist = creep.room.find(FIND_STRUCTURES, {filter: structure => structure.structureType === STRUCTURE_TOWER}).length > 0;
                 if (container && !towersExist) {
                     //broken container in a remote room? repair
                     if (container.hits < container.hitsMax * 0.7) {

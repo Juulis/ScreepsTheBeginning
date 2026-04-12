@@ -73,12 +73,31 @@ var roleHauler = {
                 creep.say("⛏️⏳");
             } else {
                 // gå hem först
-                if (creep.room.name !== mainRoom && !hasSpawn) {
-                    creep.say("🚚🌍➡️🏠");
-                    creep.moveTo(new RoomPosition(25, 25, mainRoom), {
+                const myRooms = Object.values(Game.rooms)
+                    .filter(r => r.controller && r.controller.my);
+
+                const targetRoom = _.min(myRooms, r =>
+                    creep.pos.getRangeTo(new RoomPosition(25, 25, r.name))
+                );
+
+                const needsEnergy = targetRoom.find(FIND_STRUCTURES, {
+                    filter: s =>
+                        (s.structureType === STRUCTURE_CONTAINER ||
+                            s.structureType === STRUCTURE_STORAGE ||
+                            s.structureType === STRUCTURE_SPAWN ||
+                            s.structureType === STRUCTURE_EXTENSION ||
+                            s.structureType === STRUCTURE_TOWER) &&
+                        s.store.getFreeCapacity(RESOURCE_ENERGY) > 0
+                }).length > 0;
+
+                if (creep.room.name !== targetRoom.name && needsEnergy) {
+                    creep.say("🚚🌍➡️📦");
+
+                    creep.moveTo(new RoomPosition(25, 25, targetRoom.name), {
                         visualizePathStyle: {stroke: '#000000'},
                         reusePath: 50
                     });
+
                     return;
                 }
             }
@@ -126,7 +145,7 @@ var roleHauler = {
             });
 
             // STORAGE HAULER
-            if (creep.memory.storageHauler && storage && storage.store[RESOURCE_ENERGY] > 5000) {
+            if (creep.memory.storageHauler && storage) {
                 creep.say("🛻🔋🏪");
                 if (creep.withdraw(storage, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
                     creep.moveTo(storage, {visualizePathStyle: {stroke: '#ffffff'}, reusePath: 50});
@@ -142,13 +161,13 @@ var roleHauler = {
                 creep.say("🚚🔋");
                 return;
             }
-            if (storage && storage.store[RESOURCE_ENERGY] > 1000) {
-                if (creep.withdraw(storage, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
-                    creep.moveTo(storage, {visualizePathStyle: {stroke: '#ffffff'}, reusePath: 50});
-                }
-                creep.say("🚚 🔋→🔋");
-                return;
-            }
+            // if (storage && storage.store[RESOURCE_ENERGY] > 1000) {
+            //     if (creep.withdraw(storage, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
+            //         creep.moveTo(storage, {visualizePathStyle: {stroke: '#ffffff'}, reusePath: 50});
+            //     }
+            //     creep.say("🚚 🔋→🔋");
+            //     return;
+            // }
 
             creep.say("🚚⏳💤");
         } else {
@@ -192,7 +211,7 @@ var roleHauler = {
             } else {
                 // Inget som behöver energi → gå till storage som backup eller stå still
                 let storage = creep.room.storage;
-                if (storage && storage.store.getFreeCapacity(RESOURCE_ENERGY) > 0) {
+                if (!creep.memory.storageHauler && storage && storage.store.getFreeCapacity(RESOURCE_ENERGY) > 0) {
                     creep.say("🚚🔋📦");
                     if (creep.transfer(storage, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
                         creep.moveTo(storage, {visualizePathStyle: {stroke: '#ffffff'}, reusePath: 50});

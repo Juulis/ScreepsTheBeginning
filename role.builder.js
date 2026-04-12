@@ -47,7 +47,7 @@ var roleBuilder = {
             creep.memory.building = true;
         }
 
-        const towersExist = creep.room.find(FIND_STRUCTURES, {filter: structure => structure.structureType === STRUCTURE_TOWER});
+        const towersExist = creep.room.find(FIND_STRUCTURES, {filter: structure => structure.structureType === STRUCTURE_TOWER}).length > 0;
 
         if (creep.memory.building) {
             if (repairSite && !towersExist) {
