@@ -29,15 +29,16 @@ module.exports.loop = function () {
 
     function setExits(room) {
         const exits = Game.map.describeExits(room);
+        if(Memory.debug) console.log(`--- controlled room ${room.name} exits ${exits}---`)
 
         for (const dir in exits) {
+            if(Memory.debug) console.log(`--- controlled room ${room.name} exit ${dir}---`)
             const adjacentRoom = exits[dir];
-            if (!Memory.otherRooms.includes(adjacentRoom && Memory.mainRoom !== adjacentRoom)) {
+            if (!Memory.otherRooms.includes(adjacentRoom) && Memory.mainRoom !== adjacentRoom) {
                 Memory.otherRooms.push(adjacentRoom);
             }
         }
         console.log("Sparade angränsande rum:", Memory.otherRooms);
-        Memory.exitsHandled = true;
     }
 
     // setup sources and mainRoom in memory om inte finns
@@ -199,9 +200,10 @@ module.exports.loop = function () {
 
         //ONLY CONTROLLED ROOMS
         if (room.controller && room.controller.my) {
+            if(Memory.debug) console.log("--- controlled rooms ---")
             if (Memory.mainRoom !== room.name && !room.memory.exitsHandled) {
+                setExits(room.name);
                 room.memory.exitsHandled = true;
-                setExits(room);
             }
             // Display spawn message
             const spawn = room.find(FIND_MY_SPAWNS)[0];
