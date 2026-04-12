@@ -52,15 +52,16 @@ var roleHarvester = {
             const source = Game.getObjectById(sourceId);
             let constructionSite;
             let container;
+            const isMainRoom = creep.room.name === Memory.mainRoom;
+
             if (source) {
                 container = _.find(source.pos.findInRange(FIND_STRUCTURES, 2),
                     s => s.structureType === STRUCTURE_CONTAINER && s.store.getFreeCapacity(RESOURCE_ENERGY) > 0
                 );
-                constructionSite = _.find(source.pos.findInRange(FIND_CONSTRUCTION_SITES, 2),
-                    s => s.structureType === STRUCTURE_CONTAINER
-                );
+                constructionSite = creep.room.find(source.pos.find(FIND_CONSTRUCTION_SITES));
             }
-            if (!container && !constructionSite && creep.room.name !== Memory.mainRoom) {
+
+            if (!container && !constructionSite && !isMainRoom) {
                 const mainRoomPos = new RoomPosition(25, 25, Memory.mainRoom); // mitt i rummet som mål, kvittar för den kommer inte in här när jag väl kommit in i rummet
                 creep.moveTo(mainRoomPos, {visualizePathStyle: {stroke: '#00ff00'}, reusePath: 50});
                 creep.say("⛏️|🔋📦→🏠")
