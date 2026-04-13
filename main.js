@@ -27,10 +27,10 @@ module.exports.loop = function () {
 
     function setExits(room) {
         const exits = Game.map.describeExits(room);
-        if(Memory.debug) console.log(`--- controlled room ${room.name} exits ${exits}---`)
+        if (Memory.debug) console.log(`--- controlled room ${room.name} exits ${exits}---`)
 
         for (const dir in exits) {
-            if(Memory.debug) console.log(`--- controlled room ${room.name} exit ${dir}---`)
+            if (Memory.debug) console.log(`--- controlled room ${room.name} exit ${dir}---`)
             const adjacentRoom = exits[dir];
             if (!Memory.otherRooms.includes(adjacentRoom) && Memory.mainRoom !== adjacentRoom) {
                 Memory.otherRooms.push(adjacentRoom);
@@ -174,6 +174,12 @@ module.exports.loop = function () {
 
     handleGameLogs();
 
+    Memory.hostilesNearby = 0;
+    for (const roomName in Game.rooms) {
+        const room = Game.rooms[roomName];
+        Memory.hostilesNearby = room.find(FIND_HOSTILE_STRUCTURES).length + room.find(FIND_HOSTILE_CREEPS).length;
+    }
+
     //loop through all rooms and do the loop
     for (const roomName in Game.rooms) {
         if (Memory.debug) console.log("in roomLoop:", roomName);
@@ -198,7 +204,7 @@ module.exports.loop = function () {
 
         //ONLY CONTROLLED ROOMS
         if (room.controller && room.controller.my) {
-            if(Memory.debug) console.log("--- controlled rooms ---")
+            if (Memory.debug) console.log("--- controlled rooms ---")
             if (Memory.mainRoom !== room.name && !room.memory.exitsHandled) {
                 setExits(room.name);
                 room.memory.exitsHandled = true;

@@ -63,6 +63,7 @@ var creepHandler = {
         const haulersTotal = roleCounts.hauler || 0;
         const remoteHaulersTotal = roleCounts.remoteHauler || 0;
         const claimersTotal = roleCounts.claimer || 0;
+        const warriorsTotal = roleCounts.warrior || 0;
         const containersTotal = room.find(FIND_STRUCTURES, {filter: s => s.structureType === STRUCTURE_CONTAINER}).length;
         const storageExist = room.find(FIND_STRUCTURES, {filter: s => s.structureType === STRUCTURE_STORAGE}).length > 0;
         const constructionSitesExist = room.find(FIND_CONSTRUCTION_SITES).length > 0;
@@ -91,7 +92,7 @@ var creepHandler = {
             if (Memory.debug) console.log("in stage 4+ creepbalancing");
             max_harvesters = 0; // handle this with sourcebalancing directly instead
             max_builders = 4;
-            max_upgraders = helper.getEmpireEnergyAvailable() > 100000 ? 10 : 5;
+            max_upgraders = helper.getEmpireEnergyAvailable() > 100000 ? 7 : 5;
             max_haulers = 2;
             harvesterLevel = 3; // level 4 has its own logic for now
             builderLevel = 3;
@@ -315,6 +316,20 @@ var creepHandler = {
             );
         }
 
+        function spawnWarrior() {
+            console.log("creating warrior HUAHH");
+            room.find(FIND_MY_SPAWNS)[0].spawnCreep(
+                [TOUGH, TOUGH, TOUGH, TOUGH, TOUGH, TOUGH, TOUGH, TOUGH, ATTACK, ATTACK, ATTACK, ATTACK, ATTACK, ATTACK, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE],
+                'Warrior' + Game.time,
+                {
+                    memory: {
+                        role: 'warrior',
+                        mainRoom: room.name,
+                    }
+                }
+            );
+        }
+
 
         function spawnHarvesterStage4() {
             if (Memory.debug) console.log("in stage 3 balancing");
@@ -390,6 +405,9 @@ var creepHandler = {
             if (Memory.otherRooms.some(x => !Memory.visited.includes(x))) {
                 spawnScout();
             }
+        } else if (Memory.hostilesNearby && warriorsTotal < 4) {
+            if (Memory.debug) console.log(`creating warrior`);
+            spawnWarrior();
         }
 
         if (room.memory.stage >= 4) {
