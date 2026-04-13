@@ -51,7 +51,7 @@ var creepHandler = {
         let builderLevel = 1;
         let upgraderLevel = 1;
         let haulerLevel = 1;
-        let claimerLevel = room.energyCapacityAvailable < 1200 ? 1 : 2;
+        let claimerLevel = room.energyCapacityAvailable <= 1400 ? 1 : 2;
 
 
         const roleCounts = _.countBy(Game.creeps, creep => creep.memory.role || "no role");
@@ -391,7 +391,7 @@ var creepHandler = {
         } else if (haulersTotal < max_haulers && (containersTotal > 0 || storageExist)) {
             if (Memory.debug) console.log(`creating hauler`);
             spawnHauler();
-        } else if (Game.gcl.level > 1 && claimersTotal < max_claimers && room.energyCapacityAvailable > 500) {
+        } else if (Game.gcl.level > 1 && claimersTotal < max_claimers && room.energyCapacityAvailable >= 700) {
             if (Memory.debug) console.log(`creating claimer`);
             spawnClaimer();
         } else if (upgradersTotal < max_upgraders) {

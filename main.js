@@ -115,9 +115,10 @@ module.exports.loop = function () {
         const haulersTotal = roleCounts.hauler || 0;
         const remoteHaulersTotal = roleCounts.remoteHauler || 0;
         const claimersTotal = roleCounts.claimer || 0;
+        const warriorsTotal = roleCounts.warrior || 0;
 
         console.log(`GCL:${Game.gcl.level} - ${progressBar(Game.gcl.progress, Game.gcl.progressTotal)}`);
-        console.log(`harvesters:${harvestersTotal}, upgraders:${upgradersTotal}, builders:${buildersTotal}, scouts: ${scoutsTotal}, haulers: ${haulersTotal}+${remoteHaulersTotal}, claimers: ${claimersTotal}`);
+        console.log(`harvesters:${harvestersTotal}, upgraders:${upgradersTotal}, builders:${buildersTotal}, scouts: ${scoutsTotal}, haulers: ${haulersTotal}+${remoteHaulersTotal}, claimers: ${claimersTotal}, warriors: ${warriorsTotal}`);
 
         //log the distributed sources
         const counts = {};

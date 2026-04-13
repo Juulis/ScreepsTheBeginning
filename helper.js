@@ -16,7 +16,6 @@ var helper = {
         });
         let targetContainerOrStorage = creep.pos.findClosestByPath(FIND_STRUCTURES, {
             filter: (s) => (s.structureType === STRUCTURE_CONTAINER || s.structureType === STRUCTURE_STORAGE) && s.store.getUsedCapacity(RESOURCE_ENERGY) > 0});
-        if(creep.room.name !== Memory.mainRoom) return targetsInclSpawn;
         if (targetContainerOrStorage) return targetContainerOrStorage;
         if (targetsExcludingSpawn) return targetsExcludingSpawn;
 
