@@ -6,9 +6,9 @@ var roleScout = {
 
         // 1. Kontrollera om vi är färdiga: alla rum besökta OCH tillbaka hemma
         if (Memory.otherRooms.every(roomName => Memory.visited.includes(roomName))) {
-            creep.memory.role = "harvester";
             creep.say("🌍Scout klar → Harvester!");
             console.log(`${creep.name} bytte till harvester – alla rum scoutade`);
+            creep.suicide();
             return;
         }
 
