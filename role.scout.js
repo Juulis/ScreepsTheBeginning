@@ -60,7 +60,7 @@ var roleScout = {
         // 4. När vi är framme i målrummet
         else {
             // Spara nya sources
-            const hostileArea = !creep.room.controller.my && creep.room.controller.owner;
+            const hostileArea = creep.room.controller && !creep.room.controller.my && creep.room.controller.owner;
             if (!hostileArea) {
                 const sources = creep.room.find(FIND_SOURCES);
                 let newSources = 0;
