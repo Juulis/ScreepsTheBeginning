@@ -400,14 +400,14 @@ var creepHandler = {
         } else if (buildersTotal < max_builders && constructionSitesExist) {
             if (Memory.debug) console.log(`creating builder`);
             spawnBuilder();
-        } else if (room.controller && room.controller.my && scoutsTotal === 0) {
-            if (Memory.debug) console.log(`creating scout`);
-            if (Memory.otherRooms.some(x => !Memory.visited.includes(x))) {
-                spawnScout();
-            }
         } else if (Memory.hostilesNearby && warriorsTotal < 4) {
             if (Memory.debug) console.log(`creating warrior`);
             spawnWarrior();
+        } else if (room.controller && room.controller.my && scoutsTotal === 0) {
+            if (Memory.otherRooms.some(x => !Memory.visited.includes(x))) {
+                if (Memory.debug) console.log(`creating scout`);
+                spawnScout();
+            }
         }
 
         if (room.memory.stage >= 4) {
