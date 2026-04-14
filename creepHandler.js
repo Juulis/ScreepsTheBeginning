@@ -56,7 +56,7 @@ var creepHandler = {
         let haulerLevel = 1;
         let claimerLevel = room.energyCapacityAvailable < 1400 ? 1 : 2;
 
-
+        // const roleCounts = _.countBy(_.filter(Game.creeps, c => c.memory.mainRoom === room.name), creep => creep.memory.role || "no role");
         const roleCounts = _.countBy(Game.creeps, creep => creep.memory.role || "no role");
 
         const harvestersTotal = roleCounts.harvester || 0;
