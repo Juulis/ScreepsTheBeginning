@@ -69,12 +69,18 @@ module.exports.loop = function () {
         if (Memory.debug) console.log(`setting stage - energy:${room.energyAvailable} / ${room.energyCapacityAvailable} - sources: ${Object.keys(Memory.sources).length} - harvesters: ${harvestersTotal}`);
         let stage = 1;
         const harvestersInRoom = _.filter(room.find(FIND_MY_CREEPS), (creep) => creep.memory.role === "harvester").length;
-        const stage2 = room.energyCapacityAvailable > 500 && harvestersInRoom >= room.memory.sources.length;
-        const stage3 = room.energyCapacityAvailable > 700 && Memory.sources && Object.keys(Memory.sources).length > 3;
+        const haulersInRoom = _.filter(room.find(FIND_MY_CREEPS), (creep) => creep.memory.role === "hauler").length;
+        const remoteHaulersInRoom = _.filter(room.find(FIND_MY_CREEPS), (creep) => creep.memory.role === "remoteHauler").length;
+        const roomSources = room.memory.sources.length;
+
+        const stage2 = room.energyCapacityAvailable > 500 && harvestersInRoom >= roomSources;
+        const stage3 = room.energyCapacityAvailable > 700 && Memory.visited && Memory.visited.length > 2 && haulersInRoom + remoteHaulersInRoom >= 2;
         const stage4 = room.controller && room.controller.level >= 5;
+
         if (stage2) stage = 2;
         if (stage2 && stage3) stage = 3;
         if (stage2 && stage3 && stage4) stage = 4;
+
         return stage;
     };
 
