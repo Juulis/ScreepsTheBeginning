@@ -136,7 +136,6 @@ var roleHarvester = {
         const creepsByRole = _.groupBy(_.filter(Game.creeps, c => c.memory.mainRoom === room.name), c => c.memory.role || "no role");
 
         const harvesters = creepsByRole.harvester || [];
-        const upgraders = creepsByRole.upgrader || []; //exempel för senare
 
         //TODO make theses numbers depend on how many sources in the room
         const sourceKeys = Object.keys(Memory.sources); // alla source IDs som strängar
@@ -151,8 +150,7 @@ var roleHarvester = {
 
         //check somehow if we are unbalanced?
         const unbalanced = () => {
-            if (room.memory.stage > 3) return false;
-            return harvesters.length > 2;
+            return harvesters.length > 2 && room.memory.stage < 4;
             // return source0 === 0 || source1 === 0 && source2 === 3 && source3 === 3 && source4 === 3;
         };
 
