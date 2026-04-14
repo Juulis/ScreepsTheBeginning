@@ -229,13 +229,14 @@ module.exports.loop = function () {
 
             }
             if (spawn) handleSpawn(room);
+            manageSourceBalancing(room);
             handleRoomLogs(room);
 
         }
 
         //ONLY MAINROOM
         if (Memory.mainRoom === roomName) {
-            manageSourceBalancing(room);
+
         }
     }
 }
