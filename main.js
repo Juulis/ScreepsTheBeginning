@@ -183,10 +183,12 @@ module.exports.loop = function () {
 
     handleGameLogs();
 
-    Memory.hostilesNearby = 0;
+    Memory.hostilesNearby = [];
     for (const roomName in Game.rooms) {
         const room = Game.rooms[roomName];
-        Memory.hostilesNearby = room.find(FIND_HOSTILE_STRUCTURES).length + room.find(FIND_HOSTILE_CREEPS).length;
+        const hostileStructures = room.find(FIND_HOSTILE_STRUCTURES);
+        const hostileCreeps = room.find(FIND_HOSTILE_CREEPS);
+        Memory.hostilesNearby = hostileStructures.concat(hostileCreeps);
     }
 
     //loop through all rooms and do the loop

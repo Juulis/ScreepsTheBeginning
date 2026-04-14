@@ -4,6 +4,7 @@ var roleUpgrader = require('role.upgrader');
 var roleHauler = require('role.hauler');
 var roleScout = require('role.scout');
 var roleClaimer = require('role.claimer');
+var roleWarrior = require('role.warrior');
 var helper = require('helper');
 
 var creepHandler = {
@@ -33,6 +34,8 @@ var creepHandler = {
                 roleScout.run(creep);
             else if (creep.memory.role === "claimer")
                 roleClaimer.run(creep);
+            else if (creep.memory.role === "warrior")
+                roleWarrior.run(creep);
         }
 
 
@@ -395,7 +398,7 @@ var creepHandler = {
         } else if (buildersTotal < max_builders && constructionSitesExist) {
             if (Memory.debug) console.log(`creating builder`);
             spawnBuilder();
-        } else if (Memory.hostilesNearby && warriorsTotal < 4) {
+        } else if (Memory.hostilesNearby.length > 0 && warriorsTotal < 2) {
             if (Memory.debug) console.log(`creating warrior`);
             spawnWarrior();
         } else if (room.controller && room.controller.my && scoutsTotal === 0) {

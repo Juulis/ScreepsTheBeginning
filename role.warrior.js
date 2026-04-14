@@ -4,42 +4,35 @@ var roleWarrior = {
     run: function (creep) {
 
         // Vänta in armén
-        const armySize = 3;
-        const warriors = Object.values(Game.creeps).filter(creep => creep.memory.role === 'warrior').length;
-        if (warriors < armySize) return;
+        const armySize = 2;
+        const warriors = Object.values(Game.creeps).filter(c => c.memory.role === 'warrior' && c.ticksToLive > 50).length;
+        if (warriors < armySize) {
+            creep.say('⏳');
+            return;
+        }
 
-        // 1. Hitta närmaste fiende
-        let target = creep.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
-
+        let target = Memory.hostilesNearby[0];
         if (target) {
-            // Attackera om vi är nära nog
+            creep.say('⚔️', true);
             if (creep.pos.inRangeTo(target, 1)) {
                 creep.attack(target);
-            }
-            // Annars rör dig mot målet
-            else {
-                creep.moveTo(target, {
-                    visualizePathStyle: {stroke: '#ff0000'}
-                });
-            }
-
-            // Optional: ropa ut vad vi gör (bra för debugging)
-            creep.say('⚔️', true);
-
-        } else {
-            // Inga fiender → gå till en samlingspunkt eller idle
-            let flag = Game.flags['Defend'] || Game.flags['Rally'];
-
-            if (flag) {
-                creep.moveTo(flag, {
-                    visualizePathStyle: {stroke: '#ffff00'}
-                });
             } else {
-                // Inga flaggor → stå stilla eller gå till spawn
-                creep.moveTo(creep.room.find(FIND_MY_SPAWNS)[0]);
+                creep.moveTo(target, {visualizePathStyle: {stroke: '#ff4f4f'}});
             }
-
-            creep.say('🛡️', true);
+        } else {
+            // Ingen fiende alls, gå hem och vänta
+            if (creep.room.name !== creep.memory.mainRoom) {
+                creep.say("🛡️➡️🏠")
+                creep.moveTo(Game.rooms[creep.memory.mainRoom].find(FIND_MY_SPAWNS)[0], {visualizePathStyle: {stroke: '#ff4f4f'}})
+            } else {
+                creep.say('🛡️', true);
+                let flag = Game.flags['Defend'] || Game.flags['Rally'];
+                if (flag) {
+                    creep.moveTo(flag, {visualizePathStyle: {stroke: '#ffff00'}});
+                } else {
+                    creep.moveTo(creep.room.find(FIND_MY_SPAWNS)[0]);
+                }
+            }
         }
     }
 };
