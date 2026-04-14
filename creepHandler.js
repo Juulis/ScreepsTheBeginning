@@ -382,7 +382,7 @@ var creepHandler = {
         if (Memory.debug) console.log(`before spawning field, harvestersTotal:${harvestersTotal}, max_harvesters:${max_harvesters}`);
 
         //spawn creeps depending on available roles and capacity
-        const harvestersInRoom = _.filter(room.find(FIND_MY_CREEPS), (creep) => creep.memory.role === "harvester").length > 0
+        const harvestersInRoom = _.filter(room.find(FIND_MY_CREEPS), (creep) => creep.memory.role === "harvester").length
         if ((isMainRoom || harvestersInRoom < room.memory.sources.length) && harvestersTotal < max_harvesters) { // only spawn harvesters in isMainRoom, or stage < 4 rooms will spawn bunch of harvesters that runs to source[1] in isMainRoom
             spawnHarvester();
             if (Memory.debug) console.log(`creating harvester`);
