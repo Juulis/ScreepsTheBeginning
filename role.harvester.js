@@ -151,7 +151,7 @@ var roleHarvester = {
 
         //check somehow if we are unbalanced?
         const unbalanced = () => {
-            if (room.controller.level > 4) return false;
+            if (room.memory.stage > 3) return false;
             return harvesters.length > 2;
             // return source0 === 0 || source1 === 0 && source2 === 3 && source3 === 3 && source4 === 3;
         };
@@ -162,14 +162,14 @@ var roleHarvester = {
             return;
 
         const groups = [
-            {start: 0, end: 3, source: source_1},
-            {start: 3, end: 6, source: source_2},
-            {start: 6, end: 9, source: source_3},
-            {start: 9, end: 12, source: source_4},
-            {start: 12, end: 15, source: source_5},
-            {start: 15, end: 18, source: source_6},
-            {start: 18, end: 21, source: source_7},
-            {start: 21, end: 30, source: source_8}
+            {start: 0, end: 2, source: source_1},
+            {start: 2, end: 4, source: source_2},
+            {start: 4, end: 6, source: source_3},
+            {start: 6, end: 8, source: source_4},
+            {start: 8, end: 10, source: source_5},
+            {start: 10, end: 12, source: source_6},
+            {start: 12, end: 14, source: source_7},
+            {start: 14, end: 16, source: source_8}
         ];
 
         groups.forEach(group => {
