@@ -402,7 +402,7 @@ var creepHandler = {
         if (Memory.debug) console.log(`before spawning field, harvestersTotal:${harvestersTotal}, max_harvesters:${max_harvesters}`);
 
         //spawn creeps depending on available roles and capacity
-        if ((isMainRoom || harvestersInRoom < room.memory.sources.length) && harvestersInRoom < max_harvesters / 2) {
+        if ((isMainRoom || harvestersInRoom < room.memory.sources.length) && harvestersTotal < max_harvesters / 2) {
             if (Memory.debug) console.log(`creating harvester`);
             spawnHarvester();
         } else if (upgradersInRoom === 0) {
@@ -417,7 +417,7 @@ var creepHandler = {
         } else if (Game.gcl.level > 1 && claimersTotal < max_claimers && room.energyCapacityAvailable > 700) {
             if (Memory.debug) console.log(`creating claimer`);
             spawnClaimer();
-        } else if ((isMainRoom || harvestersInRoom < room.memory.sources.length) && harvestersInRoom < max_harvesters) {
+        } else if ((isMainRoom || harvestersInRoom < room.memory.sources.length) && harvestersTotal < max_harvesters) {
             if (Memory.debug) console.log(`creating harvester`);
             spawnHarvester();
         } else if (upgradersInRoom < max_upgraders) {
