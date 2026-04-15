@@ -55,6 +55,7 @@ var creepHandler = {
         let upgraderLevel = 1;
         let haulerLevel = 1;
         let claimerLevel = room.energyCapacityAvailable < 1400 ? 1 : 2;
+        let warriorLevel = 1;
 
         const roomRoleCounts = _.countBy(_.filter(Game.creeps, c => c.memory.mainRoom === room.name), creep => creep.memory.role || "no role");
         const roleCounts = _.countBy(Game.creeps, creep => creep.memory.role || "no role");
@@ -105,6 +106,7 @@ var creepHandler = {
             builderLevel = 3;
             upgraderLevel = helper.getEmpireEnergyAvailable() > 100000 ? 4 : 3;
             haulerLevel = 4;
+            warriorLevel = 2;
         }
 
 
@@ -324,17 +326,31 @@ var creepHandler = {
         }
 
         function spawnWarrior() {
-            console.log("creating warrior HUAHH");
-            room.find(FIND_MY_SPAWNS)[0].spawnCreep(
-                [TOUGH, TOUGH, TOUGH, TOUGH, TOUGH, TOUGH, TOUGH, TOUGH, ATTACK, ATTACK, ATTACK, ATTACK, ATTACK, ATTACK, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE],
-                'Warrior' + Game.time,
-                {
-                    memory: {
-                        role: 'warrior',
-                        mainRoom: room.name,
+            if (warriorLevel === 1) {
+                console.log("creating warrior lvl 1 HUAHH");
+                room.find(FIND_MY_SPAWNS)[0].spawnCreep(
+                    [TOUGH, TOUGH, MOVE, MOVE, ATTACK, ATTACK, MOVE, MOVE],
+                    'Warrior' + Game.time,
+                    {
+                        memory: {
+                            role: 'warrior',
+                            mainRoom: room.name,
+                        }
                     }
-                }
-            );
+                );
+            } else if (warriorLevel === 2) {
+                console.log("creating warrior lvl 2 HUAHH");
+                room.find(FIND_MY_SPAWNS)[0].spawnCreep(
+                    [TOUGH, TOUGH, TOUGH, TOUGH, TOUGH, TOUGH, TOUGH, TOUGH, ATTACK, ATTACK, ATTACK, ATTACK, ATTACK, ATTACK, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE],
+                    'Warrior' + Game.time,
+                    {
+                        memory: {
+                            role: 'warrior',
+                            mainRoom: room.name,
+                        }
+                    }
+                );
+            }
         }
 
 
