@@ -87,7 +87,8 @@ var builder = {
 
                 const targetRoomMem = Memory.rooms[targetRoom];
                 if (!targetRoomMem || (targetRoom && !targetRoomMem.sources)) continue;
-                if(Game.rooms[targetRoom].find(FIND_MY_SPAWNS).length > 0) continue;
+                const roomObj = Game.rooms[targetRoom];
+                if(roomObj && roomObj.find(FIND_MY_SPAWNS).length > 0) continue;
                 if (!targetRoomMem.sources.length || !Memory.sources[targetRoomMem.sources[0]]) continue;
 
                 // Beräkna mitten en gång per sida
