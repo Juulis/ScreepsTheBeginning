@@ -68,7 +68,7 @@ var creepHandler = {
         const remoteHaulersTotal = roleCounts.remoteHauler || 0;
         const claimersTotal = roleCounts.claimer || 0;
         const warriorsTotal = roleCounts.warrior || 0;
-        const containersTotal = room.find(FIND_STRUCTURES, {filter: s => s.structureType === STRUCTURE_CONTAINER}).length;
+        const containersInRoom = room.find(FIND_STRUCTURES, {filter: s => s.structureType === STRUCTURE_CONTAINER}).length;
         const storageExist = room.find(FIND_STRUCTURES, {filter: s => s.structureType === STRUCTURE_STORAGE}).length > 0;
         const constructionSitesExist = room.find(FIND_CONSTRUCTION_SITES).length > 0;
         const harvestersInRoom = roomRoleCounts.harvester || 0;
@@ -411,7 +411,7 @@ var creepHandler = {
         } else if (upgradersInRoom === 0) {
             if (Memory.debug) console.log(`creating upgrader`);
             spawnUpgrader();
-        } else if (haulersInRoom < max_haulers && (containersTotal > 0 || storageExist)) {
+        } else if (haulersInRoom < max_haulers && (containersInRoom > 0 || storageExist)) {
             if (Memory.debug) console.log(`creating hauler`);
             spawnHauler();
         } else if (Game.gcl.level > 1 && claimersTotal < max_claimers && room.energyCapacityAvailable > 700) {
