@@ -402,7 +402,7 @@ var creepHandler = {
         if (Memory.debug) console.log(`before spawning field, harvestersTotal:${harvestersTotal}, max_harvesters:${max_harvesters}`);
 
         //spawn creeps depending on available roles and capacity
-        if ((isMainRoom || harvestersInRoom < room.memory.sources.length) && harvestersTotal < max_harvesters / 2) {
+        if ((isMainRoom || harvestersInRoom < room.memory.sources.length) && harvestersTotal < max_harvesters / 3) {
             if (Memory.debug) console.log(`creating harvester`);
             spawnHarvester();
         } else if (upgradersInRoom === 0) {
