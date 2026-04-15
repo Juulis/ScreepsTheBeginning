@@ -405,9 +405,9 @@ var creepHandler = {
         if (Memory.hostilesNearby.length > 0 && warriorsTotal < 2 && harvestersTotal > 3) {
             if (Memory.debug) console.log(`creating warrior`);
             spawnWarrior();
-        } else if ((isMainRoom || harvestersInRoom < room.memory.sources.length) && harvestersInRoom < max_harvesters) { // only spawn harvesters in isMainRoom, or stage < 4 rooms will spawn bunch of harvesters that runs to source[1] in isMainRoom
-            spawnHarvester();
+        } else if ((isMainRoom || harvestersInRoom < room.memory.sources.length) && harvestersInRoom < max_harvesters / 2) {
             if (Memory.debug) console.log(`creating harvester`);
+            spawnHarvester();
         } else if (upgradersInRoom === 0) {
             if (Memory.debug) console.log(`creating upgrader`);
             spawnUpgrader();
@@ -417,6 +417,9 @@ var creepHandler = {
         } else if (Game.gcl.level > 1 && claimersTotal < max_claimers && room.energyCapacityAvailable > 700) {
             if (Memory.debug) console.log(`creating claimer`);
             spawnClaimer();
+        } else if ((isMainRoom || harvestersInRoom < room.memory.sources.length) && harvestersInRoom < max_harvesters) {
+            if (Memory.debug) console.log(`creating harvester`);
+            spawnHarvester();
         } else if (upgradersInRoom < max_upgraders) {
             if (Memory.debug) console.log(`creating upgrader`);
             spawnUpgrader();
