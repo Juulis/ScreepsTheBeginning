@@ -5,6 +5,18 @@ var roleUpgrader = {
     /** @param {Creep} creep **/
     run: function (creep) {
 
+        // Hämta alla upgraders som tillhör creepens mainRoom
+        const upgradersInMainRoom = _.filter(Game.creeps, c =>
+            c.memory.role === 'upgrader' &&
+            c.memory.mainRoom === creep.memory.mainRoom
+        );
+
+        // Om mainRoom saknar upgraders → stanna där
+        if (!creep.memory.targetRoom && upgradersInMainRoom.length < 1) {
+            creep.memory.targetRoom = creep.memory.mainRoom;
+        }
+
+
         const myRooms = Object.values(Game.rooms)
             .filter(r => r.controller && r.controller.my);
 
@@ -15,7 +27,7 @@ var roleUpgrader = {
             ).length < 2
         );
 
-        if (targetRoom && !creep.memory.targetRoom) {
+        if (!creep.memory.targetRoom && targetRoom) {
             creep.memory.targetRoom = targetRoom.name;
         }
 
