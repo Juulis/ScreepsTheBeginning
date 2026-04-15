@@ -402,7 +402,10 @@ var creepHandler = {
         if (Memory.debug) console.log(`before spawning field, harvestersTotal:${harvestersTotal}, max_harvesters:${max_harvesters}`);
 
         //spawn creeps depending on available roles and capacity
-        if ((isMainRoom || harvestersInRoom < room.memory.sources.length) && harvestersInRoom < max_harvesters) { // only spawn harvesters in isMainRoom, or stage < 4 rooms will spawn bunch of harvesters that runs to source[1] in isMainRoom
+        if (Memory.hostilesNearby.length > 0 && warriorsTotal < 2 && harvestersTotal > 3) {
+            if (Memory.debug) console.log(`creating warrior`);
+            spawnWarrior();
+        } else if ((isMainRoom || harvestersInRoom < room.memory.sources.length) && harvestersInRoom < max_harvesters) { // only spawn harvesters in isMainRoom, or stage < 4 rooms will spawn bunch of harvesters that runs to source[1] in isMainRoom
             spawnHarvester();
             if (Memory.debug) console.log(`creating harvester`);
         } else if (haulersInRoom < max_haulers && (containersTotal > 0 || storageExist)) {
@@ -417,9 +420,6 @@ var creepHandler = {
         } else if (buildersInRoom < max_builders && constructionSitesExist) {
             if (Memory.debug) console.log(`creating builder`);
             spawnBuilder();
-        } else if (Memory.hostilesNearby.length > 0 && warriorsTotal < 2) {
-            if (Memory.debug) console.log(`creating warrior`);
-            spawnWarrior();
         } else if (room.controller && room.controller.my && scoutsTotal === 0) {
             if (Memory.otherRooms.some(x => !Memory.visited.includes(x))) {
                 if (Memory.debug) console.log(`creating scout`);
