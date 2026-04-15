@@ -120,7 +120,7 @@ var creepHandler = {
                         role: 'harvester',
                         source: room.memory.sources[0],
                         cost: 200,
-                        mainRoom: room.roomName,
+                        mainRoom: room.name,
                     }
                 });
             } else if (harvesterLevel === 2) {
@@ -130,7 +130,7 @@ var creepHandler = {
                         role: 'harvester',
                         source: room.memory.sources[0],
                         cost: 400,
-                        mainRoom: room.roomName,
+                        mainRoom: room.name,
                     }
                 });
             } else if (harvesterLevel === 3) {
@@ -140,7 +140,7 @@ var creepHandler = {
                         role: 'harvester',
                         source: room.memory.sources[0],
                         cost: 650,
-                        mainRoom: room.roomName,
+                        mainRoom: room.name,
                     }
                 });
             }
@@ -154,7 +154,7 @@ var creepHandler = {
                         role: 'upgrader',
                         upgrading: false,
                         tempHarvester: true,
-                        mainRoom: room.roomName,
+                        mainRoom: room.name,
                     }
                 });
             } else if (upgraderLevel === 2) {
@@ -164,7 +164,7 @@ var creepHandler = {
                         role: 'upgrader',
                         upgrading: false,
                         tempHarvester: true,
-                        mainRoom: room.roomName,
+                        mainRoom: room.name,
                     }
                 });
             } else if (upgraderLevel === 3) {
@@ -174,7 +174,7 @@ var creepHandler = {
                         role: 'upgrader',
                         upgrading: false,
                         tempHarvester: true,
-                        mainRoom: room.roomName,
+                        mainRoom: room.name,
                     }
                 });
             } else if (upgraderLevel === 4) {
@@ -184,7 +184,7 @@ var creepHandler = {
                         role: 'upgrader',
                         upgrading: false,
                         tempHarvester: true,
-                        mainRoom: room.roomName,
+                        mainRoom: room.name,
                     }
                 });
             }
@@ -198,7 +198,7 @@ var creepHandler = {
                         role: 'builder',
                         building: false,
                         tempHarvester: true,
-                        mainRoom: room.roomName,
+                        mainRoom: room.name,
                     }
                 });
             } else if (builderLevel === 2) {
@@ -208,7 +208,7 @@ var creepHandler = {
                         role: 'builder',
                         building: false,
                         tempHarvester: true,
-                        mainRoom: room.roomName,
+                        mainRoom: room.name,
                     }
                 });
             } else if (builderLevel === 3) {
@@ -218,7 +218,7 @@ var creepHandler = {
                         role: 'builder',
                         building: false,
                         tempHarvester: true,
-                        mainRoom: room.roomName,
+                        mainRoom: room.name,
                     }
                 });
             }
@@ -230,7 +230,7 @@ var creepHandler = {
                 room.find(FIND_MY_SPAWNS)[0].spawnCreep([CARRY, CARRY, MOVE], 'Hauler(' + haulerLevel + ')' + Game.time, {
                     memory: {
                         role: 'hauler',
-                        mainRoom: room.roomName,
+                        mainRoom: room.name,
                     }
                 });
             } else if (haulerLevel === 2) {
@@ -238,7 +238,7 @@ var creepHandler = {
                 room.find(FIND_MY_SPAWNS)[0].spawnCreep([CARRY, CARRY, CARRY, MOVE, MOVE], 'Hauler(' + haulerLevel + ')' + Game.time, {
                     memory: {
                         role: 'hauler',
-                        mainRoom: room.roomName,
+                        mainRoom: room.name,
                     }
                 });
             } else if (haulerLevel === 3) {
@@ -246,7 +246,7 @@ var creepHandler = {
                 room.find(FIND_MY_SPAWNS)[0].spawnCreep([CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE], 'Hauler(' + haulerLevel + ')' + Game.time, {
                     memory: {
                         role: 'hauler',
-                        mainRoom: room.roomName,
+                        mainRoom: room.name,
                     }
                 });
             } else if (haulerLevel === 4) {
@@ -254,7 +254,7 @@ var creepHandler = {
                 room.find(FIND_MY_SPAWNS)[0].spawnCreep([CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE], 'Hauler(' + haulerLevel + ')' + Game.time, {
                     memory: {
                         role: 'hauler',
-                        mainRoom: room.roomName,
+                        mainRoom: room.name,
                     }
                 });
             }
@@ -267,7 +267,7 @@ var creepHandler = {
                 room.find(FIND_MY_SPAWNS)[0].spawnCreep([CLAIM, MOVE, MOVE], 'Claimer(1)' + Game.time, {
                     memory: {
                         role: 'claimer',
-                        mainRoom: room.roomName,
+                        mainRoom: room.name,
                     }
                 });
             }
@@ -276,7 +276,7 @@ var creepHandler = {
                 room.find(FIND_MY_SPAWNS)[0].spawnCreep([CLAIM, CLAIM, MOVE, MOVE, MOVE, MOVE], 'Claimer(2)' + Game.time, {
                     memory: {
                         role: 'claimer',
-                        mainRoom: room.roomName,
+                        mainRoom: room.name,
                     }
                 });
             }
