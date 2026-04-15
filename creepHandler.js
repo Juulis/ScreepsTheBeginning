@@ -408,6 +408,9 @@ var creepHandler = {
         } else if ((isMainRoom || harvestersInRoom < room.memory.sources.length) && harvestersInRoom < max_harvesters) { // only spawn harvesters in isMainRoom, or stage < 4 rooms will spawn bunch of harvesters that runs to source[1] in isMainRoom
             spawnHarvester();
             if (Memory.debug) console.log(`creating harvester`);
+        } else if (upgradersInRoom === 0) {
+            if (Memory.debug) console.log(`creating upgrader`);
+            spawnUpgrader();
         } else if (haulersInRoom < max_haulers && (containersTotal > 0 || storageExist)) {
             if (Memory.debug) console.log(`creating hauler`);
             spawnHauler();
