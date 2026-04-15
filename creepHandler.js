@@ -56,7 +56,7 @@ var creepHandler = {
         let haulerLevel = 1;
         let claimerLevel = room.energyCapacityAvailable < 1400 ? 1 : 2;
 
-        // const roleCounts = _.countBy(_.filter(Game.creeps, c => c.memory.mainRoom === room.name), creep => creep.memory.role || "no role");
+        const roomRoleCounts = _.countBy(_.filter(Game.creeps, c => c.memory.mainRoom === room.name), creep => creep.memory.role || "no role");
         const roleCounts = _.countBy(Game.creeps, creep => creep.memory.role || "no role");
 
         const harvestersTotal = roleCounts.harvester || 0;
@@ -70,6 +70,10 @@ var creepHandler = {
         const containersTotal = room.find(FIND_STRUCTURES, {filter: s => s.structureType === STRUCTURE_CONTAINER}).length;
         const storageExist = room.find(FIND_STRUCTURES, {filter: s => s.structureType === STRUCTURE_STORAGE}).length > 0;
         const constructionSitesExist = room.find(FIND_CONSTRUCTION_SITES).length > 0;
+        const harvestersInRoom = roomRoleCounts.harvester || 0;
+        const haulersInRoom = roomRoleCounts.hauler || 0;
+        const buildersInRoom = roomRoleCounts.builder || 0;
+        const upgradersInRoom = roomRoleCounts.upgrader || 0;
 
         if (room.memory.stage === 2) {
             if (Memory.debug) console.log("in stage 2 creepbalancing");
@@ -382,20 +386,19 @@ var creepHandler = {
         if (Memory.debug) console.log(`before spawning field, harvestersTotal:${harvestersTotal}, max_harvesters:${max_harvesters}`);
 
         //spawn creeps depending on available roles and capacity
-        const harvestersInRoom = _.filter(room.find(FIND_MY_CREEPS), (creep) => creep.memory.role === "harvester").length
-        if ((isMainRoom || harvestersInRoom < room.memory.sources.length) && harvestersTotal < max_harvesters) { // only spawn harvesters in isMainRoom, or stage < 4 rooms will spawn bunch of harvesters that runs to source[1] in isMainRoom
+        if ((isMainRoom || harvestersInRoom < room.memory.sources.length) && harvestersInRoom < max_harvesters) { // only spawn harvesters in isMainRoom, or stage < 4 rooms will spawn bunch of harvesters that runs to source[1] in isMainRoom
             spawnHarvester();
             if (Memory.debug) console.log(`creating harvester`);
-        } else if (haulersTotal < max_haulers && (containersTotal > 0 || storageExist)) {
+        } else if (haulersInRoom < max_haulers && (containersTotal > 0 || storageExist)) {
             if (Memory.debug) console.log(`creating hauler`);
             spawnHauler();
         } else if (Game.gcl.level > 1 && claimersTotal < max_claimers && room.energyCapacityAvailable > 700) {
             if (Memory.debug) console.log(`creating claimer`);
             spawnClaimer();
-        } else if (upgradersTotal < max_upgraders) {
+        } else if (upgradersInRoom < max_upgraders) {
             if (Memory.debug) console.log(`creating upgrader`);
             spawnUpgrader();
-        } else if (buildersTotal < max_builders && constructionSitesExist) {
+        } else if (buildersInRoom < max_builders && constructionSitesExist) {
             if (Memory.debug) console.log(`creating builder`);
             spawnBuilder();
         } else if (Memory.hostilesNearby.length > 0 && warriorsTotal < 2) {
