@@ -171,7 +171,7 @@ var roleHarvester = {
         // 4. Tilldela om harvesters så att varje källa får max 2
         for (const creep of reassign) {
             // hitta en källa med plats
-            const target = sourceIds.find(id => counts[id] < 2);
+            const target = sourceIds.find(id => counts[id] < maxHarvestersPerSource);
             if (!target) break; // alla fulla
 
             creep.memory.source = target;
