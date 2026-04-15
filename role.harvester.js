@@ -97,7 +97,7 @@ var roleHarvester = {
 
             if (!container && constructionSite && (helper.getEmpireEnergyAvailable() > 1000 || !isMainRoom)) {
                 creep.say("⛏️| 🔨🧱");
-                if(creep.build(constructionSite) === ERR_NOT_IN_RANGE) {
+                if (creep.build(constructionSite) === ERR_NOT_IN_RANGE) {
                     creep.moveTo(constructionSite, {visualizePathStyle: {stroke: '#ffaa00'}, reusePath: 50});
                 }
                 return;
@@ -133,53 +133,51 @@ var roleHarvester = {
     },
 
     manageSourceBalancing: function (room) {
-        const creepsByRole = _.groupBy(_.filter(Game.creeps, c => c.memory.mainRoom === room.name), c => c.memory.role || "no role");
+        const harvesters = _.filter(Game.creeps, c => c.memory.role === "harvester");
+        const sourceIds = Object.keys(Memory.sources); // alla source IDs i rummet
 
-        const harvesters = creepsByRole.harvester || [];
-
-        //TODO make theses numbers depend on how many sources in the room
-        const sourceKeys = Object.keys(Memory.sources); // alla source IDs som strängar
-
-        const sources = [];
-        for (let i = 0; i < sourceKeys.length; i++) {
-            // Om det inte finns en källa på index i, fallback till den sista tillgängliga
-            sources[i] = sourceKeys[i] || sourceKeys[sourceKeys.length - 1];
-        }
-        const [source_1, source_2, source_3, source_4, source_5, source_6, source_7, source_8] = sources;
-
-
-        //check somehow if we are unbalanced?
         const unbalanced = () => {
             return harvesters.length > 2 && room.memory.stage < 4;
-            // return source0 === 0 || source1 === 0 && source2 === 3 && source3 === 3 && source4 === 3;
         };
 
-        harvesters.sort((a, b) => a.name.localeCompare(b.name));
+        if (!unbalanced()) return;
 
-        if (!unbalanced())
-            return;
+        // 1. Grupp av harvesters per source
+        const bySource = _.groupBy(harvesters, h => h.memory.source || "none");
 
-        const groups = [
-            {start: 0, end: 2, source: source_1},
-            {start: 2, end: 4, source: source_2},
-            {start: 4, end: 6, source: source_3},
-            {start: 6, end: 8, source: source_4},
-            {start: 8, end: 10, source: source_5},
-            {start: 10, end: 12, source: source_6},
-            {start: 12, end: 14, source: source_7},
-            {start: 14, end: 16, source: source_8}
-        ];
+        // 2. Räkna hur många harvesters varje källa har
+        const counts = {};
+        for (const id of sourceIds) {
+            counts[id] = (bySource[id] || []).length;
+        }
 
-        groups.forEach(group => {
-            for (let i = group.start; i < group.end && i < harvesters.length; i++) {
-                const creep = harvesters[i];
-                if (creep.memory.source !== group.source) {
-                    if (Memory.debug) console.log(creep.name + " : " + creep.memory.source + " -> " + group.source);
-                    creep.memory.source = group.source;
-                    creep.say("→ " + group.source);
-                }
+        // 3. Lista harvesters som saknar source eller är övertaliga
+        const reassign = [];
+
+        // harvesters utan source
+        if (bySource.none) {
+            reassign.push(...bySource.none);
+        }
+
+        // harvesters på överfulla sources
+        for (const id of sourceIds) {
+            const list = bySource[id] || [];
+            if (list.length > 2) {
+                // behåll 2, resten ska reasignas
+                reassign.push(...list.slice(2));
             }
-        });
+        }
+
+        // 4. Tilldela om harvesters så att varje källa får max 2
+        for (const creep of reassign) {
+            // hitta en källa med plats
+            const target = sourceIds.find(id => counts[id] < 2);
+            if (!target) break; // alla fulla
+
+            creep.memory.source = target;
+            counts[target] += 1;
+        }
     }
+
 };
 module.exports = roleHarvester;
