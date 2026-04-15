@@ -405,12 +405,12 @@ var creepHandler = {
         if ((isMainRoom || harvestersInRoom < room.memory.sources.length) && harvestersTotal < max_harvesters / 3) {
             if (Memory.debug) console.log(`creating harvester`);
             spawnHarvester();
-        } else if (upgradersInRoom === 0) {
-            if (Memory.debug) console.log(`creating upgrader`);
-            spawnUpgrader();
         } else if (haulersInRoom < max_haulers && (containersInRoom > 0 || storageExist)) {
             if (Memory.debug) console.log(`creating hauler`);
             spawnHauler();
+        } else if (upgradersInRoom === 0) {
+            if (Memory.debug) console.log(`creating upgrader`);
+            spawnUpgrader();
         } else if (Memory.hostilesNearby.length > 0 && warriorsTotal < 2) {
             if (Memory.debug) console.log(`creating warrior`);
             spawnWarrior();
