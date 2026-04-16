@@ -54,8 +54,7 @@ var creepHandler = {
         let builderLevel = 1;
         let upgraderLevel = 1;
         let haulerLevel = 1;
-        // let claimerLevel = room.energyCapacityAvailable < 1400 ? 1 : 2;
-        let claimerLevel = 1;
+        let claimerLevel = room.energyCapacityAvailable < 1400 ? 1 : 1;
         let warriorLevel = 1;
 
         const roomRoleCounts = _.countBy(_.filter(Game.creeps, c => c.memory.mainRoom === room.name), creep => creep.memory.role || "no role");
@@ -370,7 +369,7 @@ var creepHandler = {
                 const haulersForSource = _.filter(creepsGlobal, c =>
                     c.memory.role === 'remoteHauler' &&
                     c.memory.source === sourceId &&
-                    c.ticksToLive > 50
+                    c.ticksToLive > 200
                 );
 
                 if (Memory.debug) console.log(`source ${sourceId} har ${harvestersForSource.length} harvesters`);
@@ -383,7 +382,7 @@ var creepHandler = {
                     hasContainer = _.some(sourceObj.pos.findInRange(FIND_STRUCTURES, 1),
                         s => s.structureType === STRUCTURE_CONTAINER
                     );
-                    maxHaulers = sourceObj.room.find(FIND_MY_SPAWNS).length > 0 ? 1 : 2;
+                    maxHaulers = sourceObj.room.find(FIND_MY_SPAWNS).length > 0 ? 1 : 1;
                 }
 
                 if (hasContainer && haulersForSource.length < maxHaulers && harvestersForSource.length > 0) {
