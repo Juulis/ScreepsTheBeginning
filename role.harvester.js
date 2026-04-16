@@ -134,8 +134,8 @@ var roleHarvester = {
 
     manageSourceBalancing: function (room) {
         const harvesters = _.filter(Game.creeps, c => c.memory.role === "harvester");
-        const sourceIds = Object.keys(Memory.sources); // alla source IDs i rummet
-        const maxHarvestersPerSource = room.memory.stage < 4 ? 2 : 1;
+        const sourceIds = Object.keys(Memory.sources); // alla source IDs
+        const maxHarvestersPerSource = harvesters.length < sourceIds.length ? 1 : 2;
         const unbalanced = () => {
             return harvesters.length > 2 && room.memory.stage < 4;
         };

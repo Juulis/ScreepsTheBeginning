@@ -80,7 +80,7 @@ var creepHandler = {
 
         if (room.memory.stage === 2) {
             if (Memory.debug) console.log("in stage 2 creepbalancing");
-            max_harvesters = Object.keys(Memory.sources).length * 2;
+            max_harvesters = Object.keys(Memory.sources).length;
             max_builders = 2;
             max_upgraders = 1;
             max_haulers = 3;
@@ -90,7 +90,7 @@ var creepHandler = {
             haulerLevel = 2;
         } else if (room.memory.stage === 3) {
             if (Memory.debug) console.log("in stage 3 creepbalancing");
-            max_harvesters = Object.keys(Memory.sources).length * 2;
+            max_harvesters = Object.keys(Memory.sources).length;
             max_builders = 4;
             max_upgraders = helper.getEmpireEnergyAvailable() > 5000 ? 5 : 2;
             max_haulers = 3;
@@ -387,6 +387,8 @@ var creepHandler = {
                     maxHaulers = sourceObj.room.find(FIND_MY_SPAWNS).length > 0 ? 1 : 1;
                 }
 
+                if (sourceObj.room.find(FIND_MY_SPAWNS).length > 0) break;
+
                 if (hasContainer && haulersForSource.length < maxHaulers && harvestersForSource.length > 0) {
                     console.log("spawning Hauler lvl4 for source:", sourceId);
                     spawnRemoteHauler(sourceId);
@@ -404,7 +406,7 @@ var creepHandler = {
         if (Memory.debug) console.log(`before spawning field, harvestersTotal:${harvestersTotal}, max_harvesters:${max_harvesters}`);
 
         //spawn creeps depending on available roles and capacity
-        if ((isMainRoom || harvestersInRoom < room.memory.sources.length) && harvestersTotal < max_harvesters / 3) {
+        if ((isMainRoom || harvestersInRoom < room.memory.sources.length) && harvestersTotal < max_harvesters / 2) {
             if (Memory.debug) console.log(`creating harvester`);
             spawnHarvester();
         } else if (haulersInRoom < max_haulers && (containersInRoom > 0 || storageExist)) {
