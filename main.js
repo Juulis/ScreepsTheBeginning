@@ -146,14 +146,9 @@ module.exports.loop = function () {
                 logDistr += `${src.slice(-5)}:${counts[src]} `;
             });
         console.log(logDistr);
-    }
 
-    function handleRoomLogs(room) {
 
-        console.log(`energy: ${room.energyAvailable}(${helper.getEmpireEnergyAvailable()})/${room.energyCapacityAvailable}(${helper.getEmpireEnergyCapacity()})`)
-        console.log(`stage ${room.memory.stage} - RCL:${room.controller.level} - ${progressBar(room.controller.progress, room.controller.progressTotal)}`);
-
-        // Logga till memory varje halvtimme (1800 ticks = 30 min)
+        // Logga till memory varje timme
         if (Game.time % 1200 === 0) {
             const roleCounts = _.countBy(Game.creeps, c => c.memory.role || "no_role");
 
@@ -168,6 +163,7 @@ module.exports.loop = function () {
                 claimers: roleCounts.claimer || 0,
                 warriors: roleCounts.warrior || 0,
                 energy: helper.getEmpireEnergyAvailable(),
+                sourceDistr: logDistr,
             };
 
             // Spara i en array i Memory
@@ -180,6 +176,14 @@ module.exports.loop = function () {
         if (Memory.creepLog && Memory.creepLog.length > 1000) {
             Memory.creepLog = Memory.creepLog.slice(-500); // behåll sista 500
         }
+
+    }
+
+    function handleRoomLogs(room) {
+
+        console.log(`energy: ${room.energyAvailable}(${helper.getEmpireEnergyAvailable()})/${room.energyCapacityAvailable}(${helper.getEmpireEnergyCapacity()})`)
+        console.log(`stage ${room.memory.stage} - RCL:${room.controller.level} - ${progressBar(room.controller.progress, room.controller.progressTotal)}`);
+
     }
 
     handleGameLogs();
