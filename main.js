@@ -5,7 +5,48 @@ var {towerManager} = require('tower.handler');
 var helper = require('helper');
 
 module.exports.loop = function () {
-    console.log("\n\n\n\n" + "---------------------------------------------------------" + Memory.serverName + " tic:" + Game.time + "------------------------------------------------------------------")
+    function logEnergyTrend() {
+        const log = Memory.creepLog;
+        if (!log || log.length < 2) {
+            console.log("Not enough log entries to show trend");
+            return;
+        }
+
+        // Ta de senaste 4 (eller färre om det inte finns så många)
+        const last = log.slice(-4);
+
+        const creepsValues = last.map(entry => entry.totalCreeps);
+        const energyValues = last.map(entry => entry.energy);
+
+        let result = `energy:${energyValues.join(" → ")}  creeps:${creepsValues.join(" → ")}`
+
+        // Räkna trend
+        let creepsTrend = 0;
+        for (let i = 1; i < creepsValues.length; i++) {
+            creepsTrend += creepsValues[i] - creepsValues[i - 1];
+        }
+        let energyTrend = 0;
+        for (let i = 1; i < energyValues.length; i++) {
+            energyTrend += energyValues[i] - energyValues[i - 1];
+        }
+
+        result += "  "
+
+        if (energyTrend > 0) result += "🔋⬆️(" + energyTrend + ") ";
+        if (creepsTrend > 0) result += "🐞⬆️(" + creepsTrend + ") ";
+        if (energyTrend < 0) result += "🔋⬇️(" + energyTrend + ") ";
+        if (creepsTrend < 0) result += "🐞⬇️(" + creepsTrend + ") ";
+        if (energyTrend === 0) result += "🔋➡️ ";
+        if (creepsTrend === 0) result += "🐞➡️ ";
+
+        return result;
+    }
+
+
+
+
+
+    console.log("\n\n\n\n" + "-----------------------" + Memory.serverName + " || " + logEnergyTrend() + " tic:" + Game.time + "------------------------------------------------------------------")
     if (!Memory.username) Memory.username = "Juulis";
     // Rensa död memory (bra vana)
     for (let name in Memory.creeps) {
