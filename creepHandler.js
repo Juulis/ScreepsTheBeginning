@@ -60,6 +60,7 @@ var creepHandler = {
         const roomRoleCounts = _.countBy(_.filter(Game.creeps, c => c.memory.mainRoom === room.name), creep => creep.memory.role || "no role");
         const roleCounts = _.countBy(Game.creeps, creep => creep.memory.role || "no role");
         const stage4Counts = _.countBy(Game.rooms, room => room.memory.role || "no role");
+        const upgradersInCurrentRoom = room.find(FIND_MY_CREEPS).filter(c => c.memory.role === "upgrader")
 
         const harvestersTotal = roleCounts.harvester || 0;
         const buildersTotal = roleCounts.builder || 0;
@@ -409,7 +410,7 @@ var creepHandler = {
         } else if (haulersInRoom < max_haulers && (containersInRoom > 0 || storageExist)) {
             if (Memory.debug) console.log(`creating hauler`);
             spawnHauler();
-        } else if (upgradersInRoom === 0) {
+        } else if (upgradersInCurrentRoom === 0) {
             if (Memory.debug) console.log(`creating upgrader`);
             spawnUpgrader();
         } else if (Memory.hostilesNearby.length > 0 && warriorsTotal < 2) {
