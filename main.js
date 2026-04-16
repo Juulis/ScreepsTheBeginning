@@ -165,8 +165,9 @@ module.exports.loop = function () {
                 builders: roleCounts.builder || 0,
                 haulers: roleCounts.hauler || 0,
                 remoteHaulers: roleCounts.remoteHauler || 0,
+                claimers: roleCounts.claimer || 0,
+                warriors: roleCounts.warrior || 0,
                 energy: helper.getEmpireEnergyAvailable(),
-                energyCapacity: helper.getEmpireEnergyCapacity(),
             };
 
             // Spara i en array i Memory
