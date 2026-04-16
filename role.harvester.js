@@ -164,7 +164,7 @@ var roleHarvester = {
             const list = bySource[id] || [];
             if (list.length > maxHarvestersPerSource) {
                 // behåll 2, resten ska reasignas
-                reassign.push(...list.slice(2));
+                reassign.push(...list.slice(maxHarvestersPerSource));
             }
         }
 
