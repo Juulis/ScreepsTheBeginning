@@ -162,7 +162,7 @@ var roleHarvester = {
         // harvesters på överfulla sources
         for (const id of sourceIds) {
             const list = bySource[id] || [];
-            if (list.length > 2) {
+            if (list.length > maxHarvestersPerSource) {
                 // behåll 2, resten ska reasignas
                 reassign.push(...list.slice(2));
             }
