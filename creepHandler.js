@@ -59,6 +59,7 @@ var creepHandler = {
 
         const roomRoleCounts = _.countBy(_.filter(Game.creeps, c => c.memory.mainRoom === room.name), creep => creep.memory.role || "no role");
         const roleCounts = _.countBy(Game.creeps, creep => creep.memory.role || "no role");
+        const stage4Counts = _.countBy(Game.rooms, room => room.memory.role || "no role");
 
         const harvestersTotal = roleCounts.harvester || 0;
         const buildersTotal = roleCounts.builder || 0;
@@ -81,7 +82,7 @@ var creepHandler = {
             max_harvesters = Object.keys(Memory.sources).length * 2;
             max_builders = 2;
             max_upgraders = 1;
-            max_haulers = 2;
+            max_haulers = 3;
             harvesterLevel = 2;
             builderLevel = 2;
             upgraderLevel = 2;
@@ -91,7 +92,7 @@ var creepHandler = {
             max_harvesters = Object.keys(Memory.sources).length * 2;
             max_builders = 4;
             max_upgraders = helper.getEmpireEnergyAvailable() > 5000 ? 5 : 2;
-            max_haulers = 2;
+            max_haulers = 3;
             harvesterLevel = 3;
             builderLevel = 3;
             upgraderLevel = 3;
@@ -101,7 +102,7 @@ var creepHandler = {
             max_harvesters = 0; // handle this with sourcebalancing directly instead
             max_builders = 4;
             max_upgraders = helper.getEmpireEnergyAvailable() > 100000 ? 7 : 5;
-            max_haulers = 2;
+            max_haulers = 3;
             harvesterLevel = 3; // level 4 has its own logic for now
             builderLevel = 3;
             upgraderLevel = helper.getEmpireEnergyAvailable() > 100000 ? 4 : 3;
