@@ -413,6 +413,9 @@ var creepHandler = {
         } else if (upgradersInCurrentRoom === 0) {
             if (Memory.debug) console.log(`creating upgrader`);
             spawnUpgrader();
+        } else if (buildersInRoom < max_builders && constructionSitesExist) {
+            if (Memory.debug) console.log(`creating builder`);
+            spawnBuilder();
         } else if (Memory.hostilesNearby.length > 0 && warriorsTotal < 2) {
             if (Memory.debug) console.log(`creating warrior`);
             spawnWarrior();
@@ -425,9 +428,6 @@ var creepHandler = {
         } else if (upgradersInRoom < max_upgraders) {
             if (Memory.debug) console.log(`creating upgrader`);
             spawnUpgrader();
-        } else if (buildersInRoom < max_builders && constructionSitesExist) {
-            if (Memory.debug) console.log(`creating builder`);
-            spawnBuilder();
         } else if (room.controller && room.controller.my && scoutsTotal === 0) {
             if (Memory.otherRooms.some(x => !Memory.visited.includes(x))) {
                 if (Memory.debug) console.log(`creating scout`);
