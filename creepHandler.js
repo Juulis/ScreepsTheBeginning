@@ -59,8 +59,10 @@ var creepHandler = {
 
         const roomRoleCounts = _.countBy(_.filter(Game.creeps, c => c.memory.mainRoom === room.name), creep => creep.memory.role || "no role");
         const roleCounts = _.countBy(Game.creeps, creep => creep.memory.role || "no role");
-        const upgradersInCurrentRoom = room.find(FIND_MY_CREEPS).filter(c => c.memory.role === "upgrader")
+        const upgradersInCurrentRoom = room.find(FIND_MY_CREEPS).filter(c => c.memory.role === "upgrader");
+        const harvestersInCurrentRoom = room.find(FIND_MY_CREEPS).filter(c => c.memory.role === "harvester");
         const stage4RoomExist = _.some(Memory.rooms, (roomMem) => {return roomMem && roomMem.stage > 3;});
+        const sourcesInRoom = room.find(FIND_SOURCES).length;
 
         const harvestersTotal = roleCounts.harvester || 0;
         const buildersTotal = roleCounts.builder || 0;
@@ -379,12 +381,11 @@ var creepHandler = {
 
                 const sourceObj = Game.getObjectById(sourceId)
                 let hasContainer;
-                let maxHaulers;
+                let maxHaulers = 1;
                 if (sourceObj) {
                     hasContainer = _.some(sourceObj.pos.findInRange(FIND_STRUCTURES, 1),
                         s => s.structureType === STRUCTURE_CONTAINER
                     );
-                    maxHaulers = sourceObj.room.find(FIND_MY_SPAWNS).length > 0 ? 1 : 1;
                 }
 
                 if (hasContainer && haulersForSource.length < maxHaulers && harvestersForSource.length > 0) {
@@ -404,13 +405,13 @@ var creepHandler = {
         if (Memory.debug) console.log(`before spawning field, harvestersTotal:${harvestersTotal}, max_harvesters:${max_harvesters}`);
 
         //spawn creeps depending on available roles and capacity
-        if (harvestersTotal < max_harvesters / 2 && !stage4RoomExist) {
+        if ((harvestersTotal < max_harvesters / 2 && !stage4RoomExist) || harvestersInCurrentRoom < sourcesInRoom) {
             if (Memory.debug) console.log(`creating harvester`);
             spawnHarvester();
         } else if (haulersInRoom < max_haulers && (containersInRoom > 0 || storageExist)) {
             if (Memory.debug) console.log(`creating hauler`);
             spawnHauler();
-        } else if (upgradersInCurrentRoom === 0) {
+        } else if (upgradersInCurrentRoom.length === 0) {
             if (Memory.debug) console.log(`creating upgrader`);
             spawnUpgrader();
         } else if (buildersInRoom < max_builders && constructionSitesExist) {
