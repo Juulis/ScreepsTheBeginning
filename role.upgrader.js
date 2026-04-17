@@ -14,39 +14,32 @@ var roleUpgrader = {
             c.memory.targetRoom === creep.memory.mainRoom
         ).length < 2;   // t.ex. max 2 upgraders per rum
 
-        if (mainRoomNeedsUpgrader) {
-            creep.memory.targetRoom = creep.memory.mainRoom;
-        } else {
-            // Annars hitta ett annat rum som har färre än 2 upgraders
-            const targetRoom = _.find(myRooms, room => {
-                const upgradersThere = _.filter(Game.creeps, c =>
-                    c.memory.role === 'upgrader' &&
-                    c.memory.targetRoom === room.name
-                ).length;
-
-                return upgradersThere < 2 && room.name !== creep.memory.mainRoom;
-            });
-
-            if (targetRoom) {
-                creep.memory.targetRoom = targetRoom.name;
-            } else {
-                // Fallback: stanna i mainRoom ändå
+        if(!creep.memory.targetRoom) {
+            if (mainRoomNeedsUpgrader) {
                 creep.memory.targetRoom = creep.memory.mainRoom;
+            } else {
+                // Annars hitta ett annat rum som har färre än 2 upgraders
+                const targetRoom = _.find(myRooms, room => {
+                    const upgradersThere = _.filter(Game.creeps, c =>
+                        c.memory.role === 'upgrader' &&
+                        c.memory.targetRoom === room.name
+                    ).length;
+
+                    return upgradersThere < 2 && room.name !== creep.memory.mainRoom;
+                });
+
+                if (targetRoom) {
+                    creep.memory.targetRoom = targetRoom.name;
+                } else {
+                    // Fallback: stanna i mainRoom ändå
+                    creep.memory.targetRoom = creep.memory.mainRoom;
+                }
             }
         }
 
         // Flytta till targetRoom om vi inte är där
         if (creep.memory.targetRoom && creep.room.name !== creep.memory.targetRoom) {
             creep.say("🏛️➡️ " + creep.memory.targetRoom);
-            creep.moveTo(new RoomPosition(25, 25, creep.memory.targetRoom), {
-                visualizePathStyle: {stroke: '#ffffff'},
-                reusePath: 50
-            });
-            return;
-        }
-
-        if (creep.memory.targetRoom && creep.room.name !== creep.memory.targetRoom) {
-            creep.say("🏛️➡️🌍 " + creep.memory.targetRoom);
             creep.moveTo(new RoomPosition(25, 25, creep.memory.targetRoom), {
                 visualizePathStyle: {stroke: '#ffffff'},
                 reusePath: 50
