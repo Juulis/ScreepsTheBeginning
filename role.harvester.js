@@ -137,7 +137,8 @@ var roleHarvester = {
         const sourceIds = Object.keys(Memory.sources); // alla source IDs
         const maxHarvestersPerSource = harvesters.length < sourceIds.length ? 1 : 2;
         const unbalanced = () => {
-            return harvesters.length > 2 && room.memory.stage < 4;
+            const stage4RoomExist = _.some(Memory.rooms, (roomMem) => {return roomMem && roomMem.stage > 3;});
+            return harvesters.length > 2 && !stage4RoomExist;
         };
 
         if (!unbalanced()) return;

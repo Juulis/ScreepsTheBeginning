@@ -59,8 +59,8 @@ var creepHandler = {
 
         const roomRoleCounts = _.countBy(_.filter(Game.creeps, c => c.memory.mainRoom === room.name), creep => creep.memory.role || "no role");
         const roleCounts = _.countBy(Game.creeps, creep => creep.memory.role || "no role");
-        const stage4Counts = _.countBy(Game.rooms, room => room.memory.role || "no role");
         const upgradersInCurrentRoom = room.find(FIND_MY_CREEPS).filter(c => c.memory.role === "upgrader")
+        const stage4RoomExist = _.some(Memory.rooms, (roomMem) => {return roomMem && roomMem.stage > 3;});
 
         const harvestersTotal = roleCounts.harvester || 0;
         const buildersTotal = roleCounts.builder || 0;
@@ -406,7 +406,7 @@ var creepHandler = {
         if (Memory.debug) console.log(`before spawning field, harvestersTotal:${harvestersTotal}, max_harvesters:${max_harvesters}`);
 
         //spawn creeps depending on available roles and capacity
-        if (harvestersTotal < max_harvesters / 2) {
+        if (harvestersTotal < max_harvesters / 2 && !stage4RoomExist) {
             if (Memory.debug) console.log(`creating harvester`);
             spawnHarvester();
         } else if (haulersInRoom < max_haulers && (containersInRoom > 0 || storageExist)) {
@@ -424,7 +424,7 @@ var creepHandler = {
         } else if ((isMainRoom || harvestersInRoom < room.memory.sources.length) && harvestersTotal < max_harvesters) {
             if (Memory.debug) console.log(`creating harvester`);
             spawnHarvester();
-        } else if (Game.gcl.level > 1 && claimersTotal < max_claimers && room.energyCapacityAvailable > 700) {
+        } else if (Game.gcl.level > 1 && claimersTotal < max_claimers && room.energyCapacityAvailable > 700 && !stage4RoomExist) {
             if (Memory.debug) console.log(`creating claimer`);
             spawnClaimer();
         } else if (upgradersInRoom < max_upgraders) {
