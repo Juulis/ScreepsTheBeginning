@@ -73,11 +73,10 @@ class RoleClaimer {
             );
 
             if (claimersAlreadyTargetingRoom) continue;
-
-            const room = Game.rooms[roomName];
-
+            if(Memory.hostileRooms && roomName in Memory.hostileRooms) continue;
             if (roomName === Memory.mainRoom) continue;
 
+            const room = Game.rooms[roomName];
             if (!room) return roomName; // ingen vision → gå dit
 
             const controller = room.controller;

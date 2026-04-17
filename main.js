@@ -231,6 +231,7 @@ module.exports.loop = function () {
 
     Memory.hostilesNearby = [];
     for (const roomName in Game.rooms) {
+        if(Memory.hostileRooms && roomName in Memory.hostileRooms) continue;
         const room = Game.rooms[roomName];
         const hostileStructures = room.find(FIND_HOSTILE_STRUCTURES);
         const hostileCreeps = room.find(FIND_HOSTILE_CREEPS);

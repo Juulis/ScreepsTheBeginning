@@ -60,7 +60,8 @@ var roleScout = {
         // 4. När vi är framme i målrummet
         else {
             // Spara nya sources
-            const hostileArea = creep.room.controller && !creep.room.controller.my && creep.room.controller.owner;
+            const hostileStructures = creep.room.find(FIND_HOSTILE_STRUCTURES).length > 0;
+            const hostileArea = (creep.room.controller && !creep.room.controller.my && creep.room.controller.owner) || hostileStructures;
             if (!hostileArea) {
                 const sources = creep.room.find(FIND_SOURCES);
                 let newSources = 0;
@@ -87,6 +88,9 @@ var roleScout = {
                 } else {
                     creep.say("🌍 No new");
                 }
+            } else {
+                if(!Memory.hostileRooms) Memory.hostileRooms = [];
+                Memory.hostileRooms.push(creep.room.name);
             }
             // Markera rummet som besökt (bara om det inte redan är)
             if (!Memory.visited.includes(creep.room.name)) {
