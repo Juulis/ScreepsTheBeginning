@@ -62,7 +62,7 @@ var creepHandler = {
         const upgradersInCurrentRoom = room.find(FIND_MY_CREEPS).filter(c => c.memory.role === "upgrader");
         const harvestersInCurrentRoom = room.find(FIND_MY_CREEPS).filter(c => c.memory.role === "harvester");
         const stage4RoomExist = _.some(Memory.rooms, (roomMem) => {return roomMem && roomMem.stage > 3;});
-        const sourcesInRoom = room.find(FIND_SOURCES).length;
+        const sourcesInRoom = room.find(FIND_SOURCES);
 
         const harvestersTotal = roleCounts.harvester || 0;
         const buildersTotal = roleCounts.builder || 0;
@@ -405,7 +405,7 @@ var creepHandler = {
         if (Memory.debug) console.log(`before spawning field, harvestersTotal:${harvestersTotal}, max_harvesters:${max_harvesters}`);
 
         //spawn creeps depending on available roles and capacity
-        if ((harvestersTotal < max_harvesters / 2 && !stage4RoomExist) || harvestersInCurrentRoom < sourcesInRoom) {
+        if ((harvestersTotal < max_harvesters / 2 && !stage4RoomExist) || harvestersInCurrentRoom.length < sourcesInRoom.length) {
             if (Memory.debug) console.log(`creating harvester`);
             spawnHarvester();
         } else if (haulersInRoom < max_haulers && (containersInRoom > 0 || storageExist)) {
