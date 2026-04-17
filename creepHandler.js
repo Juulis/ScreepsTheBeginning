@@ -357,7 +357,7 @@ var creepHandler = {
 
 
         function spawnHarvesterStage4() {
-            if (Memory.debug) console.log("in stage 3 balancing");
+            if (Memory.debug) console.log("in stage 4 balancing");
             const sources = Object.keys(Memory.sources);
             const creepsGlobal = Object.values(Game.creeps);
 
@@ -386,8 +386,6 @@ var creepHandler = {
                     );
                     maxHaulers = sourceObj.room.find(FIND_MY_SPAWNS).length > 0 ? 1 : 1;
                 }
-
-                if (sourceObj.room.find(FIND_MY_SPAWNS).length > 0) break;
 
                 if (hasContainer && haulersForSource.length < maxHaulers && harvestersForSource.length > 0) {
                     console.log("spawning Hauler lvl4 for source:", sourceId);
