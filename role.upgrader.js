@@ -5,30 +5,44 @@ var roleUpgrader = {
     /** @param {Creep} creep **/
     run: function (creep) {
 
-        // Hämta alla upgraders som tillhör creepens mainRoom
-        const upgradersInMainRoom = _.filter(Game.creeps, c =>
-            c.memory.role === 'upgrader' &&
-            c.memory.mainRoom === creep.memory.mainRoom
-        );
+        const myRooms = Object.values(Game.rooms).filter(r => r.controller && r.controller.my);
 
-        // Om mainRoom saknar upgraders → stanna där
-        if (!creep.memory.targetRoom && upgradersInMainRoom.length < 1) {
+        // Prioritera alltid mainRoom om den behöver upgraders
+        const mainRoomNeedsUpgrader = _.filter(Game.creeps, c =>
+            c.memory.role === 'upgrader' &&
+            c.memory.mainRoom === creep.memory.mainRoom &&
+            c.memory.targetRoom === creep.memory.mainRoom
+        ).length < 2;   // t.ex. max 2 upgraders per rum
+
+        if (mainRoomNeedsUpgrader) {
             creep.memory.targetRoom = creep.memory.mainRoom;
+        } else {
+            // Annars hitta ett annat rum som har färre än 2 upgraders
+            const targetRoom = _.find(myRooms, room => {
+                const upgradersThere = _.filter(Game.creeps, c =>
+                    c.memory.role === 'upgrader' &&
+                    c.memory.targetRoom === room.name
+                ).length;
+
+                return upgradersThere < 2 && room.name !== creep.memory.mainRoom;
+            });
+
+            if (targetRoom) {
+                creep.memory.targetRoom = targetRoom.name;
+            } else {
+                // Fallback: stanna i mainRoom ändå
+                creep.memory.targetRoom = creep.memory.mainRoom;
+            }
         }
 
-
-        const myRooms = Object.values(Game.rooms)
-            .filter(r => r.controller && r.controller.my);
-
-        const targetRoom = _.find(myRooms, room =>
-            _.filter(Game.creeps, c =>
-                c.memory.role === 'upgrader' &&
-                c.memory.targetRoom === room.name
-            ).length < 2
-        );
-
-        if (!creep.memory.targetRoom && targetRoom) {
-            creep.memory.targetRoom = targetRoom.name;
+        // Flytta till targetRoom om vi inte är där
+        if (creep.memory.targetRoom && creep.room.name !== creep.memory.targetRoom) {
+            creep.say("🏛️➡️ " + creep.memory.targetRoom);
+            creep.moveTo(new RoomPosition(25, 25, creep.memory.targetRoom), {
+                visualizePathStyle: {stroke: '#ffffff'},
+                reusePath: 50
+            });
+            return;
         }
 
         if (creep.memory.targetRoom && creep.room.name !== creep.memory.targetRoom) {
