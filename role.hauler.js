@@ -127,17 +127,32 @@ var roleHauler = {
             }
 
             // 2. Container
-            let container = creep.pos.findClosestByPath(FIND_STRUCTURES, {
-                filter: s => s.structureType === STRUCTURE_CONTAINER &&
-                    s.store[RESOURCE_ENERGY] >= 300 &&  // undvik tomma
-                    s.room.name === creep.room.name &&
-                    !_.some(Game.creeps, c =>
-                        (c.memory.role === "hauler" || c.memory.role === "remoteHauler") &&
-                        c.memory.targetContainer &&
-                        c.memory.targetContainer === s.id &&
-                        c.id !== creep.id && s.store[RESOURCE_ENERGY] < 1000
-                    )
-            });
+            let container = null;
+
+            if (creep.memory.role === "remoteHauler" && creep.memory.targetContainer) {
+                container = Game.getObjectById(creep.memory.targetContainer);
+
+                // Om assigned container inte finns eller är tom → fallback till närmaste i rätt rum
+                if (!container || container.store[RESOURCE_ENERGY] < 200) {
+                    const sourceData = Memory.sources[creep.memory.source];
+                    if (sourceData) {
+                        const sourceRoom = sourceData.roomName;
+                        container = creep.pos.findClosestByPath(FIND_STRUCTURES, {
+                            filter: s => s.structureType === STRUCTURE_CONTAINER &&
+                                s.room.name === sourceRoom &&
+                                s.store[RESOURCE_ENERGY] >= 200
+                        });
+                    }
+                }
+            }
+            else {
+                // Vanlig hauler i main room
+                container = creep.pos.findClosestByPath(FIND_STRUCTURES, {
+                    filter: s => s.structureType === STRUCTURE_CONTAINER &&
+                        s.room.name === creep.room.name &&
+                        s.store[RESOURCE_ENERGY] >= 300
+                });
+            }
             let storage = creep.pos.findClosestByPath(FIND_STRUCTURES, {
                 filter: s => s.structureType === STRUCTURE_STORAGE &&
                     s.store[RESOURCE_ENERGY] >= 50 &&  // undvik tomma
