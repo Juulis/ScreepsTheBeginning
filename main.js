@@ -176,7 +176,8 @@ module.exports.loop = function () {
                 counts[src] = (counts[src] || 0) + 1;
         }
         const usedSources = Object.keys(counts).length;
-        let logDistr = `sourceBalancing ${usedSources}/${Memory.sources.length}: `;
+        const totalSources = Object.keys(Memory.sources).length
+        let logDistr = `sourceBalancing ${usedSources}/${totalSources}: `;
         Object.keys(counts)
             .sort((a, b) => Number(a) - Number(b))
             .forEach(src => {
