@@ -1,15 +1,15 @@
 var roleHauler = {
     run: function (creep) {
-        // create a cleaner to take care of dropped energy
+        // create a cleaner to take care of dropped energy | ignore remoteHaulers
         const totalCleaners = creep.room.find(FIND_MY_CREEPS, {filter: (c) => c.memory.role === "hauler" && c.memory.cleaner === true}).length;
         if (Memory.debug) console.log("cleaners", totalCleaners);
-        if (totalCleaners < 1 && !creep.memory.cleaner) {
+        if (totalCleaners < 1 && !creep.memory.cleaner && !creep.memory.source) {
             creep.memory.cleaner = true;
         }
-        // create a storageHauler to take care of energy transfer storage -> spawn/extensions
+        // create a storageHauler to take care of energy transfer storage -> spawn/extensions | ignore remoteHaulers
         const storageHaulers = creep.room.find(FIND_MY_CREEPS, {filter: (c) => c.memory.role === "hauler" && c.memory.storageHauler});
         const haulers = creep.room.find(FIND_MY_CREEPS, {filter: (c) => c.memory.role === "hauler" || c.memory.role === "remoteHauler"});
-        if (!creep.memory.cleaner && storageHaulers.length === 0 && haulers.length > 1) {
+        if (!creep.memory.cleaner && storageHaulers.length === 0 && haulers.length > 1 && !creep.memory.source) {
             creep.memory.storageHauler = true;
         }
 
