@@ -395,7 +395,7 @@ var creepHandler = {
                 }
 
                 // 2. Hauler bara om harvester redan finns (max 1)
-                if (hasContainer && harvestersForSource.length >= 1 && haulersForSource.length < 1) {
+                if (hasContainer && harvestersForSource.length >= 1 && haulersForSource.length < 2) {
                     console.log("Spawning RemoteHauler lvl4 for source:", sourceId);
                     spawnRemoteHauler(sourceId);
                     return;                    // ← ändra till return
