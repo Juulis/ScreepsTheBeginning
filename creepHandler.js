@@ -391,14 +391,14 @@ var creepHandler = {
                 if (harvestersForSource.length < 1) {
                     console.log("Spawning Harvester lvl4 for source:", sourceId);
                     spawnLevel4Harvester(sourceId);
-                    return;                    // ← ändra till return
+                    return;
                 }
 
                 // 2. Hauler bara om harvester redan finns (max 1)
                 if (hasContainer && harvestersForSource.length >= 1 && haulersForSource.length < 2) {
                     console.log("Spawning RemoteHauler lvl4 for source:", sourceId);
                     spawnRemoteHauler(sourceId);
-                    return;                    // ← ändra till return
+                    return;
                 }
             }
         }
@@ -421,10 +421,10 @@ var creepHandler = {
         } else if (Memory.hostilesNearby.length > 0 && warriorsTotal < 2) {
             if (Memory.debug) console.log(`creating warrior`);
             spawnWarrior();
-        } else if ((isMainRoom || harvestersInRoom < room.memory.sources.length) && harvestersTotal < max_harvesters) {
+        } else if ((isMainRoom || harvestersInRoom < room.memory.sources.length) && harvestersTotal < max_harvesters && !stage4RoomExist) {
             if (Memory.debug) console.log(`creating harvester`);
             spawnHarvester();
-        } else if (Game.gcl.level > 1 && claimersTotal < max_claimers && room.energyCapacityAvailable > 700 && !stage4RoomExist) {
+        } else if (Game.gcl.level > 1 && claimersTotal < max_claimers && room.energyCapacityAvailable > 700) {
             if (Memory.debug) console.log(`creating claimer`);
             spawnClaimer();
         } else if (upgradersInRoom < max_upgraders) {
