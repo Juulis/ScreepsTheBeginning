@@ -246,7 +246,7 @@ module.exports.loop = function () {
     for (const roomName in Game.rooms) {
         if (Memory.debug) console.log("in roomLoop:", roomName);
         const room = Game.rooms[roomName];
-        console.log("---------------------------------------------------------" + room.name + "------------------------------------------------------------------")
+        console.log("---------------------------------------------------------" + room.name + room.name === Memory.mainRoom ? "  --MAIN" : "" + "------------------------------------------------------------------")
 
         room.memory.stage = setStage(room);
 
