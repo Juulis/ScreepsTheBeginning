@@ -360,6 +360,7 @@ var creepHandler = {
 
         function spawnHarvesterStage4() {
             if (Memory.debug) console.log("in stage 4 balancing");
+
             const sources = Object.keys(Memory.sources);
             const creepsGlobal = Object.values(Game.creeps);
 
@@ -371,34 +372,33 @@ var creepHandler = {
                     c.name.includes('Harvester(4)') &&
                     c.ticksToLive > 100
                 );
+
                 const haulersForSource = _.filter(creepsGlobal, c =>
                     c.memory.role === 'remoteHauler' &&
                     c.memory.source === sourceId &&
                     c.ticksToLive > 100
                 );
 
-                if (Memory.debug) console.log(`source ${sourceId} har ${harvestersForSource.length} harvesters`);
-                if (Memory.debug) console.log(`source ${sourceId} har ${haulersForSource.length} haulers`);
-
-                const sourceObj = Game.getObjectById(sourceId)
-                let hasContainer;
-                let maxHaulers = 1;
+                const sourceObj = Game.getObjectById(sourceId);
+                let hasContainer = false;
                 if (sourceObj) {
                     hasContainer = _.some(sourceObj.pos.findInRange(FIND_STRUCTURES, 1),
                         s => s.structureType === STRUCTURE_CONTAINER
                     );
                 }
 
-                if (hasContainer && haulersForSource.length < maxHaulers && harvestersForSource.length > 0) {
-                    console.log("spawning Hauler lvl4 for source:", sourceId);
-                    spawnRemoteHauler(sourceId);
-                    break;
+                // 1. Harvester först (max 1)
+                if (harvestersForSource.length < 1) {
+                    console.log("Spawning Harvester lvl4 for source:", sourceId);
+                    spawnLevel4Harvester(sourceId);
+                    return;                    // ← ändra till return
                 }
 
-                if (harvestersForSource.length < 1) {
-                    console.log("spawning Harvester lvl4 for source:", sourceId);
-                    spawnLevel4Harvester(sourceId);
-                    break;
+                // 2. Hauler bara om harvester redan finns (max 1)
+                if (hasContainer && harvestersForSource.length >= 1 && haulersForSource.length < 1) {
+                    console.log("Spawning RemoteHauler lvl4 for source:", sourceId);
+                    spawnRemoteHauler(sourceId);
+                    return;                    // ← ändra till return
                 }
             }
         }
