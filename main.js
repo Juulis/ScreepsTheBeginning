@@ -174,10 +174,9 @@ module.exports.loop = function () {
             const harvester = creep.memory.role === "harvester";
             if (src)
                 counts[src] = (counts[src] || 0) + 1;
-
         }
-
-        let logDistr = "sourceBalancing: ";
+        const usedSources = Object.keys(counts).length;
+        let logDistr = `sourceBalancing ${usedSources}/${Memory.sources.length}: `;
         Object.keys(counts)
             .sort((a, b) => Number(a) - Number(b))
             .forEach(src => {
