@@ -109,7 +109,7 @@ module.exports.loop = function () {
         const harvestersInRoom = _.filter(room.find(FIND_MY_CREEPS), (creep) => creep.memory.role === "harvester").length;
         const haulersInRoom = _.filter(room.find(FIND_MY_CREEPS), (creep) => creep.memory.role === "hauler").length;
         const remoteHaulersInRoom = _.filter(room.find(FIND_MY_CREEPS), (creep) => creep.memory.role === "remoteHauler").length;
-        const roomSources = room.memory.sources.length;
+        const roomSources = room.memory.sources ? room.memory.sources.length : 0;
 
         const stage2 = room.energyCapacityAvailable > 500 && harvestersInRoom >= roomSources;
         const stage3 = stage2 && room.energyCapacityAvailable > 700 && Memory.visited && Memory.visited.length > 2 && haulersInRoom + remoteHaulersInRoom >= 2;
