@@ -431,7 +431,7 @@ var creepHandler = {
             if (Memory.debug) console.log(`creating upgrader`);
             spawnUpgrader();
         } else if (room.controller && room.controller.my && scoutsTotal === 0) {
-            if (Memory.otherRooms.some(x => !Memory.visited.includes(x))) {
+            if (!Memory.visited || Memory.otherRooms.some(x => !Memory.visited.includes(x))) {
                 if (Memory.debug) console.log(`creating scout`);
                 spawnScout();
             }
