@@ -20,7 +20,7 @@ var builder = {
                 const posY = [spawnPos.y, spawnPos.y, spawnPos.y - 2, spawnPos.y + 2, spawnPos.y + 2];
                 for (let i = 0; i < 5; i++) {
                     if (!(room.createConstructionSite(posX[i], posY[i], STRUCTURE_EXTENSION) === 0)) {
-                        console.log("oops, couldnt build here, idiot...");
+                        console.log("oops, couldnt build here, idiot..." + posX[i] + ":" + posY[i]);
                     }
                 }
             }
@@ -31,7 +31,7 @@ var builder = {
                 const posY = [spawnPos.y, spawnPos.y, spawnPos.y - 3, spawnPos.y + 3, spawnPos.y + 3];
                 for (let i = 0; i < 5; i++) {
                     if (!(room.createConstructionSite(posX[i], posY[i], STRUCTURE_EXTENSION) === 0)) {
-                        console.log("oops, couldnt build here, idiot...");
+                        console.log("oops, couldnt build here, idiot..." + posX[i] + ":" + posY[i]);
                     }
                 }
             }
@@ -132,12 +132,12 @@ var builder = {
             if (!hasTowerConstructionSite && totalTowers < 1 && controllerLvl > 2) {
                 console.log("building tower 1");
                 if (!(room.createConstructionSite(buildPos.x, buildPos.y + 1, STRUCTURE_TOWER) === 0)) {
-                    console.log("oops, couldnt build here, idiot..." + buildPos.x + ":" + buildPos.y - 1);
+                    console.log("oops, couldnt build here, idiot..." + buildPos.x + ":" + buildPos.y + 1);
                 }
             } else if (controllerLvl > 4 && !hasTowerConstructionSite && totalTowers < 2) {
                 console.log("building 2nd tower");
                 if (!(room.createConstructionSite(buildPos.x, buildPos.y - 1, STRUCTURE_TOWER) === 0)) {
-                    console.log("oops, couldnt build here, idiot... " + buildPos.x + ":" + buildPos.y + 1);
+                    console.log("oops, couldnt build here, idiot... " + buildPos.x + ":" + buildPos.y - 1);
                 }
             }
 
@@ -152,7 +152,8 @@ var builder = {
             if ((room.memory.stage > 2 || room.name !== Memory.mainRoom) && !hasStorageConstructionSite && totalStorages < 1 && helper.getEmpireEnergyCapacity() > 800 && controllerLvl > 3) {
                 console.log("building first storage");
                 if (!(room.createConstructionSite(buildPos.x + 3, buildPos.y - 1, STRUCTURE_STORAGE) === 0)) {
-                    console.log("oops, couldnt build here, idiot...");
+                    console.log("oops, couldnt build here, idiot... " + buildPos.x+3 + ":" + buildPos.y - 1);
+
                 }
             }
         }
