@@ -163,7 +163,6 @@ module.exports.loop = function () {
         const claimersTotal = roleCounts.claimer || 0;
         const warriorsTotal = roleCounts.warrior || 0;
 
-        console.log("test");
         console.log(`GCL:${Game.gcl.level} - ${progressBar(Game.gcl.progress, Game.gcl.progressTotal)}`);
         console.log(`Energy: ${helper.getEmpireEnergyAvailable()}/${helper.getEmpireEnergyCapacity()}`);
         console.log(`harvesters:${harvestersTotal}, upgraders:${upgradersTotal}, builders:${buildersTotal}, scouts: ${scoutsTotal}, haulers: ${haulersTotal}+${remoteHaulersTotal}, claimers: ${claimersTotal}, warriors: ${warriorsTotal}`);
