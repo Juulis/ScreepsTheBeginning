@@ -14,7 +14,7 @@ var builder = {
         if (room.name !== Memory.mainRoom && (constructingStorage || constructingTower)) return;
 
         const buildExtensions = (room, spawnPos) => {
-            if (!totalExtensions && room.controller.level > 1) {
+            if (!totalExtensions && room.controller.level > 1 && totalExtensionConstructionsites < 1) {
                 console.log("building first extensions at ", spawnPos);
                 const posX = [spawnPos.x - 2, spawnPos.x + 2, spawnPos.x, spawnPos.x, spawnPos.x + 2];
                 const posY = [spawnPos.y, spawnPos.y, spawnPos.y - 2, spawnPos.y + 2, spawnPos.y + 2];
@@ -25,7 +25,7 @@ var builder = {
                 }
             }
             if (Memory.debug) console.log(`cap: ${room.energyCapacityAvailable} crl: ${room.controller.level} ext: ${totalExtensions} extSites: ${totalExtensionConstructionsites}`);
-            if (room.energyCapacityAvailable > 500 && room.controller.level > 2 && totalExtensions + totalExtensionConstructionsites < 6) {
+            if (room.energyCapacityAvailable > 500 && room.controller.level > 2 && totalExtensions + totalExtensionConstructionsites < 1) {
                 console.log("building second extensions at ", spawnPos);
                 const posX = [spawnPos.x - 3, spawnPos.x + 3, spawnPos.x, spawnPos.x, spawnPos.x + 2];
                 const posY = [spawnPos.y, spawnPos.y, spawnPos.y - 3, spawnPos.y + 3, spawnPos.y + 3];
