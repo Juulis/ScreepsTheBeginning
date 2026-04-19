@@ -148,11 +148,10 @@ var roleHauler = {
             if (Memory.debug) console.log(creep.name + "full, dumping");
             let target;
             let sourceInMainRoom = false;
-            const hasSpawn = creep.room.find(FIND_MY_SPAWNS).length > 0;
             const source = Game.getObjectById(creep.memory.source);
             if (source && source.room.name === Memory.mainRoom) sourceInMainRoom = true;
 
-            if (creep.memory.role === "remoteHauler" && !sourceInMainRoom && hasSpawn) {
+            if (creep.memory.role === "remoteHauler" && !sourceInMainRoom) {
                 //för remotehaulers, prioritera närmsta deliveryplace
                 const myRooms = Object.values(Game.rooms)
                     .filter(r => r.find(FIND_MY_SPAWNS).length > 0);
@@ -161,16 +160,25 @@ var roleHauler = {
                     creep.pos.getRangeTo(new RoomPosition(25, 25, r.name))
                 );
 
-                target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
+                targets = targetRoom.find(FIND_STRUCTURES, {
                     filter: s =>
                         (s.structureType === STRUCTURE_CONTAINER ||
                             s.structureType === STRUCTURE_STORAGE ||
                             s.structureType === STRUCTURE_SPAWN ||
                             s.structureType === STRUCTURE_EXTENSION ||
                             s.structureType === STRUCTURE_TOWER) &&
-                        s.store.getFreeCapacity(RESOURCE_ENERGY) > 0 &&
-                        s.room.name === targetRoom.name
+                        s.store.getFreeCapacity(RESOURCE_ENERGY) > 0
                 });
+                let bestTarget = null;
+                let bestDistance = Infinity;
+                for (const s of targets) {
+                    const distance = creep.pos.getRangeTo(s);
+                    if (distance < bestDistance) {
+                        bestDistance = distance;
+                        bestTarget = s;
+                    }
+                }
+                target = bestTarget;
             } else {
                 // prioritera spawn + extensions först, sen tower, sen storage
                 target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
