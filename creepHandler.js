@@ -94,7 +94,7 @@ var creepHandler = {
             if (Memory.debug) console.log("in stage 3 creepbalancing");
             max_harvesters = Object.keys(Memory.sources).length;
             max_builders = 4;
-            max_upgraders = helper.getEmpireEnergyAvailable() > 50000 ? 5 : 2;
+            max_upgraders = helper.getEmpireEnergyAvailable() > 5000 ? 5 : 3;
             max_haulers = 2;
             harvesterLevel = 3;
             builderLevel = 3;
