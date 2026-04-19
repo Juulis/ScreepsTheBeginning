@@ -36,7 +36,7 @@ var creepHandler = {
         const isMainRoom = room.name === Memory.mainRoom;
 
         let max_harvesters = Object.keys(Memory.sources).length * 2;
-        let max_builders = helper.getRoomTotalEnergyContainers(room) > 2000 ? 3 : 1;
+        let max_builders = helper.getRoomTotalEnergyContainers(room) > 2000 ? 3 : 2;
         let max_upgraders = helper.getRoomTotalEnergyContainers(room) > 2000 ? 2 : 1;
         let max_haulers = 1;
         let max_claimers = roomsWithSources - myRoomsTotal;
