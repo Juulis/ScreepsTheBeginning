@@ -13,16 +13,7 @@ var creepHandler = {
         for (var name in room.find(FIND_MY_CREEPS)) {
             var creep = room.find(FIND_MY_CREEPS)[name];
 
-            let lowEnergyMode = false;
-            if (room.name === Memory.mainRoom) {
-                //announce lowEnergyMode warning
-                lowEnergyMode = room.energyAvailable < 200 && _.filter(room.find(FIND_MY_CREEPS), (creep) => creep.memory.role === "harvester").length < 3;
-                if (lowEnergyMode) console.log("Warning! lowEnergyMode");
-            }
-
-            if (lowEnergyMode && creep.memory.tempHarvester) {
-                roleHarvester.run(creep, Object.keys(Memory.sources)[1]);
-            } else if (creep.memory.role === "harvester")
+            if (creep.memory.role === "harvester")
                 roleHarvester.run(creep, creep.memory.source || Object.keys(Memory.sources)[0]);
             else if (creep.memory.role === "builder")
                 roleBuilder.run(creep);
