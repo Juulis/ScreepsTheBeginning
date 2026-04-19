@@ -47,7 +47,7 @@ var roleHauler = {
 
                 // hitta container nära source
                 const source = Game.getObjectById(sourceId);
-                const container = source.pos.findInRange(FIND_STRUCTURES, 3, {filter: (s) => s.structureType.STRUCTURE_CONTAINER})[0];
+                const container = source.pos.findInRange(FIND_STRUCTURES, 3, {filter: (s) => s.structureType === STRUCTURE_CONTAINER})[0];
                 if (container && !creep.memory.targetContainer) creep.memory.targetContainer = container.id;
 
                 if (container && container.store[RESOURCE_ENERGY] > 200) {
