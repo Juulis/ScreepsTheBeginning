@@ -46,9 +46,9 @@ var creepHandler = {
         const roomsWithSources = new Set(Object.values(Memory.sources).map(s => s.roomName)).size;
         const isMainRoom = room.name === Memory.mainRoom;
         let max_harvesters = Object.keys(Memory.sources).length * 2;
-        let max_builders = 1;
+        let max_builders = 2;
         let max_upgraders = 1;
-        let max_haulers = 1;
+        let max_haulers = 2;
         let max_claimers = roomsWithSources - myRoomsTotal;
         let harvesterLevel = 1;
         let builderLevel = 1;
