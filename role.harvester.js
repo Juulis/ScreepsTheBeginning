@@ -63,7 +63,7 @@ var roleHarvester = {
             const brokenContainer = container && container.hits < container.hitsMax * 0.7;
             let containerGotRoomForEnergy = false;
             if (container && container.store.getFreeCapacity(RESOURCE_ENERGY) > 0) containerGotRoomForEnergy = true;
-            if (!constructionSite && !isMainRoom && !containerGotRoomForEnergy) {
+            if (!constructionSite && !isMainRoom && !containerGotRoomForEnergy && !brokenContainer) {
                 const mainRoomPos = new RoomPosition(25, 25, Memory.mainRoom); // mitt i rummet som mål, kvittar för den kommer inte in här när jag väl kommit in i rummet
                 creep.moveTo(mainRoomPos, {visualizePathStyle: {stroke: '#00ff00'}, reusePath: 50});
                 creep.say("⛏️|🔋📦→🏠")
