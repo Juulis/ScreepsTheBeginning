@@ -164,7 +164,7 @@ module.exports.loop = function () {
         const warriorsTotal = roleCounts.warrior || 0;
 
         console.log(`GCL:${Game.gcl.level} - ${progressBar(Game.gcl.progress, Game.gcl.progressTotal)}`);
-        console.log(`Energy: ${helper.getEmpireEnergyAvailable()}/${helper.getEmpireEnergyCapacity()} Containers: ${helper.getRoomTotalEnergyContainers(room)}`);
+        console.log(`Energy: ${helper.getEmpireEnergyAvailable()}/${helper.getEmpireEnergyCapacity()}`);
         console.log(`harvesters:${harvestersTotal}, upgraders:${upgradersTotal}, builders:${buildersTotal}, scouts: ${scoutsTotal}, haulers: ${haulersTotal}+${remoteHaulersTotal}, claimers: ${claimersTotal}, warriors: ${warriorsTotal}`);
 
         //log the distributed sources
@@ -220,7 +220,7 @@ module.exports.loop = function () {
 
     function handleRoomLogs(room) {
 
-        console.log(`energy: ${room.energyAvailable}/${room.energyCapacityAvailable}`)
+        console.log(`energy: ${room.energyAvailable}/${room.energyCapacityAvailable} Containers: ${helper.getRoomTotalEnergyContainers(room)}`)
         console.log(`stage ${room.memory.stage} - RCL:${room.controller.level} - ${progressBar(room.controller.progress, room.controller.progressTotal)}`);
 
     }
