@@ -53,20 +53,23 @@ var roleHarvester = {
             let constructionSite;
             let container;
             const isMainRoom = creep.room.name === Memory.mainRoom;
-
             if (source) {
                 container = _.find(source.pos.findInRange(FIND_STRUCTURES, 2),
-                    s => s.structureType === STRUCTURE_CONTAINER && s.store.getFreeCapacity(RESOURCE_ENERGY) > 0
+                    s => s.structureType === STRUCTURE_CONTAINER
                 );
                 constructionSite = creep.room.find(FIND_CONSTRUCTION_SITES)[0];
             }
 
+            const brokenContainer = container && container.hits < container.hitsMax * 0.7;
+
+            if(container.store.getFreeCapacity(RESOURCE_ENERGY) > 0) container = null;
             if (!container && !constructionSite && !isMainRoom) {
                 const mainRoomPos = new RoomPosition(25, 25, Memory.mainRoom); // mitt i rummet som mål, kvittar för den kommer inte in här när jag väl kommit in i rummet
                 creep.moveTo(mainRoomPos, {visualizePathStyle: {stroke: '#00ff00'}, reusePath: 50});
                 creep.say("⛏️|🔋📦→🏠")
                 return;
             }
+
 
             if (Memory.debug) console.log(creep.name + "DELIVERING")
             let hostile = creep.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
@@ -109,7 +112,7 @@ var roleHarvester = {
             }
 
             const towersExist = creep.room.find(FIND_STRUCTURES, {filter: structure => structure.structureType === STRUCTURE_TOWER}).length > 0;
-            if (container && !towersExist) {
+            if (brokenContainer && !towersExist) {
                 //broken container in a remote room? repair
                 if (container.hits < container.hitsMax * 0.7) {
                     creep.say("⛏️|🔧️🧱");
