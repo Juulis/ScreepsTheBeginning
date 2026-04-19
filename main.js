@@ -240,14 +240,14 @@ module.exports.loop = function () {
                 )
             }
         });
-        Memory.hostilesNearby = hostileStructures.concat(hostileCreeps);
+        Memory.hostilesNearby = Memory.hostilesNearby.concat(hostileCreeps, hostileStructures);
     }
 
     //loop through all rooms and do the loop
     for (const roomName in Game.rooms) {
         if (Memory.debug) console.log("in roomLoop:", roomName);
         const room = Game.rooms[roomName];
-        console.log("---------------------------------------------------------" + room.name + (room.name === Memory.mainRoom ? "--MAIN" : (room.find(FIND_MY_SPAWNS).length > 0 ? "--OWNED":"")) + "------------------------------------------------------------------");
+        console.log("---------------------------------------------------------" + room.name + (room.name === Memory.mainRoom ? "--MAIN" : (room.find(FIND_MY_SPAWNS).length > 0 ? "--OWNED" : "")) + "------------------------------------------------------------------");
 
         room.memory.stage = setStage(room);
 
