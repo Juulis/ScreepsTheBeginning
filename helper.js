@@ -74,5 +74,25 @@ var helper = {
             return energy;
         });
     },
+    getRoomTotalEnergy: function(room) {
+        if (!room) return 0;
+
+        const containersAndStorage = room.find(FIND_STRUCTURES, {
+            filter: s => s.structureType === STRUCTURE_CONTAINER ||
+                s.structureType === STRUCTURE_STORAGE
+        });
+
+        return room.energyAvailable + _.sum(containersAndStorage, s => s.store[RESOURCE_ENERGY] || 0);
+    },
+    getRoomTotalEnergyContainers: function(room) {
+        if (!room) return 0;
+
+        const containersAndStorage = room.find(FIND_STRUCTURES, {
+            filter: s => s.structureType === STRUCTURE_CONTAINER ||
+                s.structureType === STRUCTURE_STORAGE
+        });
+
+        return _.sum(containersAndStorage, s => s.store[RESOURCE_ENERGY] || 0);
+    },
 }
 module.exports = helper;

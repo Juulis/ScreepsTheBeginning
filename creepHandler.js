@@ -45,10 +45,11 @@ var creepHandler = {
         const myRoomsTotal = Object.values(Game.rooms).filter(room => room.controller && room.controller.my).length;
         const roomsWithSources = new Set(Object.values(Memory.sources).map(s => s.roomName)).size;
         const isMainRoom = room.name === Memory.mainRoom;
+
         let max_harvesters = Object.keys(Memory.sources).length * 2;
-        let max_builders = helper.getEmpireEnergyAvailable() > 5000 ? 3 : 2;
-        let max_upgraders = helper.getEmpireEnergyAvailable() > 5000 ? 2 : 1;
-        let max_haulers = 2;
+        let max_builders = helper.getRoomTotalEnergyContainers(room) > 5000 ? 3 : 2;
+        let max_upgraders = helper.getRoomTotalEnergyContainers(room) > 3000 ? 2 : 1;
+        let max_haulers = helper.getRoomTotalEnergyContainers(room) > 2000 ? 3 : 2;
         let max_claimers = roomsWithSources - myRoomsTotal;
         let harvesterLevel = 1;
         let builderLevel = 1;
@@ -94,7 +95,7 @@ var creepHandler = {
             if (Memory.debug) console.log("in stage 3 creepbalancing");
             max_harvesters = Object.keys(Memory.sources).length;
             max_builders = 4;
-            max_upgraders = helper.getEmpireEnergyAvailable() > 5000 ? 5 : 3;
+            max_upgraders = helper.getRoomTotalEnergyContainers(room) > 5000 ? 5 : 3;
             max_haulers = 2;
             harvesterLevel = 3;
             builderLevel = 3;
