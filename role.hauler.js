@@ -160,7 +160,7 @@ var roleHauler = {
                     creep.pos.getRangeTo(new RoomPosition(25, 25, r.name))
                 );
 
-                targets = targetRoom.find(FIND_STRUCTURES, {
+                const targets = targetRoom.find(FIND_STRUCTURES, {
                     filter: s =>
                         (s.structureType === STRUCTURE_CONTAINER ||
                             s.structureType === STRUCTURE_STORAGE ||
