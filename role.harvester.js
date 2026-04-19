@@ -61,9 +61,9 @@ var roleHarvester = {
             }
 
             const brokenContainer = container && container.hits < container.hitsMax * 0.7;
-
-            if(container && container.store.getFreeCapacity(RESOURCE_ENERGY) > 0) container = null;
-            if (!container && !constructionSite && !isMainRoom) {
+            let containerGotRoomForEnergy = false;
+            if (container && container.store.getFreeCapacity(RESOURCE_ENERGY) > 0) containerGotRoomForEnergy = true;
+            if (!container && !constructionSite && !isMainRoom && !containerGotRoomForEnergy) {
                 const mainRoomPos = new RoomPosition(25, 25, Memory.mainRoom); // mitt i rummet som mål, kvittar för den kommer inte in här när jag väl kommit in i rummet
                 creep.moveTo(mainRoomPos, {visualizePathStyle: {stroke: '#00ff00'}, reusePath: 50});
                 creep.say("⛏️|🔋📦→🏠")
@@ -107,21 +107,19 @@ var roleHarvester = {
             }
 
 
-            if (container) {
+            if (container && containerGotRoomForEnergy) {
                 target = container;
             }
 
             const towersExist = creep.room.find(FIND_STRUCTURES, {filter: structure => structure.structureType === STRUCTURE_TOWER}).length > 0;
             if (brokenContainer && !towersExist) {
                 //broken container in a remote room? repair
-                if (container.hits < container.hitsMax * 0.7) {
-                    creep.say("⛏️|🔧️🧱");
-                    const repaired = creep.repair(container);
-                    if (repaired === ERR_NOT_IN_RANGE) {
-                        creep.moveTo(container, {visualizePathStyle: {stroke: '#ffaa00'}, reusePath: 50});
-                    }
-                    return;
+                creep.say("⛏️|🔧️🧱");
+                const repaired = creep.repair(container);
+                if (repaired === ERR_NOT_IN_RANGE) {
+                    creep.moveTo(container, {visualizePathStyle: {stroke: '#ffaa00'}, reusePath: 50});
                 }
+                return;
             }
 
             creep.say("⛏️|🔋📦")
@@ -140,7 +138,9 @@ var roleHarvester = {
         const sourceIds = Object.keys(Memory.sources); // alla source IDs
         const maxHarvestersPerSource = harvesters.length < sourceIds.length ? 1 : 2;
         const unbalanced = () => {
-            const stage4RoomExist = _.some(Memory.rooms, (roomMem) => {return roomMem && roomMem.stage > 3;});
+            const stage4RoomExist = _.some(Memory.rooms, (roomMem) => {
+                return roomMem && roomMem.stage > 3;
+            });
             return harvesters.length > 2 && !stage4RoomExist;
         };
 
