@@ -161,7 +161,7 @@ var roleHauler = {
                     creep.pos.getRangeTo(new RoomPosition(25, 25, r.name))
                 );
 
-                target = creep.findClosestByPath(FIND_STRUCTURES, {
+                target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
                     filter: s =>
                         (s.structureType === STRUCTURE_CONTAINER ||
                             s.structureType === STRUCTURE_STORAGE ||
