@@ -418,7 +418,7 @@ var creepHandler = {
         } else if (buildersInRoom < max_builders && constructionSitesExist) {
             if (Memory.debug) console.log(`creating builder`);
             spawnBuilder();
-        } else if (Memory.hostilesNearby.length > 0 && warriorsTotal < 2) {
+        } else if (Memory.hostilesNearby.length > 0 && warriorsTotal < 3) {
             if (Memory.debug) console.log(`creating warrior`);
             spawnWarrior();
         } else if ((isMainRoom || harvestersInRoom < room.memory.sources.length) && harvestersTotal < max_harvesters && !stage4RoomExist) {

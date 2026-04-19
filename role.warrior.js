@@ -4,7 +4,7 @@ var roleWarrior = {
     run: function (creep) {
 
         // Vänta in armén
-        const armySize = 2;
+        const armySize = 1; // testing without armysize for now
         const warriors = Object.values(Game.creeps).filter(c => c.memory.role === 'warrior' && c.ticksToLive > 50).length;
         if (warriors < armySize) {
             creep.say('⏳');
