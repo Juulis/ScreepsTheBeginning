@@ -284,6 +284,11 @@ module.exports.loop = function () {
             manageSourceBalancing(room);
             handleRoomLogs(room);
 
+        } else {
+            //Log container energy in remote rooms
+            const energyInContainers =  helper.getRoomTotalEnergyContainers(room);
+            const containers = room.find(FIND_STRUCTURES, {filter: {structureType: STRUCTURE_CONTAINER}});
+            if(containers) console.log(`Containers: ${helper.getRoomTotalEnergyContainers(room)}`);
         }
 
         //ONLY MAINROOM
