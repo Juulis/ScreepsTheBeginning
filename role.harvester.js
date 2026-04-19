@@ -60,7 +60,7 @@ var roleHarvester = {
                 constructionSite = creep.room.find(FIND_CONSTRUCTION_SITES)[0];
             }
 
-            const brokenContainer = container && container.hits < container.hitsMax * 0.7;
+            const brokenContainer = container && container.hits < container.hitsMax * 0.6;
             let containerGotRoomForEnergy = false;
             if (container && container.store.getFreeCapacity(RESOURCE_ENERGY) > 0) containerGotRoomForEnergy = true;
             if (!constructionSite && !isMainRoom && !containerGotRoomForEnergy && !brokenContainer) {
@@ -106,20 +106,35 @@ var roleHarvester = {
                 return;
             }
 
-            if(Memory.debug) console.log("cgrfe:"+containerGotRoomForEnergy+" container:"+container);
+            if (Memory.debug) console.log("cgrfe:" + containerGotRoomForEnergy + " container:" + container);
             if (container && containerGotRoomForEnergy) {
                 target = container;
             }
 
-            const towersExist = creep.room.find(FIND_STRUCTURES, {filter: structure => structure.structureType === STRUCTURE_TOWER}).length > 0;
-            if (brokenContainer && !towersExist) {
-                //broken container in a remote room? repair
-                creep.say("⛏️|🔧️🧱");
-                const repaired = creep.repair(container);
-                if (repaired === ERR_NOT_IN_RANGE) {
-                    creep.moveTo(container, {visualizePathStyle: {stroke: '#ffaa00'}, reusePath: 50});
+            const towersWithEnergyExist = creep.room.find(FIND_STRUCTURES, {filter: structure => structure.structureType === STRUCTURE_TOWER && structure.store.getUsedCapacity() > 100}).length > 0;
+            if (container && !towersWithEnergyExist) {
+                const repairUntil = 0.99;
+
+                // Starta repair-läge om containern är dålig
+                if (!creep.memory.repairing && brokenContainer) {
+                    creep.memory.repairing = true;
                 }
-                return;
+
+                // Om vi är i repair-läge → fortsätt reparera
+                if (creep.memory.repairing) {
+                    creep.say("⛏️|🔧️🧱");
+                    const repaired = creep.repair(container);
+
+                    if (repaired === ERR_NOT_IN_RANGE) {
+                        creep.moveTo(container, {visualizePathStyle: {stroke: '#ffaa00'}, reusePath: 30});
+                    }
+
+                    // Avsluta repair-läge när containern är ordentligt lagad
+                    if (container.hits >= container.hitsMax * repairUntil) {
+                        creep.memory.repairing = false;
+                    }
+                    return;
+                }
             }
 
             creep.say("⛏️|🔋📦")
