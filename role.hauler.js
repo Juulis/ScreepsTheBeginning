@@ -34,17 +34,6 @@ var roleHauler = {
             const hasSpawn = roomObj && roomObj.find(FIND_MY_SPAWNS).length > 0;
 
             if (!creep.memory.delivering) {
-
-                // gå till rätt rum först
-                if (creep.room.name !== sourceRoom) {
-                    creep.say("🚚➡️🌍");
-                    creep.moveTo(new RoomPosition(25, 25, sourceRoom), {
-                        visualizePathStyle: {stroke: '#000000'},
-                        reusePath: 50
-                    });
-                    return;
-                }
-
                 // hitta container nära source
                 const source = Game.getObjectById(sourceId);
                 const container = source.pos.findInRange(FIND_STRUCTURES, 3, {filter: (s) => s.structureType === STRUCTURE_CONTAINER})[0];
@@ -53,7 +42,7 @@ var roleHauler = {
                 if (container && container.store[RESOURCE_ENERGY] > 200) {
                     creep.say("🚚🔋");
                     if (creep.withdraw(container, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
-                        creep.moveTo(container, {visualizePathStyle: {stroke: '#000000'}, reusePath: 50});
+                        creep.moveTo(container, {visualizePathStyle: {stroke: '#000000'}, reusePath: 20});
                     }
                     return;
                 }
@@ -63,7 +52,7 @@ var roleHauler = {
                 if (dropped) {
                     creep.say("🚚🧹");
                     if (creep.pickup(dropped) === ERR_NOT_IN_RANGE) {
-                        creep.moveTo(dropped, {visualizePathStyle: {stroke: '#000000'}, reusePath: 50});
+                        creep.moveTo(dropped, {visualizePathStyle: {stroke: '#000000'}, reusePath: 20});
                     }
                     return;
                 }
