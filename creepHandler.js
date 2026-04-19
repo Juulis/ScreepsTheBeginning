@@ -126,7 +126,7 @@ var creepHandler = {
 
             if (harvesterLevel === 1) {
                 console.log("creating harvester lvl1");
-                room.find(FIND_MY_SPAWNS)[0].spawnCreep([WORK, CARRY, MOVE], 'Harvester(' + harvesterLevel + ')' + Game.time, {
+                room.find(FIND_MY_SPAWNS)[0].spawnCreep([WORK, CARRY, MOVE], 'Harvester(' + harvesterLevel + ')' + sourceId + '-' + Game.time, {
                     memory: {
                         role: 'harvester',
                         source: sourceId,
@@ -136,7 +136,7 @@ var creepHandler = {
                 });
             } else if (harvesterLevel === 2) {
                 console.log("creating harvester lvl2");
-                room.find(FIND_MY_SPAWNS)[0].spawnCreep([WORK, WORK, CARRY, MOVE, MOVE], 'Harvester(' + harvesterLevel + ')' + Game.time, {
+                room.find(FIND_MY_SPAWNS)[0].spawnCreep([WORK, WORK, CARRY, MOVE, MOVE], 'Harvester(' + harvesterLevel + ')' + sourceId + '-' + Game.time, {
                     memory: {
                         role: 'harvester',
                         source: sourceId,
@@ -146,7 +146,7 @@ var creepHandler = {
                 });
             } else if (harvesterLevel === 3) {
                 console.log("creating harvester lvl3");
-                room.find(FIND_MY_SPAWNS)[0].spawnCreep([WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE], 'Harvester(' + harvesterLevel + ')' + Game.time, {
+                room.find(FIND_MY_SPAWNS)[0].spawnCreep([WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE], 'Harvester(' + harvesterLevel + ')' + sourceId + '-' + Game.time, {
                     memory: {
                         role: 'harvester',
                         source: sourceId,
@@ -156,8 +156,7 @@ var creepHandler = {
                 });
             } else if (harvesterLevel === 4) {
                 room.find(FIND_MY_SPAWNS)[0].spawnCreep([WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE],
-                    'Harvester(4)' + sourceId + '-' + Game.time,
-                    {
+                    'Harvester(' + harvesterLevel + ')' + sourceId + '-' + Game.time, {
                         memory: {
                             role: 'harvester',
                             source: sourceId,
