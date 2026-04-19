@@ -28,8 +28,6 @@ var creepHandler = {
             else if (creep.memory.role === "warrior")
                 roleWarrior.run(creep);
         }
-
-
     },
 
     handleSpawn: function (room) {
@@ -38,8 +36,8 @@ var creepHandler = {
         const isMainRoom = room.name === Memory.mainRoom;
 
         let max_harvesters = Object.keys(Memory.sources).length * 2;
-        let max_builders = helper.getRoomTotalEnergyContainers(room) > 5000 ? 3 : 2;
-        let max_upgraders = helper.getRoomTotalEnergyContainers(room) > 3000 ? 2 : 1;
+        let max_builders = helper.getRoomTotalEnergyContainers(room) > 2000 ? 3 : 1;
+        let max_upgraders = helper.getRoomTotalEnergyContainers(room) > 2000 ? 2 : 1;
         let max_haulers = 1;
         let max_claimers = roomsWithSources - myRoomsTotal;
         let harvesterLevel = 1;
@@ -424,14 +422,14 @@ var creepHandler = {
 
                 // 1. Harvester först (max 1)
                 if (harvestersForSource.length < 1) {
-                    console.log("Spawning Harvester lvl4 for source:", sourceId);
+                    console.log("Spawning Harvester for source:", sourceId);
                     spawnHarvester(sourceId);
                     return;
                 }
 
                 // 2. Hauler bara om harvester redan finns (max 1)
                 if (hasContainer && harvestersForSource.length >= 1 && haulersForSource.length < 2) {
-                    console.log("Spawning RemoteHauler lvl4 for source:", sourceId);
+                    console.log("Spawning RemoteHauler for source:", sourceId);
                     spawnRemoteHauler(sourceId);
                     return;
                 }
