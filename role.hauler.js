@@ -58,35 +58,6 @@ var roleHauler = {
                 }
 
                 creep.say("⛏️⏳");
-            } else {
-                // gå hem först
-                const myRooms = Object.values(Game.rooms)
-                    .filter(r => r.controller && r.controller.my);
-
-                const targetRoom = _.min(myRooms, r =>
-                    creep.pos.getRangeTo(new RoomPosition(25, 25, r.name))
-                );
-
-                const needsEnergy = targetRoom.find(FIND_STRUCTURES, {
-                    filter: s =>
-                        (s.structureType === STRUCTURE_CONTAINER ||
-                            s.structureType === STRUCTURE_STORAGE ||
-                            s.structureType === STRUCTURE_SPAWN ||
-                            s.structureType === STRUCTURE_EXTENSION ||
-                            s.structureType === STRUCTURE_TOWER) &&
-                        s.store.getFreeCapacity(RESOURCE_ENERGY) > 0
-                }).length > 0;
-
-                if (creep.room.name !== targetRoom.name && needsEnergy) {
-                    creep.say("🚚🌍➡️📦");
-
-                    creep.moveTo(new RoomPosition(25, 25, targetRoom.name), {
-                        visualizePathStyle: {stroke: '#000000'},
-                        reusePath: 50
-                    });
-
-                    return;
-                }
             }
         }
 
@@ -181,16 +152,24 @@ var roleHauler = {
             const source = Game.getObjectById(creep.memory.source);
             if (source && source.room.name === Memory.mainRoom) sourceInMainRoom = true;
 
-            if (creep.memory.role === "remoteHauler" && !sourceInMainRoom && !hasSpawn) {
-                //för remotehaulers, prioritera bara närmsta deliveryplace
-                target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
-                    filter: (s) => {
-                        return (s.structureType === STRUCTURE_SPAWN ||
-                                s.structureType === STRUCTURE_EXTENSION ||
-                                s.structureType === STRUCTURE_CONTAINER ||
-                                s.structureType === STRUCTURE_TOWER) &&
-                            s.store.getFreeCapacity(RESOURCE_ENERGY) > 0;
-                    }
+            if (creep.memory.role === "remoteHauler" && !sourceInMainRoom && hasSpawn) {
+                //för remotehaulers, prioritera närmsta deliveryplace
+                const myRooms = Object.values(Game.rooms)
+                    .filter(r => r.find(FIND_MY_SPAWNS).length > 0);
+
+                const targetRoom = _.min(myRooms, r =>
+                    creep.pos.getRangeTo(new RoomPosition(25, 25, r.name))
+                );
+
+                target = creep.findClosestByPath(FIND_STRUCTURES, {
+                    filter: s =>
+                        (s.structureType === STRUCTURE_CONTAINER ||
+                            s.structureType === STRUCTURE_STORAGE ||
+                            s.structureType === STRUCTURE_SPAWN ||
+                            s.structureType === STRUCTURE_EXTENSION ||
+                            s.structureType === STRUCTURE_TOWER) &&
+                        s.store.getFreeCapacity(RESOURCE_ENERGY) > 0 &&
+                        s.room.name === targetRoom.name
                 });
             } else {
                 // prioritera spawn + extensions först, sen tower, sen storage
@@ -207,7 +186,7 @@ var roleHauler = {
             if (target) {
                 creep.say("🚚🔋📦");
                 if (creep.transfer(target, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
-                    creep.moveTo(target, {reusePath: 50, visualizePathStyle: {stroke: '#ffffff'}});
+                    creep.moveTo(target, {reusePath: 30, visualizePathStyle: {stroke: '#ffffff'}});
                 }
             } else {
                 // Inget som behöver energi → gå till storage som backup eller stå still
