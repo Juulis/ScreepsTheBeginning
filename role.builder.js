@@ -74,9 +74,9 @@ var roleBuilder = {
             }
         } else {
             // Hämta energi
-            const container = creep.room.find(FIND_STRUCTURES, {
-                filter: (s) => s.structureType === STRUCTURE_CONTAINER && s.store.getUsedCapacity(RESOURCE_ENERGY) > 0});
-            if (!container && ((creep.room.find(FIND_MY_CREEPS).filter(c => c.memory.role === "harvester").length < 4 || creep.room.memory.stage < 3) && creep.room.name === Memory.mainRoom)) {
+            const containerWithEnergyExist = creep.room.find(FIND_STRUCTURES, {
+                filter: (s) => s.structureType === STRUCTURE_CONTAINER && s.store.getUsedCapacity(RESOURCE_ENERGY) > 0}).length > 0;
+            if (!containerWithEnergyExist && ((creep.room.find(FIND_MY_CREEPS).filter(c => c.memory.role === "harvester").length < 4 || creep.room.memory.stage < 3) && creep.room.name === Memory.mainRoom)) {
                 creep.say("⛏️⚡ → 🛠️")
                 const source = creep.pos.findClosestByPath(FIND_SOURCES);
                 if (creep.harvest(source) == ERR_NOT_IN_RANGE) {
