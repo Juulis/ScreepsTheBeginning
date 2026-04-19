@@ -84,7 +84,7 @@ var creepHandler = {
             if (Memory.debug) console.log("in stage 2 creepbalancing");
             max_harvesters = Object.keys(Memory.sources).length;
             max_builders = 2;
-            max_upgraders = 1;
+            max_upgraders = 3;
             max_haulers = 2;
             harvesterLevel = 2;
             builderLevel = 2;
