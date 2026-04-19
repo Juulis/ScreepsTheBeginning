@@ -106,7 +106,7 @@ var roleHarvester = {
                 return;
             }
 
-
+            if(Memory.debug) console.log("cgrfe:"+containerGotRoomForEnergy+" container:"+container);
             if (container && containerGotRoomForEnergy) {
                 target = container;
             }
