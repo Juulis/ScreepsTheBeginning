@@ -8,7 +8,8 @@ var builder = {
     buildManager: function (room) {
         const totalExtensions = room.find(FIND_STRUCTURES, {filter: structure => structure.structureType === STRUCTURE_EXTENSION}).length;
         const totalExtensionConstructionsites = room.find(FIND_CONSTRUCTION_SITES, {filter: s => s.structureType === STRUCTURE_EXTENSION}).length;
-        const spawnPos = room.find(FIND_MY_SPAWNS)[0].pos;
+        const spawn = room.find(FIND_MY_SPAWNS)[0];
+        const spawnPos = spawn && spawn.pos;
 
         const constructingStorage = room.find(FIND_CONSTRUCTION_SITES, {filter: s => s.structureType === STRUCTURE_STORAGE}).length > 0;
         const constructingTower = room.find(FIND_CONSTRUCTION_SITES, {filter: s => s.structureType === STRUCTURE_TOWER}).length > 0;
@@ -262,6 +263,7 @@ var builder = {
         }
 
         const getForbiddenPositions = () => {
+            room.memory.forbiddenPositions = [];
             const forbiddenPositions = new Set();
             //first extensions
             room.memory.forbiddenPositions.add(`${spawnPos.x - 2},${spawnPos.y - 2}`);
@@ -299,7 +301,7 @@ var builder = {
             room.memory.forbiddenPositions.add(`${spawnPos.x},${spawnPos.y - 3}`);
 
 
-            return forbiddenPositions;
+            return Array.from(forbiddenPositions);
         }
 
         const buildRoads = (room) => {
