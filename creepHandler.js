@@ -76,7 +76,7 @@ var creepHandler = {
         if (room.memory.stage === 2) {
             if (Memory.debug) console.log("in stage 2 creepbalancing");
             max_harvesters = Object.keys(Memory.sources).length;
-            max_builders = 2;
+            max_builders = 3;
             max_upgraders = helper.getRoomTotalEnergyContainers(room) > 2000 ? 5 : 3;
             max_haulers = 1;
             harvesterLevel = 2;

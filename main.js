@@ -112,7 +112,7 @@ module.exports.loop = function () {
         const roomSources = room.memory.sources ? room.memory.sources.length : 0;
 
         const stage2 = room.energyCapacityAvailable > 500 && harvestersInRoom >= roomSources;
-        const stage3 = stage2 && room.energyCapacityAvailable > 700 && Memory.visited && Memory.visited.length > 2 && haulersInRoom + remoteHaulersInRoom >= 2;
+        const stage3 = stage2 && room.energyCapacityAvailable > 700 && haulersInRoom + remoteHaulersInRoom >= roomSources;
         const stage4 = stage2 && stage3 && room.controller && room.controller.level >= 5;
 
         if (stage2) stage = 2;
