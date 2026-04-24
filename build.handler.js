@@ -8,6 +8,7 @@ var builder = {
     buildManager: function (room) {
         const totalExtensions = room.find(FIND_STRUCTURES, {filter: structure => structure.structureType === STRUCTURE_EXTENSION}).length;
         const totalExtensionConstructionsites = room.find(FIND_CONSTRUCTION_SITES, {filter: s => s.structureType === STRUCTURE_EXTENSION}).length;
+        const spawnPos = room.find(FIND_MY_SPAWNS)[0].pos;
 
         const constructingStorage = room.find(FIND_CONSTRUCTION_SITES, {filter: s => s.structureType === STRUCTURE_STORAGE}).length > 0;
         const constructingTower = room.find(FIND_CONSTRUCTION_SITES, {filter: s => s.structureType === STRUCTURE_TOWER}).length > 0;
@@ -154,7 +155,7 @@ var builder = {
 
             if ((room.memory.stage > 2 || room.name !== Memory.mainRoom) && !hasStorageConstructionSite && totalStorages < 1 && helper.getEmpireEnergyCapacity() > 800 && controllerLvl > 3) {
                 console.log("building first storage");
-                if (!(room.createConstructionSite(buildPos.x, buildPos.y - 2, STRUCTURE_STORAGE) === 0)) {
+                if (!(room.createConstructionSite(buildPos.x, buildPos.y - 3, STRUCTURE_STORAGE) === 0)) {
                     console.log("oops, couldnt build container" + buildPos.x + ":" + buildPos.y - 2);
 
                 }
@@ -260,7 +261,53 @@ var builder = {
             }
         }
 
+        const getForbiddenPositions = () => {
+            const forbiddenPositions = new Set();
+            //first extensions
+            room.memory.forbiddenPositions.add(`${spawnPos.x - 2},${spawnPos.y - 2}`);
+            room.memory.forbiddenPositions.add(`${spawnPos.x - 2},${spawnPos.y - 1}`);
+            room.memory.forbiddenPositions.add(`${spawnPos.x - 2},${spawnPos.y}`);
+            room.memory.forbiddenPositions.add(`${spawnPos.x - 2},${spawnPos.y + 1}`);
+            room.memory.forbiddenPositions.add(`${spawnPos.x - 2},${spawnPos.y + 2}`);
+
+            //second extensions
+            room.memory.forbiddenPositions.add(`${spawnPos.x - 3},${spawnPos.y - 2}`);
+            room.memory.forbiddenPositions.add(`${spawnPos.x - 3},${spawnPos.y - 1}`);
+            room.memory.forbiddenPositions.add(`${spawnPos.x - 3},${spawnPos.y}`);
+            room.memory.forbiddenPositions.add(`${spawnPos.x - 3},${spawnPos.y + 1}`);
+            room.memory.forbiddenPositions.add(`${spawnPos.x - 3},${spawnPos.y + 2}`);
+
+            //third extensions
+            room.memory.forbiddenPositions.add(`${spawnPos.x + 2},${spawnPos.y - 2}`);
+            room.memory.forbiddenPositions.add(`${spawnPos.x + 2},${spawnPos.y - 1}`);
+            room.memory.forbiddenPositions.add(`${spawnPos.x + 2},${spawnPos.y}`);
+            room.memory.forbiddenPositions.add(`${spawnPos.x + 2},${spawnPos.y + 1}`);
+            room.memory.forbiddenPositions.add(`${spawnPos.x + 2},${spawnPos.y + 2}`);
+
+            //fourth extensions
+            room.memory.forbiddenPositions.add(`${spawnPos.x + 3},${spawnPos.y - 2}`);
+            room.memory.forbiddenPositions.add(`${spawnPos.x + 3},${spawnPos.y - 1}`);
+            room.memory.forbiddenPositions.add(`${spawnPos.x + 3},${spawnPos.y}`);
+            room.memory.forbiddenPositions.add(`${spawnPos.x + 3},${spawnPos.y + 1}`);
+            room.memory.forbiddenPositions.add(`${spawnPos.x + 3},${spawnPos.y + 2}`);
+
+            //Towers
+            room.memory.forbiddenPositions.add(`${spawnPos.x},${spawnPos.y - 1}`);
+            room.memory.forbiddenPositions.add(`${spawnPos.x},${spawnPos.y + 1}`);
+
+            //Storage
+            room.memory.forbiddenPositions.add(`${spawnPos.x},${spawnPos.y - 3}`);
+
+
+            return forbiddenPositions;
+        }
+
         const buildRoads = (room) => {
+            if (!room.memory.forbiddenPositions) {
+                room.memory.forbiddenPositions = getForbiddenPositions();
+            }
+            const forbidden = room.memory.forbiddenPositions;
+
             // Bygg bara roads om det finns ett tower
             const towers = room.find(FIND_MY_STRUCTURES, {
                 filter: s => s.structureType === STRUCTURE_TOWER
@@ -278,9 +325,11 @@ var builder = {
             });
 
             // Bygg road där det gått mycket trafik (minst X gångningar)
-            const minTraffic = 50;
+            const minTraffic = 70;
 
             for (const posKey in room.memory.roadData) {
+                if (forbidden.includes(posKey)) continue; // dont build on future constructionsites
+
                 if (room.memory.roadData[posKey] >= minTraffic) {
                     const [x, y] = posKey.split(',').map(Number);
 
@@ -309,14 +358,11 @@ var builder = {
             }
         }
 
-
         //preCheck if we should build stuff
-
         const buildersExist = _.filter(room.find(FIND_MY_CREEPS), (creep) => creep.memory.role === "builder").length > 0;
 
         // build the stuff
         if (room.find(FIND_MY_SPAWNS).length > 0) {
-            const spawnPos = room.find(FIND_MY_SPAWNS)[0].pos;
             buildStorage(room, spawnPos);
             buildTower(room, spawnPos);
             buildExtensions(room, spawnPos);
