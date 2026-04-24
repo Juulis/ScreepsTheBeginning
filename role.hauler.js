@@ -159,7 +159,14 @@ var roleHauler = {
                 const targetRoom = _.min(myRooms, r =>
                     creep.pos.getRangeTo(new RoomPosition(25, 25, r.name))
                 );
-
+                if (targetRoom.name !== creep.room.name) {
+                    creep.say("🚚🔋🌍➡️🏠");
+                    creep.moveTo(new RoomPosition(25, 25, targetRoom.name), {
+                        visualizePathStyle: {stroke: '#000000'},
+                        reusePath: 25,
+                    });
+                    return;
+                }
                 const targets = targetRoom.find(FIND_STRUCTURES, {
                     filter: s =>
                         (s.structureType === STRUCTURE_CONTAINER ||
