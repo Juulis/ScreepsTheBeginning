@@ -18,7 +18,7 @@ var builder = {
             if (!totalExtensions && room.controller.level > 1 && totalExtensionConstructionsites < 1) {
                 console.log("building first extensions at ", spawnPos);
                 const posX = [spawnPos.x - 2, spawnPos.x - 2, spawnPos.x - 2, spawnPos.x - 2, spawnPos.x - 2];
-                const posY = [spawnPos.y - 2, spawnPos.y -1, spawnPos.y, spawnPos.y + 1, spawnPos.y + 2];
+                const posY = [spawnPos.y - 2, spawnPos.y - 1, spawnPos.y, spawnPos.y + 1, spawnPos.y + 2];
                 for (let i = 0; i < 5; i++) {
                     if (!(room.createConstructionSite(posX[i], posY[i], STRUCTURE_EXTENSION) === 0)) {
                         console.log("oops, couldnt build here, idiot..." + posX[i] + ":" + posY[i]);
@@ -29,8 +29,8 @@ var builder = {
             //STAGE 2
             if (room.energyCapacityAvailable > 500 && room.controller.level > 2 && totalExtensions + totalExtensionConstructionsites < 10) {
                 console.log("building second extensions at ", spawnPos);
-                const posX = [spawnPos.x - 3, spawnPos.x - 3, spawnPos.x -3, spawnPos.x -3, spawnPos.x - 3];
-                const posY = [spawnPos.y - 2, spawnPos.y -1, spawnPos.y, spawnPos.y + 1, spawnPos.y + 2];
+                const posX = [spawnPos.x - 3, spawnPos.x - 3, spawnPos.x - 3, spawnPos.x - 3, spawnPos.x - 3];
+                const posY = [spawnPos.y - 2, spawnPos.y - 1, spawnPos.y, spawnPos.y + 1, spawnPos.y + 2];
                 for (let i = 0; i < 5; i++) {
                     if (!(room.createConstructionSite(posX[i], posY[i], STRUCTURE_EXTENSION) === 0)) {
                         console.log("oops, couldnt build here, idiot..." + posX[i] + ":" + posY[i]);
@@ -41,7 +41,7 @@ var builder = {
             if (room.controller.level > 2 && totalExtensions + totalExtensionConstructionsites < 15) {
                 console.log("building third extensions at ", spawnPos);
                 const posX = [spawnPos.x + 2, spawnPos.x + 2, spawnPos.x + 2, spawnPos.x + 2, spawnPos.x + 2];
-                const posY = [spawnPos.y - 2, spawnPos.y -1, spawnPos.y, spawnPos.y + 1, spawnPos.y + 2];
+                const posY = [spawnPos.y - 2, spawnPos.y - 1, spawnPos.y, spawnPos.y + 1, spawnPos.y + 2];
                 for (let i = 0; i < 5; i++) {
                     if (!(room.createConstructionSite(posX[i], posY[i], STRUCTURE_EXTENSION) === 0)) {
                         console.log("oops, couldnt build here, idiot... " + posX[i] + ":" + posY[i]);
@@ -51,7 +51,7 @@ var builder = {
             if (room.controller.level > 3 && totalExtensions + totalExtensionConstructionsites < 20) {
                 console.log("building fourth extensions at ", spawnPos);
                 const posX = [spawnPos.x + 3, spawnPos.x + 3, spawnPos.x + 3, spawnPos.x + 3, spawnPos.x + 3];
-                const posY = [spawnPos.y - 2, spawnPos.y -1, spawnPos.y, spawnPos.y + 1, spawnPos.y + 2];
+                const posY = [spawnPos.y - 2, spawnPos.y - 1, spawnPos.y, spawnPos.y + 1, spawnPos.y + 2];
                 for (let i = 0; i < 5; i++) {
                     if (!(room.createConstructionSite(posX[i], posY[i], STRUCTURE_EXTENSION) === 0)) {
                         console.log("oops, couldnt build here, idiot... " + posX[i] + ":" + posY[i]);
@@ -89,9 +89,9 @@ var builder = {
                 const targetRoomMem = Memory.rooms[targetRoom];
                 if (!targetRoomMem || (targetRoom && !targetRoomMem.sources)) continue;
                 const roomObj = Game.rooms[targetRoom];
-                if(roomObj && roomObj.find(FIND_MY_SPAWNS).length > 0) continue;
+                if (roomObj && roomObj.find(FIND_MY_SPAWNS).length > 0) continue;
                 if (!targetRoomMem.sources.length || !Memory.sources[targetRoomMem.sources[0]]) continue;
-                if(Memory.hostileRooms && targetRoom in Memory.hostileRooms) continue;
+                if (Memory.hostileRooms && targetRoom in Memory.hostileRooms) continue;
 
                 // Beräkna mitten en gång per sida
                 let middleExit;
@@ -260,6 +260,55 @@ var builder = {
             }
         }
 
+        const buildRoads = (room) => {
+            // Bygg bara roads om det finns ett tower
+            const towers = room.find(FIND_MY_STRUCTURES, {
+                filter: s => s.structureType === STRUCTURE_TOWER
+            });
+            if (towers.length === 0) return; // only build roads if there is towers that can repair them
+
+            // Öka räknare på alla positioner där creeps går
+            if (!room.memory.roadData) room.memory.roadData = {};
+
+            const creeps = room.find(FIND_MY_CREEPS);
+            creeps.forEach(creep => {
+                const key = `${creep.pos.x},${creep.pos.y}`;
+                if (!room.memory.roadData[key]) room.memory.roadData[key] = 0;
+                room.memory.roadData[key]++;
+            });
+
+            // Bygg road där det gått mycket trafik (minst X gångningar)
+            const minTraffic = 50;
+
+            for (const posKey in room.memory.roadData) {
+                if (room.memory.roadData[posKey] >= minTraffic) {
+                    const [x, y] = posKey.split(',').map(Number);
+
+                    // Kolla om det redan finns road eller construction site
+                    const existing = room.lookForAt(LOOK_STRUCTURES, x, y)
+                        .some(s => s.structureType === STRUCTURE_ROAD);
+
+                    const siteExists = room.lookForAt(LOOK_CONSTRUCTION_SITES, x, y)
+                        .some(s => s.structureType === STRUCTURE_ROAD);
+
+                    if (!existing && !siteExists) {
+                        const result = room.createConstructionSite(x, y, STRUCTURE_ROAD);
+                        if (result === OK) {
+                            console.log(`🛣️ Bygger road vid ${x},${y} i ${room.name} (trafik: ${room.memory.roadData[posKey]})`);
+                        }
+                    }
+
+                    // Återställ räknaren lite (så den inte fortsätter bygga oändligt)
+                    room.memory.roadData[posKey] = Math.floor(room.memory.roadData[posKey] * 0.6);
+                }
+            }
+
+            // Rensa gammal data
+            if (Game.time % 5000 === 0) {
+                room.memory.roadData = {};
+            }
+        }
+
 
         //preCheck if we should build stuff
 
@@ -277,6 +326,7 @@ var builder = {
                 buildSpawn(room);
             }
         }
+        buildRoads(room);
         buildContainersAtSources(room);
     }
 }
