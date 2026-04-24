@@ -451,7 +451,7 @@ var creepHandler = {
         } else if (Memory.hostilesNearby.length > 0 && warriorsTotal < 3) {
             if (Memory.debug) console.log(`creating warrior`);
             spawnWarrior();
-        } else if (Game.gcl.level > 1 && claimersTotal < max_claimers && room.energyCapacityAvailable > 700) {
+        } else if (claimersTotal < max_claimers && room.energyCapacityAvailable > 700) {
             if (Memory.debug) console.log(`creating claimer`);
             spawnClaimer();
         } else if (upgradersInRoom < max_upgraders) {
