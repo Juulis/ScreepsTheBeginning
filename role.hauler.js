@@ -36,7 +36,7 @@ var roleHauler = {
             if (!creep.memory.delivering) {
                 // hitta container nära source
                 const source = Game.getObjectById(sourceId);
-                const container = source.pos.findInRange(FIND_STRUCTURES, 3, {filter: (s) => s.structureType === STRUCTURE_CONTAINER})[0];
+                const container = source && source.pos.findInRange(FIND_STRUCTURES, 3, {filter: (s) => s.structureType === STRUCTURE_CONTAINER})[0];
                 if (container && !creep.memory.targetContainer) creep.memory.targetContainer = container.id;
 
                 if (container && container.store[RESOURCE_ENERGY] > 200) {
@@ -48,7 +48,7 @@ var roleHauler = {
                 }
 
                 // fallback: dropped energy
-                const dropped = source.pos.findInRange(FIND_DROPPED_RESOURCES, 1)[0];
+                const dropped = source && source.pos.findInRange(FIND_DROPPED_RESOURCES, 1)[0];
                 if (dropped) {
                     creep.say("🚚🧹");
                     if (creep.pickup(dropped) === ERR_NOT_IN_RANGE) {

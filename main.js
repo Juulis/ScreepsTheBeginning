@@ -188,7 +188,7 @@ module.exports.loop = function () {
 
 
         // Logga till memory varje timme
-        if (Game.time % 1200 === 0) {
+        if (Game.time % 600 === 0) {
             const roleCounts = _.countBy(Game.creeps, c => c.memory.role || "no_role");
 
             const logEntry = {

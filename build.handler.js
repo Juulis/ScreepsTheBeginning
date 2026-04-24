@@ -38,7 +38,7 @@ var builder = {
                 }
             }
             //STAGE 4
-            if (room.controller.level > 3 && totalExtensions + totalExtensionConstructionsites < 15) {
+            if (room.controller.level > 2 && totalExtensions + totalExtensionConstructionsites < 15) {
                 console.log("building third extensions at ", spawnPos);
                 const posX = [spawnPos.x + 2, spawnPos.x + 2, spawnPos.x + 2, spawnPos.x + 2, spawnPos.x + 2];
                 const posY = [spawnPos.y - 2, spawnPos.y -1, spawnPos.y, spawnPos.y + 1, spawnPos.y + 2];
@@ -48,7 +48,7 @@ var builder = {
                     }
                 }
             }
-            if (room.controller.level > 4 && totalExtensions + totalExtensionConstructionsites < 20) {
+            if (room.controller.level > 3 && totalExtensions + totalExtensionConstructionsites < 20) {
                 console.log("building fourth extensions at ", spawnPos);
                 const posX = [spawnPos.x + 3, spawnPos.x + 3, spawnPos.x + 3, spawnPos.x + 3, spawnPos.x + 3];
                 const posY = [spawnPos.y - 2, spawnPos.y -1, spawnPos.y, spawnPos.y + 1, spawnPos.y + 2];
@@ -154,8 +154,8 @@ var builder = {
 
             if ((room.memory.stage > 2 || room.name !== Memory.mainRoom) && !hasStorageConstructionSite && totalStorages < 1 && helper.getEmpireEnergyCapacity() > 800 && controllerLvl > 3) {
                 console.log("building first storage");
-                if (!(room.createConstructionSite(buildPos.x + 3, buildPos.y - 1, STRUCTURE_STORAGE) === 0)) {
-                    console.log("oops, couldnt build here, idiot... " + buildPos.x+3 + ":" + buildPos.y - 1);
+                if (!(room.createConstructionSite(buildPos.x, buildPos.y - 2, STRUCTURE_STORAGE) === 0)) {
+                    console.log("oops, couldnt build container" + buildPos.x + ":" + buildPos.y - 2);
 
                 }
             }
