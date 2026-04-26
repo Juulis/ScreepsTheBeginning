@@ -16,8 +16,7 @@ var builder = {
         if (room.name !== Memory.mainRoom && (constructingStorage || constructingTower)) return;
 
         const buildExtensions = (room, spawnPos) => {
-            //STAGE 1
-            if (!totalExtensions && room.controller.level > 1 && totalExtensionConstructionsites < 1) {
+            if (!totalExtensions && room.controller.level === 2 && totalExtensionConstructionsites < 1) {
                 console.log("building first extensions at ", spawnPos);
                 const posX = [spawnPos.x - 2, spawnPos.x - 2, spawnPos.x - 2, spawnPos.x - 2, spawnPos.x - 2];
                 const posY = [spawnPos.y - 2, spawnPos.y - 1, spawnPos.y, spawnPos.y + 1, spawnPos.y + 2];
@@ -28,8 +27,7 @@ var builder = {
                 }
             }
             if (Memory.debug) console.log(`cap: ${room.energyCapacityAvailable} crl: ${room.controller.level} ext: ${totalExtensions} extSites: ${totalExtensionConstructionsites}`);
-            //STAGE 2
-            if (room.energyCapacityAvailable > 500 && room.controller.level > 2 && totalExtensions + totalExtensionConstructionsites < 10) {
+            if (room.energyCapacityAvailable > 500 && room.controller.level === 3 && totalExtensions + totalExtensionConstructionsites < 10) {
                 console.log("building second extensions at ", spawnPos);
                 const posX = [spawnPos.x - 3, spawnPos.x - 3, spawnPos.x - 3, spawnPos.x - 3, spawnPos.x - 3];
                 const posY = [spawnPos.y - 2, spawnPos.y - 1, spawnPos.y, spawnPos.y + 1, spawnPos.y + 2];
@@ -39,8 +37,7 @@ var builder = {
                     }
                 }
             }
-            //STAGE 4
-            if (room.controller.level > 2 && totalExtensions + totalExtensionConstructionsites < 15) {
+            if (room.controller.level === 4 && totalExtensions + totalExtensionConstructionsites < 15) {
                 console.log("building third extensions at ", spawnPos);
                 const posX = [spawnPos.x + 2, spawnPos.x + 2, spawnPos.x + 2, spawnPos.x + 2, spawnPos.x + 2];
                 const posY = [spawnPos.y - 2, spawnPos.y - 1, spawnPos.y, spawnPos.y + 1, spawnPos.y + 2];
