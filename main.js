@@ -222,7 +222,7 @@ module.exports.loop = function () {
 
         console.log(`energy: ${room.energyAvailable}/${room.energyCapacityAvailable} Containers: ${helper.getRoomTotalEnergyContainers(room)}`)
         console.log(`stage ${room.memory.stage} - RCL:${room.controller.level} - ${progressBar(room.controller.progress, room.controller.progressTotal)}`);
-
+        console.log(room.energyCapacityAvailable);
     }
 
     handleGameLogs();

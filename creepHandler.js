@@ -99,8 +99,8 @@ var creepHandler = {
             if (Memory.debug) console.log("in stage 4+ creepbalancing");
             max_harvesters = 0; // handle this with sourcebalancing directly instead
             max_builders = 4;
-            max_upgraders = helper.getEmpireEnergyAvailable() > 100000 ? 5 : 3;
-            max_haulers = 3;
+            max_upgraders = helper.getEmpireEnergyAvailable() > 100000 ? 7 : 3;
+            max_haulers = 2;
             harvesterLevel = 3; // level 4 has its own logic for now
             builderLevel = 3;
             upgraderLevel = helper.getEmpireEnergyAvailable() > 100000 ? 4 : 3;
