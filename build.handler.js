@@ -8,6 +8,7 @@ var builder = {
     buildManager: function (room) {
         const totalExtensions = room.find(FIND_STRUCTURES, {filter: structure => structure.structureType === STRUCTURE_EXTENSION}).length;
         const totalExtensionConstructionsites = room.find(FIND_CONSTRUCTION_SITES, {filter: s => s.structureType === STRUCTURE_EXTENSION}).length;
+        const totalRoadConstructionsites = room.find(FIND_CONSTRUCTION_SITES, {filter: s => s.structureType === STRUCTURE_ROAD}).length;
         const spawn = room.find(FIND_MY_SPAWNS)[0];
         const spawnPos = spawn && spawn.pos;
 
@@ -326,6 +327,7 @@ var builder = {
             // Bygg road där det gått mycket trafik (minst X gångningar)
             const minTraffic = 70;
 
+            if(totalRoadConstructionsites > 5 && helper.getRoomTotalEnergy(room) < 5000 ) return;
             for (const posKey in room.memory.roadData) {
                 if (forbidden.includes(posKey)) continue; // dont build on future constructionsites
 
