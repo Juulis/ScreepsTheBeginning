@@ -10,8 +10,23 @@ var helper = require('helper');
 var creepHandler = {
 
     handleRoles: function (room) {
-        for (var name in room.find(FIND_MY_CREEPS)) {
-            var creep = room.find(FIND_MY_CREEPS)[name];
+        const creeps = room.find(FIND_MY_CREEPS);
+        for (let i = 0; i < creeps.length; i++) {
+            const creep = creeps[i];
+
+            // Gå till Rally flagga först om den finns
+            if (creep.memory.rallyPoint) {
+                const flag = Game.flags[creep.memory.rallyPoint];
+                if (flag) {
+                    if (creep.pos.getRangeTo(flag) > 1) {
+                        creep.say("🏴 Rally");
+                        creep.moveTo(flag, {reusePath: 10});
+                        continue;
+                    } else {
+                        delete creep.memory.rallyPoint;
+                    }
+                }
+            }
 
             if (creep.memory.role === "harvester")
                 roleHarvester.run(creep, creep.memory.source || Object.keys(Memory.sources)[0]);
@@ -121,6 +136,7 @@ var creepHandler = {
                         source: sourceId,
                         cost: 200,
                         mainRoom: room.name,
+                        rallyPoint: "Rally",
                     }
                 });
             } else if (harvesterLevel === 2) {
@@ -131,6 +147,7 @@ var creepHandler = {
                         source: sourceId,
                         cost: 350,
                         mainRoom: room.name,
+                        rallyPoint: "Rally",
                     }
                 });
             } else if (harvesterLevel === 3) {
@@ -141,6 +158,7 @@ var creepHandler = {
                         source: sourceId,
                         cost: 550,
                         mainRoom: room.name,
+                        rallyPoint: "Rally",
                     }
                 });
             } else if (harvesterLevel === 4) {
@@ -150,7 +168,8 @@ var creepHandler = {
                             role: 'harvester',
                             source: sourceId,
                             mainRoom: room.name,
-                            cost: 650
+                            cost: 650,
+                            rallyPoint: "Rally",
                         }
                     }
                 );
@@ -166,6 +185,7 @@ var creepHandler = {
                         upgrading: false,
                         tempHarvester: true,
                         mainRoom: room.name,
+                        rallyPoint: "Rally",
                     }
                 });
             } else if (upgraderLevel === 2) {
@@ -176,6 +196,7 @@ var creepHandler = {
                         upgrading: false,
                         tempHarvester: true,
                         mainRoom: room.name,
+                        rallyPoint: "Rally",
                     }
                 });
             } else if (upgraderLevel === 3) {
@@ -186,6 +207,7 @@ var creepHandler = {
                         upgrading: false,
                         tempHarvester: true,
                         mainRoom: room.name,
+                        rallyPoint: "Rally",
                     }
                 });
             } else if (upgraderLevel === 4) {
@@ -196,6 +218,7 @@ var creepHandler = {
                         upgrading: false,
                         tempHarvester: true,
                         mainRoom: room.name,
+                        rallyPoint: "Rally",
                     }
                 });
             }
@@ -210,6 +233,7 @@ var creepHandler = {
                         building: false,
                         tempHarvester: true,
                         mainRoom: room.name,
+                        rallyPoint: "Rally",
                     }
                 });
             } else if (builderLevel === 2) {
@@ -220,6 +244,7 @@ var creepHandler = {
                         building: false,
                         tempHarvester: true,
                         mainRoom: room.name,
+                        rallyPoint: "Rally",
                     }
                 });
             } else if (builderLevel === 3) {
@@ -230,6 +255,7 @@ var creepHandler = {
                         building: false,
                         tempHarvester: true,
                         mainRoom: room.name,
+                        rallyPoint: "Rally",
                     }
                 });
             }
@@ -242,6 +268,7 @@ var creepHandler = {
                     memory: {
                         role: 'hauler',
                         mainRoom: room.name,
+                        rallyPoint: "Rally",
                     }
                 });
             } else if (haulerLevel === 2) {
@@ -250,6 +277,7 @@ var creepHandler = {
                     memory: {
                         role: 'hauler',
                         mainRoom: room.name,
+                        rallyPoint: "Rally",
                     }
                 });
             } else if (haulerLevel === 3) {
@@ -258,6 +286,7 @@ var creepHandler = {
                     memory: {
                         role: 'hauler',
                         mainRoom: room.name,
+                        rallyPoint: "Rally",
                     }
                 });
             } else if (haulerLevel === 4) {
@@ -266,6 +295,7 @@ var creepHandler = {
                     memory: {
                         role: 'hauler',
                         mainRoom: room.name,
+                        rallyPoint: "Rally",
                     }
                 });
             }
@@ -279,6 +309,7 @@ var creepHandler = {
                     memory: {
                         role: 'claimer',
                         mainRoom: room.name,
+                        rallyPoint: "Rally",
                     }
                 });
             }
@@ -288,6 +319,7 @@ var creepHandler = {
                     memory: {
                         role: 'claimer',
                         mainRoom: room.name,
+                        rallyPoint: "Rally",
                     }
                 });
             }
@@ -303,6 +335,7 @@ var creepHandler = {
                             role: 'remoteHauler',
                             source: sourceId,
                             mainRoom: room.name,
+                            rallyPoint: "Rally",
                         }
                     }
                 );
@@ -316,6 +349,7 @@ var creepHandler = {
                             role: 'remoteHauler',
                             source: sourceId,
                             mainRoom: room.name,
+                            rallyPoint: "Rally",
                         }
                     }
                 );
@@ -329,6 +363,7 @@ var creepHandler = {
                             role: 'remoteHauler',
                             source: sourceId,
                             mainRoom: room.name,
+                            rallyPoint: "Rally",
                         }
                     }
                 );
@@ -342,6 +377,7 @@ var creepHandler = {
                             role: 'remoteHauler',
                             source: sourceId,
                             mainRoom: room.name,
+                            rallyPoint: "Rally",
                         }
                     }
                 );
@@ -358,6 +394,7 @@ var creepHandler = {
                     memory: {
                         role: 'scout',
                         mainRoom: room.name,
+                        rallyPoint: "Rally",
                     }
                 }
             );
@@ -373,6 +410,7 @@ var creepHandler = {
                         memory: {
                             role: 'warrior',
                             mainRoom: room.name,
+                            rallyPoint: "Defend",
                         }
                     }
                 );
@@ -385,6 +423,7 @@ var creepHandler = {
                         memory: {
                             role: 'warrior',
                             mainRoom: room.name,
+                            rallyPoint: "Defend",
                         }
                     }
                 );
@@ -413,6 +452,12 @@ var creepHandler = {
                 );
 
                 const sourceObj = Game.getObjectById(sourceId);
+                let hostilesInRoom = false;
+                for (const creep of Memory.hostilesNearby) {
+                    if (creep.room.name === sourceObj.room.name) hostilesInRoom = true;
+                }
+                if (hostilesInRoom) continue;
+
                 let hasContainer = false;
                 if (sourceObj) {
                     hasContainer = _.some(sourceObj.pos.findInRange(FIND_STRUCTURES, 1),
@@ -448,9 +493,6 @@ var creepHandler = {
         } else if (buildersInRoom < max_builders && constructionSitesExist) {
             if (Memory.debug) console.log(`creating builder`);
             spawnBuilder();
-        } else if ((Memory.hostilesNearby.length > 0 && warriorsTotal < 3) || (room.memory.stage >= 3 && warriorsTotal < 2)) {
-            if (Memory.debug) console.log(`creating warrior`);
-            spawnWarrior();
         } else if (claimersTotal < max_claimers && room.energyCapacityAvailable > 700) {
             if (Memory.debug) console.log(`creating claimer`);
             spawnClaimer();
@@ -465,7 +507,11 @@ var creepHandler = {
         }
         // run sourcehandling after spawnprio to always trumph other creeps
         sourceHandling();
-
+        // always prio warriors
+        if ((warriorsTotal < Memory.hostilesNearby.length * 3 && warriorsTotal < 9) || (room.memory.stage >= 3 && warriorsTotal < 2)) {
+            if (Memory.debug) console.log(`creating warrior`);
+            spawnWarrior();
+        }
         //DESPAWN
         if (!constructionSitesExist) {
             const spawn = Game.spawns["Spawn1"];

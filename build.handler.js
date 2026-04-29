@@ -239,12 +239,12 @@ var builder = {
             return true;
         }
 
-        function findSpawnLocation(room) {
+        function findClearLocation(radius) {
             for (let x = 6; x < 44; x++) {
                 for (let y = 6; y < 44; y++) {
 
                     if (x <= 10 || x >= 40 || y <= 10 || y >= 40) continue;
-                    if (isAreaClear(room, x, y, 5)) {
+                    if (isAreaClear(room, x, y, radius)) {
                         return new RoomPosition(x, y, room.name);
                     }
 
@@ -254,7 +254,7 @@ var builder = {
         }
 
         const buildSpawn = (room) => {
-            const pos = findSpawnLocation(room);
+            const pos = findClearLocation(5);
             if (pos) {
                 room.createConstructionSite(pos, STRUCTURE_SPAWN);
             }
@@ -327,7 +327,7 @@ var builder = {
             // Bygg road där det gått mycket trafik (minst X gångningar)
             const minTraffic = 70;
 
-            if(totalRoadConstructionsites > 5 && helper.getRoomTotalEnergy(room) < 5000 ) return;
+            if (totalRoadConstructionsites > 5 && helper.getRoomTotalEnergy(room) < 5000) return;
             for (const posKey in room.memory.roadData) {
                 if (forbidden.includes(posKey)) continue; // dont build on future constructionsites
 
@@ -359,20 +359,42 @@ var builder = {
             }
         }
 
+        const createRallyFlag = (room) => {
+            const pos = findClearLocation(3);
+            console.log("createRallyFlag: " + pos);
+            const result = room.createFlag(pos, "Rally");
+            if (result === OK) {
+                console.log(`🛣️ Bygger Flagga vid ${pos} i ${room.name}`);
+            }
+        }
+
+        const createDefendFlag = (room) => {
+            const pos = findClearLocation(3);
+            console.log("createDefendFlag: " + pos);
+            const result = room.createFlag(pos, "Defend");
+            if (result === OK) {
+                console.log(`🛣️ Bygger Flagga vid ${pos} i ${room.name}`);
+            }
+        }
+
         //preCheck if we should build stuff
         const buildersExist = _.filter(room.find(FIND_MY_CREEPS), (creep) => creep.memory.role === "builder").length > 0;
-
+        const rallyFlag = Game.flags['Rally'];
+        const defendFlag = Game.flags['Defend'];
         // build the stuff
         if (room.find(FIND_MY_SPAWNS).length > 0) {
             buildStorage(room, spawnPos);
             buildTower(room, spawnPos);
             buildExtensions(room, spawnPos);
             buildContainer(room);
+            if (!rallyFlag && (totalExtensions + totalExtensionConstructionsites) >= 20) createRallyFlag(room)
+            if (!defendFlag && (totalExtensions + totalExtensionConstructionsites) >= 20) createDefendFlag(room)
         } else if (room.controller && room.controller.my) {
             if (room.find(FIND_CONSTRUCTION_SITES, {filter: s => s.structureType === STRUCTURE_SPAWN}).length < 1) {
                 buildSpawn(room);
             }
         }
+        //all rooms
         buildRoads(room);
         buildContainersAtSources(room);
     }
