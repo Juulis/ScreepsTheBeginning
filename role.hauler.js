@@ -147,11 +147,11 @@ var roleHauler = {
             if (creep.memory.role === "hauler") creep.memory.targetContainer = "";
             if (Memory.debug) console.log(creep.name + "full, dumping");
             let target;
-            let sourceInMainRoom = false;
+            let sourceInOwnedRoom = false;
             const source = Game.getObjectById(creep.memory.source);
-            if (source && source.room.name === Memory.mainRoom) sourceInMainRoom = true;
+            if (source && source.room.name === Memory.mainRoom || source.room.find(FIND_MY_SPAWNS).length > 0) sourceInOwnedRoom = true;
 
-            if (creep.memory.role === "remoteHauler" && !sourceInMainRoom) {
+            if (creep.memory.role === "remoteHauler" && !sourceInOwnedRoom) {
                 //för remotehaulers, prioritera närmsta deliveryplace
                 const myRooms = Object.values(Game.rooms)
                     .filter(r => r.find(FIND_MY_SPAWNS).length > 0);
