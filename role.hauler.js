@@ -149,7 +149,7 @@ var roleHauler = {
             let target;
             let sourceInOwnedRoom = false;
             const source = Game.getObjectById(creep.memory.source);
-            if (source && source.room.name === Memory.mainRoom || source.room.find(FIND_MY_SPAWNS).length > 0) sourceInOwnedRoom = true;
+            if ((source && source.room.name === Memory.mainRoom) || (source && source.room.find(FIND_MY_SPAWNS).length > 0)) sourceInOwnedRoom = true;
 
             if (creep.memory.role === "remoteHauler" && !sourceInOwnedRoom) {
                 //för remotehaulers, prioritera närmsta deliveryplace
