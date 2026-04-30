@@ -325,7 +325,7 @@ var builder = {
             });
 
             // Bygg road där det gått mycket trafik (minst X gångningar)
-            const minTraffic = 70;
+            const minTraffic = 100;
 
             if (totalRoadConstructionsites > 5 && helper.getRoomTotalEnergy(room) < 5000) return;
             for (const posKey in room.memory.roadData) {
