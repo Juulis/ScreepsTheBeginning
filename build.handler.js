@@ -190,7 +190,7 @@ var builder = {
             //check if source is in remote room and main-stage is below 2
             const isMainRoom = room.name === Memory.mainRoom;
             const mainRoom = Game.rooms[Memory.mainRoom];
-            if (!isMainRoom && mainRoom.stage < 2) return;
+            if (!isMainRoom && mainRoom.memory.stage < 2) return;
 
             //loop sources in room
             room.memory.sources.forEach(source => {
