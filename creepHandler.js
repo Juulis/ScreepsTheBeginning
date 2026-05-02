@@ -16,7 +16,7 @@ var creepHandler = {
 
             // Gå till Rally flagga först om den finns
             if (creep.memory.rallyPoint) {
-                const flag = Game.flags[creep.memory.rallyPoint];
+                const flag = room.flags[creep.memory.rallyPoint];
                 if (flag) {
                     if (creep.pos.getRangeTo(flag) > 1) {
                         creep.say("🏴 Rally");
